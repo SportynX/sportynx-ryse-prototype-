@@ -2662,7 +2662,7 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .qr-card .st-btn{margin-top:18px}.qr-card .st-btn.ghost{margin-top:10px}
 .qr-tick{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:rgba(31,107,255,.16);border:1px solid rgba(111,152,255,.5);color:#8FB0FF}.qr-tick svg{width:24px;height:24px}
 /* ---------- Home v1 · scroll + below-the-fold guidance (Ivan, 18 Oct) ---------- */
-.pane-home{overflow-y:auto;overflow-x:hidden;scrollbar-width:none;margin:0 -20px;padding:0 20px;gap:0;justify-content:flex-start}
+.pane-home{overflow-y:auto;overflow-x:hidden;scrollbar-width:none;margin:-12px -20px 0;padding:12px 20px 0;gap:0;justify-content:flex-start}
 .pane-home::-webkit-scrollbar{display:none}
 .pane-home>*{flex:none}
 .h-first>*{min-height:0}
@@ -4875,7 +4875,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       (function step(){ if(!el.isConnected) return; i++; el.textContent=w.slice(0,i); if(i<w.length) setTimeout(step,45) })() }
     function watch(){ var box=$('h-more'), pane=$('pane-home'); if(!box||!pane) return;
       if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(en){ if(en[0].isIntersecting){ io.disconnect(); type() } },{root:pane,threshold:.35}); io.observe(box.firstChild) } else type() }
-    function fit(){ var pane=$('pane-home'), f=$('h-first'); if(!pane||!f||!pane.clientHeight) return; f.style.height=Math.max(0,pane.clientHeight-10)+'px' }
+    function fit(){ var pane=$('pane-home'), f=$('h-first'); if(!pane||!f||!pane.clientHeight) return; f.style.height=Math.max(0,pane.clientHeight-22)+'px' }
     window.ryseHomeMore=function(){ render(); requestAnimationFrame(fit) };
     window.addEventListener('resize',fit);
     document.addEventListener('click',function(ev){ var b=ev.target.closest('#h-more [data-hx]'); if(!b) return; var k=b.dataset.hx;
