@@ -2666,22 +2666,23 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .pane-home::-webkit-scrollbar{display:none}
 .pane-home>*{flex:none}
 .h-first>*{min-height:0}
-.h-first{display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.h-first{display:flex;flex-direction:column;justify-content:flex-start;gap:14px}
+.h-intel .hm-intro{margin:2px 0}
 /* Home · activity in boxes, live from Apple Health (Ivan, 18 Oct) */
-#h-act.h-actline{display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:8px;padding:0}
+#h-act.h-actline{display:flex;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:10px;padding:0}
 #h-act .ha-hd{display:flex;align-items:center;justify-content:space-between;padding:0 4px}
 #h-act .lbl{font:600 10.5px/1 var(--font-body);letter-spacing:.2em;color:rgba(200,207,221,.86)}
 #h-act .src{margin:0;display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--font-body);color:rgba(200,207,221,.7)}
 #h-act .src i{width:6px;height:6px;border-radius:50%;background:#4F8BFF;box-shadow:0 0 0 3px rgba(79,139,255,.18);animation:haLive 2.4s ease-in-out infinite}
 @keyframes haLive{50%{box-shadow:0 0 0 5px rgba(79,139,255,0)}}
-#h-act .ha-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#h-act .ha-t{display:flex;align-items:center;gap:9px;min-width:0;padding:11px 12px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
-#h-act .ha-t svg{width:20px;height:20px;flex:none;color:#7FA2FF}
-#h-act .ha-t span{display:flex;flex-direction:column;gap:3px;min-width:0}
-#h-act .ha-t b{font:700 16.5px/1 var(--font-body);font-variant-numeric:tabular-nums;color:var(--ryse-white);white-space:nowrap}
-#h-act .ha-t em{font:500 11.5px/1 var(--font-body);font-style:normal;color:rgba(200,207,221,.75)}
+#h-act .ha-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#h-act .ha-t{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0;padding:15px 14px 14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
+#h-act .ha-t svg{width:22px;height:22px;flex:none;color:#7FA2FF}
+#h-act .ha-t span{display:flex;flex-direction:column;gap:5px;min-width:0}
+#h-act .ha-t b{font:700 21px/1 var(--font-body);letter-spacing:-.01em;font-variant-numeric:tabular-nums;color:var(--ryse-white);white-space:nowrap}
+#h-act .ha-t em{font:500 12.5px/1 var(--font-body);font-style:normal;color:rgba(200,207,221,.75)}
 #pane-home #h-ai{display:none!important} /* RYSEON AI line removed from Home (Ivan, 18 Oct) */
-.h-more{display:flex;flex-direction:column;gap:14px;padding:4px 0 40px}
+.h-more{display:flex;flex-direction:column;gap:14px;padding:14px 0 40px}
 .hm-cap{display:flex;align-items:center;gap:7px;font:600 10.5px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:rgba(200,207,221,.86);margin:10px 2px -2px}
 .hm-cap svg{width:12px;height:12px;color:#7FA2FF}
 .hm-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(255,255,255,.09);background:#0F1116;padding:18px}
@@ -3221,6 +3222,8 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
       </button>
 
       <button class="h-week rise d1" type="button" data-home="calendar" id="h-week" data-dyn aria-label="This week"></button>
+
+      <div class="h-intel rise d1" id="h-intel"></div>
 
       <div class="h-focus dk rise d2" role="group" data-home="focus" id="h-focus" data-dyn>
         <span class="h-focus-top"><span class="mlabel" id="h-flabel"></span><span class="h-ctx" id="h-ctx"></span></span>
@@ -4847,9 +4850,9 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     function clipDone(){ return (P.hmTasks||{}).clip===today() }
     function render(){ var box=$('h-more'); if(!box) return; var nm=(P.first||'').trim();
       var t1=trainedToday(), t2=clipDone(), n=(t1?1:0)+(t2?1:0);
+      $('h-intel').innerHTML='<div class="hm-card hm-intro"><span class="who"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 9.4 6.6 14.2 8 9.4 9.4 8 14.2 6.6 9.4 1.8 8 6.6 6.6Z" fill="currentColor"/></svg>'+e(rT('RYSEON Intelligence'))+'</span><p class="hm-type" id="hm-type"></p>'+
+          '<div class="hm-ex" id="hm-ex"><span id="hm-ex-t"></span><button type="button" data-hx="train">'+e(rT('Log training'))+'</button></div></div>';
       box.innerHTML=
-        '<div class="hm-card hm-intro"><span class="who"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 9.4 6.6 14.2 8 9.4 9.4 8 14.2 6.6 9.4 1.8 8 6.6 6.6Z" fill="currentColor"/></svg>'+e(rT('RYSEON Intelligence'))+'</span><p class="hm-type" id="hm-type"></p>'+
-          '<div class="hm-ex" id="hm-ex"><span id="hm-ex-t"></span><button type="button" data-hx="train">'+e(rT('Log training'))+'</button></div></div>'+
         '<div class="hm-cap"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8 9.4 6.6 14.2 8 9.4 9.4 8 14.2 6.6 9.4 1.8 8 6.6 6.6Z" fill="currentColor"/></svg>'+e(rT('From RYSEON Intelligence'))+'</div>'+
         '<div class="hm-card hm-tasks"><div class="hd"><b>'+e(rT('Today’s tasks'))+'</b><small>'+n+' / 2</small></div>'+
           '<button type="button" class="hm-task'+(t1?' done':'')+'" data-hx="train"><span class="ck"><svg viewBox="0 0 16 16" fill="none"><path d="m3.5 8.5 3 3 6-6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="t"><b>'+e(rT('Log today’s training'))+'</b><small>'+e(rT('Takes 30 seconds. It’s the base for your recovery and progress.'))+'</small></span><svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>'+
@@ -4874,8 +4877,8 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     function ex(){ var el=$('hm-ex-t'), w=rT('Team training · 90 min · moderate'), i=0; $('hm-ex').classList.add('on'); var tt=$('hm-type'); if(tt) tt.innerHTML=e(tt.textContent);
       (function step(){ if(!el.isConnected) return; i++; el.textContent=w.slice(0,i); if(i<w.length) setTimeout(step,45) })() }
     function watch(){ var box=$('h-more'), pane=$('pane-home'); if(!box||!pane) return;
-      if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(en){ if(en[0].isIntersecting){ io.disconnect(); type() } },{root:pane,threshold:.35}); io.observe(box.firstChild) } else type() }
-    function fit(){ var pane=$('pane-home'), f=$('h-first'); if(!pane||!f||!pane.clientHeight) return; f.style.height=Math.max(0,pane.clientHeight-22)+'px' }
+      if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(en){ if(en[0].isIntersecting){ io.disconnect(); type() } },{root:pane,threshold:.35}); io.observe($('h-intel').firstChild||box) } else type() }
+    function fit(){ var pane=$('pane-home'), f=$('h-first'); if(!pane||!f||!pane.clientHeight) return; f.style.height='' }
     window.ryseHomeMore=function(){ render(); requestAnimationFrame(fit) };
     window.addEventListener('resize',fit);
     document.addEventListener('click',function(ev){ var b=ev.target.closest('#h-more [data-hx]'); if(!b) return; var k=b.dataset.hx;
