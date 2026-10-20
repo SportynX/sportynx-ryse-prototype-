@@ -110,19 +110,20 @@ function sortForHome(L){var ord={Match:0,Training:1,Recovery:2,Learning:3,Rest:4
 function statusNotices(){
   var o=others();if(!o.length) return '';
   return '<div class="reqs rise d1">'+o.map(function(c){var a=A(c.a);
+    if(c.st==='invited') return invitedNotice(a,c);
     if(c.st==='pending') return '<div class="req pending">'+ava(a,'','locked')+'<span class="t"><b>Request pending · '+esc(nm(a))+'</b><p>'+esc(a.first)+' needs to approve your connection in RYSEON. Nothing is shared until then.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="openA" data-id="'+a.id+'">View</button></span></div>';
     if(c.st==='declined') return '<div class="req">'+ava(a,'','ended')+'<span class="t"><b>Request declined · '+esc(nm(a))+'</b><p>'+esc(a.first)+' chose not to share '+his(a)+' development. No information was shared.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Dismiss</button></span></div>';
     if(c.st==='ended') return '<div class="req">'+ava(a,'','ended')+'<span class="t"><b>Access ended · '+esc(nm(a))+'</b><p>This athlete is no longer sharing their RYSEON development with you.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Dismiss</button></span></div>';
     return '';}).join('')+'</div>';
 }
 function zeroHome(){
-  var pend=others().some(function(c){return c.st==='pending'});
+  var pend=others().some(function(c){return c.st==='pending'||c.st==='invited'});
   return '<div class="endstate rise d2">'+
     '<div class="orbit" style="width:150px;height:150px"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span style="position:relative;width:14px;height:14px;border-radius:50%;background:var(--blue-3);box-shadow:0 0 24px rgba(111,152,255,.7)"></span></div>'+
     '<h2>'+(pend?'Waiting for approval':'No athletes connected')+'</h2>'+
     '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’ll follow the development they choose to share.')+'</p>'+
     '<div style="width:min(320px,100%);margin-top:6px;display:flex;flex-direction:column;gap:10px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button>'+
-      (pend?others().filter(function(c){return c.st==='pending'}).map(function(c){var a=A(c.a);return '<button class="btn btn-sim" type="button" data-a="simApproveApp" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves access</button>'}).join(''):'<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button>')+'</div>'+
+      (pend?others().filter(function(c){return c.st==='pending'||c.st==='invited'}).map(function(c){var a=A(c.a);return '<button class="btn btn-sim" type="button" data-a="'+(c.st==='invited'?'invJoin':'simApproveApp')+'" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+(c.st==='invited'?' joins RYSEON</button>':' approves access</button>')}).join(''):'<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button>')+'</div>'+
   '</div>'+
   '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Follow',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
 }
@@ -215,6 +216,7 @@ function viewAthlete(){
     (L.length>1?'<div class="switcher" role="group" aria-label="Switch athlete">'+L.map(function(x){var b=A(x.a);return '<button type="button" data-a="openA" data-id="'+b.id+'" aria-current="'+(b.id===S.aid)+'" title="'+esc(nm(b))+'">'+ava(b)+'</button>'}).join('')+'</div>':'')+'</div>';
   if(!c||c.st==='ended') return h+endedState(a)+'</div>';
   if(c.st==='pending') return h+pendingState(a,c)+'</div>';
+  if(c.st==='invited') return h+invitedState(a,c)+'</div>';
   if(c.st==='declined') return h+declinedState(a)+'</div>';
   var p=P(a.id);
   h+='<header class="ahead fade">'+ava(a,'xl')+'<div style="min-width:0"><div class="nm">'+esc(a.first)+'<br>'+esc(a.last)+'</div>'+

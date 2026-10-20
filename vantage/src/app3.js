@@ -98,7 +98,7 @@ function viewProfile(){
   h+='<div class="card focus rise d1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Your plan</span><p style="margin-top:10px;font:700 22px/1 var(--font-display);text-transform:uppercase">'+pl.name+'</p><p class="sub" style="margin-top:8px;font-size:14px">'+n+' of '+pl.max+' athletes · €'+price(S.plan,Math.max(n,1)).toFixed(2)+' / month</p></div>'+
     '<button class="btn btn-primary btn-sm" type="button" data-a="nav" data-v="pricing">Manage plan</button></div><div class="usage">'+usageBar()+'</div></div>';
   h+='<div class="sec-h rise d2"><h2 class="h3">Connections</h2><button class="link" type="button" data-a="reqNew">Request another athlete</button></div>';
-  h+='<div class="set rise d2">'+(S.cons.length?S.cons.map(function(c){var a=A(c.a),st={connected:['Connected','blue'],pending:['Pending',''],declined:['Declined',''],ended:['Access ended','']}[c.st];
+  h+='<div class="set rise d2">'+(S.cons.length?S.cons.map(function(c){var a=A(c.a),st={connected:['Connected','blue'],pending:['Pending',''],invited:['Invited',''],declined:['Declined',''],ended:['Access ended','']}[c.st];
       return '<button type="button" data-a="openA" data-id="'+a.id+'"'+(c.st==='connected'?' data-t="access"':'')+'>'+ava(a,'',c.st==='connected'?'':(c.st==='pending'?'locked':'ended'))+'<span class="t">'+esc(nm(a))+'<small>'+esc(c.rel)+(c.st==='connected'?' · '+PERM_LABELS.filter(function(x){return P(a.id)[x[0]]}).length+' of 9 areas shared':'')+'</small></span><span class="pill '+st[1]+'">'+st[0]+'</span>'+I.chev+'</button>'}).join(''):'<div><span class="t muted">No connections yet</span></div>')+'</div>';
   h+='<div class="sec-h rise d2"><h2 class="h3">Account</h2></div><div class="set rise d2">'+
     '<button type="button" data-a="ovRole">'+I.role.replace('<svg','<svg class="i"')+'<span class="t">How you use VANTAGE<small>Personalises VANTAGE. It doesn’t change what athletes share.</small></span><span class="v">'+roleLabel(S.role)+'</span>'+I.chev+'</button>'+
@@ -140,7 +140,7 @@ function calcNote(n){
 }
 
 /* ---------- REQUEST ANOTHER ATHLETE (in-app) ---------- */
-function slotsUsed(){return S.cons.filter(function(c){return c.st==='connected'||c.st==='pending'}).length}
+function slotsUsed(){return S.cons.filter(function(c){return c.st==='connected'||c.st==='pending'||c.st==='invited'}).length}
 function viewRequest(){
   var st=S.req.stage,h='<div class="page narrow">'+mtop()+'<div><button class="textbtn" type="button" data-a="reqBack" style="display:flex;align-items:center;gap:6px">'+I.left.replace('<svg','<svg style="width:16px;height:16px"')+(st==='find'?'Athletes':'Back')+'</button></div>';
   if(st==='find'){
@@ -184,7 +184,7 @@ function loadScenario(k){
 function go(view,o){
   S.view=view;S.ov=null;o=o||{};
   if(view==='athlete'){ if(o.id&&o.id!==S.aid){S.aid=o.id;S.asch={mode:'day',date:new Date(TODAY)}} if(o.t) S.atab=o.t }
-  if(view==='request'){S.req={q:'',sel:null,rel:roleLabel(S.role),src:'app',stage:'find'}}
+  if(view==='request'){S.req={q:'',sel:null,rel:roleLabel(S.role),src:'app',stage:'choose'}}
   render(true);
 }
 function startRequest(){
@@ -214,7 +214,7 @@ function onClick(e){
     case 'obGo': obGo(d.to);break;
     case 'obBack': S.step=S.trail.pop()||'lang';if(S.step==='account') S.emailMode=false;render(true);break;
     case 'role': S.role=d.r;render();break;
-    case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
+    case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('connect');break;
     case 'authMail': S.emailMode=true;render();break;
     case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
     case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
@@ -249,7 +249,7 @@ function onClick(e){
     case 'closeOv': S.ov=null;render();break;
     case 'reqNew': startRequest();break;
     case 'reqAgain': var cr=conOf(d.id);S.cons.splice(S.cons.indexOf(cr),1);if(slotsUsed()>=PLANS[S.plan].max){S.ov={t:'limit'};render();break}S.view='request';S.req={q:'',sel:d.id,rel:cr.rel,src:'app',stage:'request'};render(true);break;
-    case 'reqBack': if(S.req.stage==='request'){S.req.stage='find';render(true)} else go('athletes');break;
+    case 'reqBack': if(S.req.stage==='request'){S.req.stage='find';render(true)} else if(S.req.stage==='find'||S.req.stage==='invite'){S.req.stage='choose';render(true)} else go('athletes');break;
     case 'cancelReq': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('Request cancelled');break;
     case 'dismiss': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);if(S.view==='athlete') go('athletes');else render();break;
     case 'askStop': S.ov={t:'stop',id:d.id};render();break;
@@ -284,7 +284,7 @@ function onSubmit(e){
   var f=e.target.getAttribute('data-f');if(!f) return;e.preventDefault();
   if(f==='email'){var n=document.getElementById('in-name').value.trim(),m=document.getElementById('in-mail').value.trim();
     if(!n||m.indexOf('@')<1){toast('Enter your name and a valid email');return}
-    S.user=n;S.email=m;S.emailMode=false;S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find')}
+    S.user=n;S.email=m;S.emailMode=false;S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('connect')}
 }
 /* language "Continue" returns to profile when opened from settings */
 var _obGo=obGo;obGo=function(to){if(S.langReturn&&S.step==='lang'){S.langReturn=false;S.ob=false;S.view='profile';render(true);toast('Language set to '+LANGS[S.lang][1]);return}_obGo(to)};

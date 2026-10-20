@@ -82,9 +82,9 @@ var S={ob:true,step:'lang',lang:0,role:null,user:'Ivan',email:'ivan@example.com'
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function A(id){return DIRECTORY[id]}
 function nm(a){return a.first+' '+a.last}
-function he(a){return a.g==='f'?'she':'he'}
-function his(a){return a.g==='f'?'her':'his'}
-function him(a){return a.g==='f'?'her':'him'}
+function he(a){return a.g==='f'?'she':(a.g==='x'?'they':'he')}
+function his(a){return a.g==='f'?'her':(a.g==='x'?'their':'his')}
+function him(a){return a.g==='f'?'her':(a.g==='x'?'them':'him')}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 function ava(a,cls,st){return '<span class="ava '+(cls||'')+(st?' '+st:'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(st==='locked'?'':'')+a.first[0]+a.last[0]+'</span>'}
 function conOf(id){for(var i=0;i<S.cons.length;i++) if(S.cons[i].a===id) return S.cons[i];return null}
@@ -100,9 +100,9 @@ function store(){try{localStorage.setItem('vantage.v1',JSON.stringify({scn:S.scn
 
 /* ================= ONBOARDING ================= */
 var OB_FLOW=['lang','intro','role','how','account','find','request','sent','approved'];
-var OB_DOTS=['role','how','account','find','request'];
+var OB_DOTS=['role','how','account','connect','find','request'];
 function obHead(showBack){
-  var i=OB_DOTS.indexOf(S.step);
+  var i=OB_DOTS.indexOf(S.step==='invite'?'find':S.step);
   return '<div class="ob-top">'+(showBack?'<button class="back" type="button" data-a="obBack" aria-label="Back">'+I.back+'</button>':'<span></span>')+
     (i>=0?'<span class="ob-steps" aria-label="Step '+(i+1)+' of '+OB_DOTS.length+'">'+OB_DOTS.map(function(_,j){return '<i class="'+(j<=i?'on':'')+'"></i>'}).join('')+'</span>':'<span></span>')+'<span style="width:44px"></span></div>';
 }
