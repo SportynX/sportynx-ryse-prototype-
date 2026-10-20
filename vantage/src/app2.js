@@ -247,12 +247,7 @@ function tabOverview(a,p){
   var right='<div class="col">'+
     (p.schedule&&p.matches?(m?'<div class="card focus nm-card"><span class="mlabel acc">Next match</span><div class="vs"><b>'+(m.ha==='Away'?'@ ':'vs ')+esc(m.opp)+'</b></div><p class="when"><b>'+fmt(m.date,'rel')+' · '+m.time+'</b> · '+esc(m.note)+' · '+m.ha+'</p></div>':'<div class="card"><span class="mlabel">Next match</span><p class="sub" style="margin-top:10px">No match in the next four weeks.</p></div>'):lockbox(a,'Matches'))+
     aiCard(a)+
-    '<div class="grid4" style="grid-template-columns:1fr 1fr">'+
-      statTile('Training',p.training,ws.sessions+'<small>sessions</small>',ws.mins+' min this week')+
-      statTile('Sleep',p.sleep,avgS.toFixed(1).replace('.0','')+'<small>h avg</small>','Last 7 nights')+
-      statTile('Recovery',p.sleep,'<span style="font-size:22px">'+rec[0]+'</span>',rec[1])+
-      statTile('Football learning',p.learning,lr.mins+'<small>min</small>','This month · '+lr.vids+' videos')+
-    '</div>'+
+    ringsHTML(a,p)+
     (p.development?'<button class="card tap" type="button" data-a="atab" data-t="development" style="text-align:left;width:100%"><span class="mlabel">Athlete level</span><span style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="lvl" style="font-size:20px">'+LEVELS[a.lvl]+'</span>'+ladder(a.lvl,true)+'</span><p class="sub" style="margin-top:10px;font-size:13px">'+(a.lvl<4?'Next: '+LEVELS[a.lvl+1]+'. Levels reflect sustained development behaviour.':'Highest level. Levels reflect sustained development behaviour.')+'</p></button>':'')+
   '</div>';
   return '<div class="grid2">'+left+right+'</div>';
