@@ -1307,3 +1307,21 @@ html:not([data-view]) .pg-pair small{color:#8FB0FF}
 .lv-t b{font:600 16px/1.3 var(--font-body);color:var(--text)}
 .lv-t small{font:500 13.5px/1.4 var(--font-body);color:var(--mut)}
 .lv-s.warn .lv-t small{color:#FFB4B6}
+/* Log activity — day overview */
+.lg-legend{display:flex;gap:14px;flex-wrap:wrap;margin:-2px 0 10px;font:500 12px/1 var(--font-body);color:var(--mut)}
+.lg-legend span{display:inline-flex;align-items:center;gap:6px}
+.lg-legend i{width:10px;height:6px;border-radius:2px}
+.lg-legend i.s-club,.lg-bar i.s-club{background:var(--blue-2)}
+.lg-legend i.s-plan,.lg-bar i.s-plan{background:rgba(157,184,255,.45)}
+.lg-legend i.s-added,.lg-bar i.s-added{background:repeating-linear-gradient(135deg,#fff 0 2px,rgba(255,255,255,.55) 2px 4px)}
+.lg-bar i.m,.lg-bar i.s-club.m{background:#E9EEF8}
+.lg-ticks{position:relative;height:12px;margin:0 17px 6px 86px;font:600 10px/1 var(--font-body);color:var(--mut-2,var(--mut));font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.lg-ticks span{position:absolute;top:0;transform:translateX(-50%)}
+.lg-a{align-items:flex-start}
+.lg-a .ava{--s:38px}
+.lg-a .t{flex:1;min-width:0;gap:7px}
+.lg-a .t b{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.lg-st{font:500 12px/1.2 var(--font-body);color:var(--mut);white-space:nowrap}
+.lg-bar{position:relative;display:block;height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
+.lg-bar i{position:absolute;top:0;bottom:0;border-radius:3px}
+.lg-a small{white-space:normal}
