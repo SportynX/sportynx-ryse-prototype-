@@ -751,3 +751,8 @@ html,body{background:#000}
 .mwm{font:700 15px/1 var(--font-display);letter-spacing:.32em;text-transform:uppercase;color:var(--text)}
 .proto{top:calc(var(--sat) + 22px)!important}
 .proto.ob-on{top:calc(var(--sat) + 10px)!important}
+
+/* prototype-only control: clearly not product UI */
+.btn-sim{border:1px dashed rgba(157,184,255,.55);background:rgba(31,107,255,.08);color:var(--blue-3);letter-spacing:.12em;font-size:12.5px;gap:10px}
+.btn-sim:hover{border-color:var(--blue-3);background:rgba(31,107,255,.14)}
+.btn-sim .sim-k{font:600 9px/1 var(--font-body);letter-spacing:.18em;padding:4px 6px;border-radius:6px;background:rgba(157,184,255,.16);color:var(--blue-3)}

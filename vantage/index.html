@@ -11,8 +11,8 @@
 <meta name="robots" content="noindex,nofollow">
 <title>VANTAGE</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-180.png?v=1">
-<link rel="icon" type="image/png" href="icon-192.png?v=1">
+<link rel="apple-touch-icon" href="icon-180.png?v=2">
+<link rel="icon" type="image/png" href="icon-192.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
@@ -770,6 +770,11 @@ html,body{background:#000}
 .mwm{font:700 15px/1 var(--font-display);letter-spacing:.32em;text-transform:uppercase;color:var(--text)}
 .proto{top:calc(var(--sat) + 22px)!important}
 .proto.ob-on{top:calc(var(--sat) + 10px)!important}
+
+/* prototype-only control: clearly not product UI */
+.btn-sim{border:1px dashed rgba(157,184,255,.55);background:rgba(31,107,255,.08);color:var(--blue-3);letter-spacing:.12em;font-size:12.5px;gap:10px}
+.btn-sim:hover{border-color:var(--blue-3);background:rgba(31,107,255,.14)}
+.btn-sim .sim-k{font:600 9px/1 var(--font-body);letter-spacing:.18em;padding:4px 6px;border-radius:6px;background:rgba(157,184,255,.16);color:var(--blue-3)}
 </style>
 </head>
 <body>
@@ -1160,7 +1165,8 @@ function renderOb(){
         '<ul class="concepts"><li style="--i:0">Progress</li><li style="--i:1">Schedule</li><li style="--i:2">Development</li></ul>'+
       '</div>'+
       '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="role">Get started</button>'+
-      '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p></div>'+
+      '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p>'+
+      '<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button></div>'+
     '</div>';
   }
   else if(s==='role'){
@@ -1284,7 +1290,7 @@ function sentBody(ob){
     '<p class="note rise d3">No information is available until '+esc(a.first)+' approves.</p>'+
   '</div>'+
   '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="'+(ob?'enterApp':'doneReq')+'">'+(ob?'Continue to VANTAGE':'Done')+'</button>'+
-    (ATHLETES[a.id]?'<button class="textbtn" type="button" data-a="'+(ob?'simApprove':'simApproveApp')+'" data-id="'+a.id+'" style="align-self:center">Prototype · simulate '+esc(a.first)+' approving</button>':'')+
+    '<button class="btn btn-sim" type="button" data-a="'+(ob?'simApprove':'simApproveApp')+'" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves access</button>'+
   '</div>';
 }
 function approvedBody(ob){
@@ -1471,7 +1477,8 @@ function zeroHome(){
     '<div class="orbit" style="width:150px;height:150px"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span style="position:relative;width:14px;height:14px;border-radius:50%;background:var(--blue-3);box-shadow:0 0 24px rgba(111,152,255,.7)"></span></div>'+
     '<h2>'+(pend?'Waiting for approval':'No athletes connected')+'</h2>'+
     '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’ll follow the development they choose to share.')+'</p>'+
-    '<div style="width:min(320px,100%);margin-top:6px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button></div>'+
+    '<div style="width:min(320px,100%);margin-top:6px;display:flex;flex-direction:column;gap:10px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button>'+
+      (pend?others().filter(function(c){return c.st==='pending'}).map(function(c){var a=A(c.a);return '<button class="btn btn-sim" type="button" data-a="simApproveApp" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves access</button>'}).join(''):'<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button>')+'</div>'+
   '</div>'+
   '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Follow',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
 }
@@ -1698,7 +1705,7 @@ function endedState(a){
 function pendingState(a,c){
   return '<div class="endstate fade"><div class="orbit"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a,'','locked')+'<span class="lock">'+I.lock+'</span></div><span class="pill"><span class="dot"></span>Request pending</span><h2>'+esc(nm(a))+'</h2><p>'+esc(a.first)+' needs to approve your connection in RYSEON before you can view '+his(a)+' development. No information is shared until then.</p>'+
     '<p class="note">Requested '+(c.ago?c.ago+' days ago':'today')+' as '+esc(c.rel)+'</p>'+
-    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-quiet btn-sm" type="button" data-a="cancelReq" data-id="'+a.id+'">Cancel request</button>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'" style="border-style:dashed">Prototype · simulate approval</button>':'')+'</div></div>';
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-quiet btn-sm" type="button" data-a="cancelReq" data-id="'+a.id+'">Cancel request</button>'+'<button class="btn btn-sim btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves</button>'+'</div></div>';
 }
 function declinedState(a){
   return '<div class="endstate fade"><span class="ava xl ended" style="--h:'+a.h+'">'+a.first[0]+a.last[0]+'</span><span class="pill">Request declined</span><h2>Request declined</h2><p>'+esc(a.first)+' chose not to share '+his(a)+' RYSEON development. No information was shared.</p>'+
@@ -1875,7 +1882,7 @@ function renderOv(){
       '<div><span class="mlabel" style="margin-bottom:10px">Portfolio</span><div class="pgrid">'+Object.keys(SCENARIOS).map(function(k){var s=SCENARIOS[k];return '<button class="pbtn" type="button" data-a="scn" data-k="'+k+'" aria-pressed="'+(S.scn===k&&!S.ob)+'"><b>'+s.label+'</b><small>'+PLANS[s.plan].name+'</small></button>'}).join('')+'</div></div>'+
       '<div><span class="mlabel" style="margin-bottom:10px">Onboarding</span><div class="pgrid"><button class="pbtn" type="button" data-a="restart"><b>Start onboarding</b><small>Language → connected</small></button><button class="pbtn" type="button" data-a="protoNF"><b>Athlete not found</b><small>Search with no match</small></button></div></div>'+
       (L.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate an athlete ending access</span><div class="chips" style="flex-wrap:wrap">'+L.map(function(c){var a=A(c.a);return '<button class="chip" type="button" data-a="revoke" data-id="'+a.id+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div></div>':'')+
-      (pend.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate a response</span><div style="display:flex;flex-direction:column;gap:8px">'+pend.map(function(c){var a=A(c.a);return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:120px;font-weight:600">'+esc(nm(a))+'</span>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'">Approve</button>':'')+'<button class="btn btn-quiet btn-sm" type="button" data-a="simDecline" data-id="'+a.id+'">Decline</button></div>'}).join('')+'</div></div>':'')+
+      (pend.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate a response</span><div style="display:flex;flex-direction:column;gap:8px">'+pend.map(function(c){var a=A(c.a);return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:120px;font-weight:600">'+esc(nm(a))+'</span>'+'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'">Approve</button>'+'<button class="btn btn-quiet btn-sm" type="button" data-a="simDecline" data-id="'+a.id+'">Decline</button></div>'}).join('')+'</div></div>':'')+
     '</div>';
   }
   return '<div class="scrim" data-a="scrim"><div class="'+cls+'" role="dialog" aria-modal="true">'+inner+'</div></div>';
@@ -1923,6 +1930,7 @@ function onClick(e){
     case 'role': S.role=d.r;render();break;
     case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
     case 'authMail': S.emailMode=true;render();break;
+    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent1'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
     case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
     case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
       if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
@@ -1973,7 +1981,13 @@ function onClick(e){
   }
 }
 function loadScenarioFromOb(){S.ob=false;if(!S.scn) S.scn='custom'}
-function approve(id){var c=conOf(id);if(!c) return;c.st='connected';c.since=dkey(TODAY);c.p={}}
+function ensureFull(id){
+  if(ATHLETES[id]) return; var d=DIRECTORY[id],pro=d.age>=19,tk=pro?'marko':(d.g==='f'?'petra':'luka'),t=ATHLETES[tk],o={},k;
+  for(k in t) o[k]=t[k]; for(k in d) o[k]=d[k];
+  o.play=pro?'Professional':'Youth Academy';o.tpl=pro?'pro':'youth';o.since=dkey(TODAY);
+  o.ins=t.ins;ATHLETES[id]=o;DIRECTORY[id]=o;
+}
+function approve(id){var c=conOf(id);if(!c) return;ensureFull(id);c.st='connected';c.since=dkey(TODAY);c.p={}}
 function onInput(e){
   var t=e.target,k=t.getAttribute('data-in');if(!k) return;
   if(k==='find'){S.req.q=t.value;var r=document.getElementById('results');if(r) r.innerHTML=resultsHtml()}

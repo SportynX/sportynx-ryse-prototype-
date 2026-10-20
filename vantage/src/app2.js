@@ -121,7 +121,8 @@ function zeroHome(){
     '<div class="orbit" style="width:150px;height:150px"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span style="position:relative;width:14px;height:14px;border-radius:50%;background:var(--blue-3);box-shadow:0 0 24px rgba(111,152,255,.7)"></span></div>'+
     '<h2>'+(pend?'Waiting for approval':'No athletes connected')+'</h2>'+
     '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’ll follow the development they choose to share.')+'</p>'+
-    '<div style="width:min(320px,100%);margin-top:6px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button></div>'+
+    '<div style="width:min(320px,100%);margin-top:6px;display:flex;flex-direction:column;gap:10px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button>'+
+      (pend?others().filter(function(c){return c.st==='pending'}).map(function(c){var a=A(c.a);return '<button class="btn btn-sim" type="button" data-a="simApproveApp" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves access</button>'}).join(''):'<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button>')+'</div>'+
   '</div>'+
   '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Follow',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
 }
@@ -348,7 +349,7 @@ function endedState(a){
 function pendingState(a,c){
   return '<div class="endstate fade"><div class="orbit"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a,'','locked')+'<span class="lock">'+I.lock+'</span></div><span class="pill"><span class="dot"></span>Request pending</span><h2>'+esc(nm(a))+'</h2><p>'+esc(a.first)+' needs to approve your connection in RYSEON before you can view '+his(a)+' development. No information is shared until then.</p>'+
     '<p class="note">Requested '+(c.ago?c.ago+' days ago':'today')+' as '+esc(c.rel)+'</p>'+
-    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-quiet btn-sm" type="button" data-a="cancelReq" data-id="'+a.id+'">Cancel request</button>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'" style="border-style:dashed">Prototype · simulate approval</button>':'')+'</div></div>';
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-quiet btn-sm" type="button" data-a="cancelReq" data-id="'+a.id+'">Cancel request</button>'+'<button class="btn btn-sim btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves</button>'+'</div></div>';
 }
 function declinedState(a){
   return '<div class="endstate fade"><span class="ava xl ended" style="--h:'+a.h+'">'+a.first[0]+a.last[0]+'</span><span class="pill">Request declined</span><h2>Request declined</h2><p>'+esc(a.first)+' chose not to share '+his(a)+' RYSEON development. No information was shared.</p>'+

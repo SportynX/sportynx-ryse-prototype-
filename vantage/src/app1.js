@@ -133,7 +133,8 @@ function renderOb(){
         '<ul class="concepts"><li style="--i:0">Progress</li><li style="--i:1">Schedule</li><li style="--i:2">Development</li></ul>'+
       '</div>'+
       '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="role">Get started</button>'+
-      '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p></div>'+
+      '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p>'+
+      '<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button></div>'+
     '</div>';
   }
   else if(s==='role'){
@@ -257,7 +258,7 @@ function sentBody(ob){
     '<p class="note rise d3">No information is available until '+esc(a.first)+' approves.</p>'+
   '</div>'+
   '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="'+(ob?'enterApp':'doneReq')+'">'+(ob?'Continue to VANTAGE':'Done')+'</button>'+
-    (ATHLETES[a.id]?'<button class="textbtn" type="button" data-a="'+(ob?'simApprove':'simApproveApp')+'" data-id="'+a.id+'" style="align-self:center">Prototype · simulate '+esc(a.first)+' approving</button>':'')+
+    '<button class="btn btn-sim" type="button" data-a="'+(ob?'simApprove':'simApproveApp')+'" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+' approves access</button>'+
   '</div>';
 }
 function approvedBody(ob){

@@ -168,7 +168,7 @@ function renderOv(){
       '<div><span class="mlabel" style="margin-bottom:10px">Portfolio</span><div class="pgrid">'+Object.keys(SCENARIOS).map(function(k){var s=SCENARIOS[k];return '<button class="pbtn" type="button" data-a="scn" data-k="'+k+'" aria-pressed="'+(S.scn===k&&!S.ob)+'"><b>'+s.label+'</b><small>'+PLANS[s.plan].name+'</small></button>'}).join('')+'</div></div>'+
       '<div><span class="mlabel" style="margin-bottom:10px">Onboarding</span><div class="pgrid"><button class="pbtn" type="button" data-a="restart"><b>Start onboarding</b><small>Language → connected</small></button><button class="pbtn" type="button" data-a="protoNF"><b>Athlete not found</b><small>Search with no match</small></button></div></div>'+
       (L.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate an athlete ending access</span><div class="chips" style="flex-wrap:wrap">'+L.map(function(c){var a=A(c.a);return '<button class="chip" type="button" data-a="revoke" data-id="'+a.id+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div></div>':'')+
-      (pend.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate a response</span><div style="display:flex;flex-direction:column;gap:8px">'+pend.map(function(c){var a=A(c.a);return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:120px;font-weight:600">'+esc(nm(a))+'</span>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'">Approve</button>':'')+'<button class="btn btn-quiet btn-sm" type="button" data-a="simDecline" data-id="'+a.id+'">Decline</button></div>'}).join('')+'</div></div>':'')+
+      (pend.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate a response</span><div style="display:flex;flex-direction:column;gap:8px">'+pend.map(function(c){var a=A(c.a);return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:120px;font-weight:600">'+esc(nm(a))+'</span>'+'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'">Approve</button>'+'<button class="btn btn-quiet btn-sm" type="button" data-a="simDecline" data-id="'+a.id+'">Decline</button></div>'}).join('')+'</div></div>':'')+
     '</div>';
   }
   return '<div class="scrim" data-a="scrim"><div class="'+cls+'" role="dialog" aria-modal="true">'+inner+'</div></div>';
@@ -216,6 +216,7 @@ function onClick(e){
     case 'role': S.role=d.r;render();break;
     case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
     case 'authMail': S.emailMode=true;render();break;
+    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent1'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
     case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
     case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
       if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
@@ -266,7 +267,13 @@ function onClick(e){
   }
 }
 function loadScenarioFromOb(){S.ob=false;if(!S.scn) S.scn='custom'}
-function approve(id){var c=conOf(id);if(!c) return;c.st='connected';c.since=dkey(TODAY);c.p={}}
+function ensureFull(id){
+  if(ATHLETES[id]) return; var d=DIRECTORY[id],pro=d.age>=19,tk=pro?'marko':(d.g==='f'?'petra':'luka'),t=ATHLETES[tk],o={},k;
+  for(k in t) o[k]=t[k]; for(k in d) o[k]=d[k];
+  o.play=pro?'Professional':'Youth Academy';o.tpl=pro?'pro':'youth';o.since=dkey(TODAY);
+  o.ins=t.ins;ATHLETES[id]=o;DIRECTORY[id]=o;
+}
+function approve(id){var c=conOf(id);if(!c) return;ensureFull(id);c.st='connected';c.since=dkey(TODAY);c.p={}}
 function onInput(e){
   var t=e.target,k=t.getAttribute('data-in');if(!k) return;
   if(k==='find'){S.req.q=t.value;var r=document.getElementById('results');if(r) r.innerHTML=resultsHtml()}
