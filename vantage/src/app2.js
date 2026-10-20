@@ -80,7 +80,7 @@ function todayCounts(ids){
 function weekMatches(ids){var n=0,end=7-((TODAY.getDay()+6)%7);ids.forEach(function(id){for(var i=0;i<end;i++) if(eventsFor(id,addDays(TODAY,i)).some(function(e){return e.k==='m'})) n++});return n}
 function viewHome(){
   var L=live(),ids=liveIds(),h='<div class="page">'+mtop();
-  h+='<div class="home-hero rise d1"><div><p class="greet">'+greeting()+', '+esc(S.user.split(' ')[0])+'</p><p class="psub">'+(L.length?(L.length===1?'Your athlete at a glance.':'Your athletes at a glance.'):'Welcome to VANTAGE.')+'</p></div>'+
+  h+='<div class="home-hero rise d1"><div><p class="greet">'+greeting()+', '+esc(S.user.split(' ')[0])+'</p><p class="psub">'+(L.length?(L.length===1?'Your team at a glance.':'Your team at a glance.'):'Welcome to VANTAGE.')+'</p></div>'+
     (L.length?'<div class="count"><b>'+L.length+'</b><span>'+(L.length===1?'Athlete':'Athletes')+'</span></div>':'')+'</div>';
   h+=statusNotices();
   if(!L.length){ return h+zeroHome()+'</div>' }
@@ -95,7 +95,7 @@ function viewHome(){
     var a=A(L[0].a);
     h+='<div class="grid2 rise d2"><div class="col">'+athleteCard(a,true)+'</div><div class="col">'+todayCard(a)+aiCard(a)+'</div></div>';
   } else {
-    h+='<div class="sec-h rise d2"><h2 class="h3">Your athletes</h2><button class="link" type="button" data-a="nav" data-v="athletes">View all</button></div>';
+    h+='<div class="sec-h rise d2"><h2 class="h3">Your team</h2><button class="link" type="button" data-a="nav" data-v="athletes">View all</button></div>';
     h+='<div class="agrid rise d2">'+sortForHome(L).map(function(c){return athleteCard(A(c.a))}).join('')+'</div>';
   }
   return h+'</div>';
@@ -121,11 +121,11 @@ function zeroHome(){
   return '<div class="endstate rise d2">'+
     '<div class="orbit" style="width:150px;height:150px"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span style="position:relative;width:14px;height:14px;border-radius:50%;background:var(--blue-3);box-shadow:0 0 24px rgba(111,152,255,.7)"></span></div>'+
     '<h2>'+(pend?'Waiting for approval':'No athletes connected')+'</h2>'+
-    '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’ll follow the development they choose to share.')+'</p>'+
+    '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’re connected to the development they choose to share.')+'</p>'+
     '<div style="width:min(320px,100%);margin-top:6px;display:flex;flex-direction:column;gap:10px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button>'+
       (pend?others().filter(function(c){return c.st==='pending'||c.st==='invited'}).map(function(c){var a=A(c.a);return '<button class="btn btn-sim" type="button" data-a="'+(c.st==='invited'?'invJoin':'simApproveApp')+'" data-id="'+a.id+'"><span class="sim-k">Prototype</span>'+esc(a.first)+(c.st==='invited'?' joins RYSEON</button>':' approves access</button>')}).join(''):'<button class="btn btn-sim" type="button" data-a="demoIn"><span class="sim-k">Prototype</span>Enter as approved</button>')+'</div>'+
   '</div>'+
-  '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Follow',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
+  '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Connect',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
 }
 function evLabel(e){return e.k==='m'?(e.ha==='Away'?'@ ':'vs ')+e.opp:e.type}
 function todayFact(a){
@@ -176,7 +176,7 @@ function viewAthletes(){
   if(!L.length) return h+zeroHome()+'</div>';
   if(L.length>2){
     var levelsHere=uniq(L.map(function(c){return A(c.a).lvl})).sort();
-    h+='<div class="toolbar rise d1"><label class="field sm">'+I.search+'<span class="sr">Search your athletes</span><input id="ath-q" data-in="athQ" placeholder="Search your athletes" value="'+esc(S.athQ)+'"></label>'+
+    h+='<div class="toolbar rise d1"><label class="field sm">'+I.search+'<span class="sr">Search your team</span><input id="ath-q" data-in="athQ" placeholder="Search your team" value="'+esc(S.athQ)+'"></label>'+
       '<div class="chips" role="group" aria-label="Filter">'+[['all','All'],['match','Match this week']].concat(levelsHere.map(function(l){return ['l'+l,LEVELS[l]]})).map(function(f){return '<button class="chip" type="button" data-a="athF" data-f="'+f[0]+'" aria-pressed="'+(S.athF===f[0])+'">'+f[1]+'</button>'}).join('')+'</div>'+
       '<span class="grow"></span><div class="seg" role="tablist" aria-label="Layout"><button type="button" role="tab" data-a="athV" data-f="cards" aria-selected="'+(S.athV==='cards')+'" aria-label="Cards" style="min-width:48px">'+I.grid.replace('<svg','<svg style="width:17px;height:17px"')+'</button><button type="button" role="tab" data-a="athV" data-f="list" aria-selected="'+(S.athV==='list')+'" aria-label="List" style="min-width:48px">'+I.list.replace('<svg','<svg style="width:17px;height:17px"')+'</button></div></div>';
   }
@@ -338,7 +338,7 @@ function tabAccess(a,p){
       '<div class="r"><span class="t"><b>Connected since</b></span><span class="v">'+fmt(new Date(c.since||a.since),'d mon y')+'</span></div>'+
       '<div class="r"><span class="t"><b>RYSEON ID</b></span><span class="v">'+a.ryid+'</span></div>'+
       '<div class="r"><span class="t"><b>Your access</b></span><span class="v">'+(canAdd()?'View + add training':'Read-only')+'</span></div></div></div>'+
-    '<div class="card"><span class="mlabel">Stop following</span><p class="sub" style="margin-top:8px;font-size:14px">This ends your access to '+esc(a.first)+'’s shared information. To follow again, you’ll need to send a new request.</p><div style="margin-top:14px"><button class="btn btn-quiet btn-sm" type="button" data-a="askStop" data-id="'+a.id+'">Stop following '+esc(a.first)+'</button></div></div>'+
+    '<div class="card"><span class="mlabel">Disconnect</span><p class="sub" style="margin-top:8px;font-size:14px">This ends your access to '+esc(a.first)+'’s shared information. To connect again, you’ll need to send a new request.</p><div style="margin-top:14px"><button class="btn btn-quiet btn-sm" type="button" data-a="askStop" data-id="'+a.id+'">Disconnect from '+esc(a.first)+'</button></div></div>'+
   '</div></div>';
 }
 function permList(p){

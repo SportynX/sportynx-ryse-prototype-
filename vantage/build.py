@@ -2,7 +2,7 @@
 import os
 D=os.path.dirname(os.path.abspath(__file__)); S=os.path.join(D,'src')
 r=lambda f:open(os.path.join(S,f),encoding='utf-8').read()
-css=r('style.css'); js=r('data.js')+'\n'+r('app1.js').replace('__LOGO__','')+'\n'+r('app2.js')+'\n'+r('app3.js')+'\n'+r('app4.js')+'\n'+r('app5.js')+'\n'+r('media.js')+'\n'+r('app6.js')
+css=r('style.css'); js=r('data.js')+'\n'+r('app1.js').replace('__LOGO__','')+'\n'+r('app2.js')+'\n'+r('app3.js')+'\n'+r('app4.js')+'\n'+r('app5.js')+'\n'+r('media.js')+'\n'+r('app6.js')+'\n'+r('app7.js')
 head='''<!doctype html>
 <html lang="en">
 <head>

@@ -129,7 +129,7 @@ function renderOb(){
       '<div class="ob-body">'+
         '<div class="ob-brand rise d1"><span><span class="wm-v">Vantage</span><small>by <span class="wm">RYSE<span class="on">ON</span></span></small></span></div>'+
         hl(['Stay connected','to their','development.'])+
-        '<p class="sub rise d2">Follow the athletes who choose to share their <b class="wm" style="color:var(--text)">RYSE<span class="on">ON</span></b> development with you.</p>'+
+        '<p class="sub rise d2">Be part of the team around athletes who share their <b class="wm" style="color:var(--text)">RYSE<span class="on">ON</span></b> development with you.</p>'+
         '<ul class="concepts"><li style="--i:0">Progress</li><li style="--i:1">Schedule</li><li style="--i:2">Development</li></ul>'+
       '</div>'+
       '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="role">Get started</button>'+
@@ -138,7 +138,7 @@ function renderOb(){
     '</div>';
   }
   else if(s==='role'){
-    var R=[['parent','Parent','Follow your child’s development.',I.parent],['agent','Agent','Follow the players you represent.',I.agent],['coach','Private Coach','Follow the athletes you train.',I.coach],['other','Other','A trusted person in an athlete’s development.',I.other]];
+    var R=[['parent','Parent','Stay connected to your child’s development.',I.parent],['agent','Agent','Connect with the players you represent.',I.agent],['coach','Private Coach','Connect with the athletes you train.',I.coach],['other','Other','A trusted person in an athlete’s development.',I.other]];
     h=obHead(true)+'<div class="ob-col">'+
       '<div class="ob-body">'+hl(['How will you','use Vantage?'])+
       '<p class="sub rise d2">This shapes how VANTAGE is set up for you.</p>'+
@@ -153,7 +153,7 @@ function renderOb(){
       '<ol class="how">'+
         '<li style="--i:0"><span class="n">'+I.search+'</span><span><b>Find</b><p>Find an athlete on RYSEON by name or RYSEON ID.</p></span></li>'+
         '<li style="--i:1"><span class="n">'+I.send+'</span><span><b>Request</b><p>Send a request. The athlete approves it in RYSEON.</p></span></li>'+
-        '<li style="--i:2"><span class="n">'+I.eye+'</span><span><b>Follow</b><p>Follow the development information they choose to share.</p></span></li>'+
+        '<li style="--i:2"><span class="n">'+I.eye+'</span><span><b>Connect</b><p>See the development information they choose to share.</p></span></li>'+
       '</ol>'+
       '<div class="control rise d4">'+I.shield+'<span><b>The athlete stays in control.</b><p>They choose what you see and can end access at any time. You can’t change their data.</p></span></div>'+
       '</div>'+
@@ -211,7 +211,7 @@ function resultsHtml(){
   if(!res.length) return '<div class="empty-s fade">'+I.search+'<b>Athlete not found</b><p>No RYSEON athlete matches “'+esc(q.trim())+'”. Check the spelling, or ask the athlete for their RYSEON ID.</p></div>';
   return '<p class="mlabel" style="margin-bottom:-2px">'+res.length+' athlete'+(res.length>1?'s':'')+' on RYSEON</p>'+res.map(function(a){
     var c=conOf(a.id),st='';
-    if(c&&c.st==='connected') st='<span class="pill blue st">Following</span>';
+    if(c&&c.st==='connected') st='<span class="pill blue st">Connected</span>';
     else if(c&&c.st==='pending') st='<span class="pill st">Requested</span>';
     return '<button class="res fade" type="button" data-a="pick" data-id="'+a.id+'">'+ava(a,'')+'<span class="t"><b>'+esc(nm(a))+'</b><small>'+esc(a.club)+' · '+esc(a.team)+'</small><small>'+esc(a.pos)+' · '+esc(a.city)+'</small><span class="id">'+a.ryid+'</span></span>'+(st||I.chev)+'</button>';
   }).join('');
@@ -266,7 +266,7 @@ function approvedBody(ob){
   return '<div class="state" style="margin:auto 0">'+
     '<div class="orbit done rise d1"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a)+'<span class="ok">'+I.check+'</span></div>'+
     '<h1 class="display hl" style="text-align:center"><span class="line"><span class="li">You’re connected.</span></span></h1>'+
-    '<p class="sub rise d2" style="max-width:36ch">'+esc(a.first)+' approved your request. You can now follow the development '+he(a)+' shares with you.</p>'+
+    '<p class="sub rise d2" style="max-width:36ch">'+esc(a.first)+' approved your request. You’re now connected to the development '+he(a)+' shares with you.</p>'+
     '<div class="card rise d3" style="width:100%;text-align:left"><span class="mlabel acc">'+esc(a.first)+' is sharing</span><p style="margin-top:10px;font:500 14.5px/1.55 var(--font-body)">'+sh.join(' · ')+'</p></div>'+
   '</div>'+
   '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="openNew" data-id="'+a.id+'">Open VANTAGE</button></div>';

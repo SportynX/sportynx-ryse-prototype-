@@ -45,7 +45,7 @@ function viewSchedule(){
   var ids=liveIds(),shared=ids.filter(function(id){return P(id).schedule}),notS=ids.filter(function(id){return !P(id).schedule});
   var h='<div class="page">'+mtop()+'<div class="ptop rise d1"><div class="t"><h1 class="ptitle">Schedule</h1><p class="psub">Shared RYSEON schedules. View only.</p></div></div>';
   if(!ids.length) return h+zeroHome()+'</div>';
-  if(!shared.length) return h+'<div class="endstate"><h2>No schedules shared</h2><p>None of your athletes are sharing their schedule with you.</p></div></div>';
+  if(!shared.length) return h+'<div class="endstate"><h2>No schedules shared</h2><p>No one in your team is sharing their schedule with you.</p></div></div>';
   if(shared.length>1){
     h+='<div class="chips rise d1" role="group" aria-label="Athletes"><button class="chip" type="button" data-a="schWho" data-id="all" aria-pressed="'+(S.sch.who==='all')+'">All athletes</button>'+shared.map(function(id){var a=A(id);return '<button class="chip" type="button" data-a="schWho" data-id="'+id+'" aria-pressed="'+(S.sch.who===id)+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div>';
   }
@@ -125,8 +125,8 @@ function viewPricing(){
   h+='<div class="plans rise d2">'+['individual','v5','pro'].map(function(k){var p=PLANS[k];return '<div class="plan'+(k==='v5'?' rec':'')+'">'+(k===cur?'<span class="pill blue cur">Current plan</span>':(k==='v5'?'<span class="pill cur">Most chosen</span>':''))+
     '<span class="nm">'+p.name+'</span><div class="price"><b>€'+p.price.toFixed(2)+'</b><span>/ month</span></div>'+
     '<ul>'+feats[k].map(function(f){return '<li>'+I.check+'<span>'+f+'</span></li>'}).join('')+'</ul>'+
-    '<button class="btn '+(k===cur?'btn-quiet':'btn-primary')+'" type="button" data-a="choosePlan" data-p="'+k+'"'+(k===cur||live().length>p.max?' disabled':'')+'>'+(k===cur?'Your plan':(live().length>p.max?'Follows up to '+p.max:'Choose '+p.short))+'</button></div>'}).join('')+'</div>';
-  h+='<div class="card rise d2 calc"><div class="out"><span class="mlabel acc">How many athletes will you follow?</span><span class="muted" style="font-size:13.5px">Best value</span></div>'+
+    '<button class="btn '+(k===cur?'btn-quiet':'btn-primary')+'" type="button" data-a="choosePlan" data-p="'+k+'"'+(k===cur||live().length>p.max?' disabled':'')+'>'+(k===cur?'Your plan':(live().length>p.max?'Connects up to '+p.max:'Choose '+p.short))+'</button></div>'}).join('')+'</div>';
+  h+='<div class="card rise d2 calc"><div class="out"><span class="mlabel acc">How many athletes will be in your team?</span><span class="muted" style="font-size:13.5px">Best value</span></div>'+
     '<div class="out"><b><span id="calc-n">'+n+'</span> <span style="font-size:15px;font-family:var(--font-body);font-weight:500;color:var(--mut)">athlete'+(n>1?'s':'')+'</span></b><b id="calc-out">'+PLANS[bp[0]].short+' · €'+bp[1].toFixed(2)+'</b></div>'+
     '<input type="range" id="calc" min="1" max="11" step="1" value="'+n+'" data-in="calc" aria-label="Number of athletes"><div class="ticks">'+[1,2,3,4,5,6,7,8,9,10,'10+'].map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><p class="note" id="calc-note">'+calcNote(n)+'</p></div>';
   h+='<div class="rx rise d3"><div><span class="mlabel acc">RYSEON X</span><h3 style="margin-top:10px">Managing more than<br>10 athletes?</h3><p>RYSEON X is the professional command centre for teams, academies, national teams and football organisations.</p></div><a class="btn btn-quiet btn-sm" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a></div>';
@@ -134,7 +134,7 @@ function viewPricing(){
   return h+'</div>';
 }
 function calcNote(n){
-  if(n>10) return 'VANTAGE follows up to 10 athletes. For larger groups, RYSEON X is built for teams and organisations.';
+  if(n>10) return 'VANTAGE connects up to 10 athletes. For larger groups, RYSEON X is built for teams and organisations.';
   var b=bestPlan(n),parts=['individual','v5','pro'].map(function(k){var v=price(k,n);return v==null?null:PLANS[k].short+' €'+v.toFixed(2)}).filter(Boolean);
   return 'Options for '+n+': '+parts.join(' · ')+'.';
 }
@@ -156,10 +156,10 @@ function renderOv(){
   var o=S.ov;if(!o) return '';
   var inner='',cls='sheet';
   if(o.t==='report') inner=reportSheet(o.id);
-  else if(o.t==='stop'){cls+=' sm';var a=A(o.id);inner='<div class="sheet-b" style="padding-top:26px"><h2 class="rp-h" style="font-size:24px">Stop following '+esc(a.first)+'?</h2><p class="sub">You’ll lose access to everything '+esc(a.first)+' shares with you. To follow again, you’ll need to send a new request and '+esc(a.first)+' will need to approve it.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="doStop" data-id="'+a.id+'">Stop following</button><button class="btn btn-quiet" type="button" data-a="closeOv">Keep following</button></div></div>'}
+  else if(o.t==='stop'){cls+=' sm';var a=A(o.id);inner='<div class="sheet-b" style="padding-top:26px"><h2 class="rp-h" style="font-size:24px">Disconnect from '+esc(a.first)+'?</h2><p class="sub">You’ll lose access to everything '+esc(a.first)+' shares with you. To connect again, you’ll need to send a new request and '+esc(a.first)+' will need to approve it.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="doStop" data-id="'+a.id+'">Disconnect</button><button class="btn btn-quiet" type="button" data-a="closeOv">Stay connected</button></div></div>'}
   else if(o.t==='limit'){cls+=' sm';var pl=PLANS[S.plan];
-    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE follows up to 10 athletes. RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
-      :'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">'+pl.name+'</span><h2 class="rp-h" style="font-size:26px">Your plan is full</h2><p class="sub">'+pl.name+' follows up to '+pl.max+' athletes. Move to a larger plan to request another athlete.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="nav" data-v="pricing">See plans</button><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
+    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE connects up to 10 athletes. RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
+      :'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">'+pl.name+'</span><h2 class="rp-h" style="font-size:26px">Your plan is full</h2><p class="sub">'+pl.name+' connects up to '+pl.max+' athletes. Move to a larger plan to request another athlete.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="nav" data-v="pricing">See plans</button><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
   else if(o.t==='role'){cls+=' sm';inner='<div class="sheet-h"><span class="mlabel">How you use VANTAGE</span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div><div class="sheet-b"><div class="roles" role="radiogroup">'+[['parent','Parent',I.parent],['agent','Agent',I.agent],['coach','Private Coach',I.coach],['other','Other',I.other]].map(function(r){return '<button class="role" type="button" role="radio" style="min-height:104px" aria-checked="'+(S.role===r[0])+'" data-a="setRole" data-r="'+r[0]+'"><span class="tick">'+I.check+'</span>'+r[2]+'<b>'+r[1]+'</b></button>'}).join('')+'</div><p class="note">This personalises VANTAGE. It doesn’t change what any athlete shares with you.</p></div>'}
   else if(o.t==='proto'){
     var L=live(),pend=others().filter(function(c){return c.st==='pending'});
@@ -253,7 +253,7 @@ function onClick(e){
     case 'cancelReq': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('Request cancelled');break;
     case 'dismiss': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);if(S.view==='athlete') go('athletes');else render();break;
     case 'askStop': S.ov={t:'stop',id:d.id};render();break;
-    case 'doStop': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('You’re no longer following '+A(d.id).first);break;
+    case 'doStop': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('You’re no longer connected with '+A(d.id).first);break;
     case 'choosePlan': S.plan=d.p;render();toast('Plan changed to '+PLANS[d.p].name);break;
     case 'ovRole': S.ov={t:'role'};render();break;
     case 'setRole': S.role=d.r;S.ov=null;render();break;
