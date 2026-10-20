@@ -1091,7 +1091,7 @@ var ATHLETES={
     m:{c:66,i:62,l:71,p:55,h:58,r:63},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
-  mateo:{first:'Oliver',last:'Smith',g:'m',age:14,club:'Kingsbridge FC Academy',team:'U15',opp:['Hartley Rovers U15','Thornbury Town U15','Ashcombe United U15','Whitmore Athletic U15','Langford City U15','Redbridge Albion U15','Elmstead U15','Northgate Town U15'],pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'London',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
+  mateo:{first:'Jenna',last:'Smith',g:'f',age:19,club:'Kingsbridge FC Women',team:'Senior Women',opp:['Hartley Rovers Women','Thornbury Town Women','Ashcombe United Women','Whitmore Athletic Women','Langford City Women','Redbridge Albion Women','Elmstead Women','Northgate Town Women'],pos:'Left Winger',ps:'LW',play:'Semi-professional',lvl:1,ryid:'RY-523911',h:196,city:'London',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
     m:{c:68,i:61,l:73,p:56,h:60,r:64},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
@@ -1123,7 +1123,7 @@ var ATHLETES={
     m:{c:82,i:76,l:70,p:83,h:81,r:74},since:'2025-12-05',
     lvh:[['Bronze','Joined RYSEON','Nov 2024'],['Silver','Sustained for 8 weeks','Feb 2025'],['Gold','Sustained for 12 weeks','Jul 2025'],['High Performance','Sustained for 16 weeks','Jan 2026']],
     ins:'Two travel days affected sleep timing this week. Training sessions were all completed.'},
-  nika:{first:'Jenna',last:'Lennox',g:'f',age:19,club:'Harrow Athletic Women',team:'Senior Women',opp:['Hartley Rovers Women','Thornbury Town Women','Ashcombe United Women','Whitmore Athletic Women','Langford City Women','Redbridge Albion Women','Elmstead Women','Northgate Town Women'],pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Manchester',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
+  nika:{first:'Ella',last:'Lennox',g:'f',age:19,club:'Harrow Athletic Women',team:'Senior Women',opp:['Hartley Rovers Women','Thornbury Town Women','Ashcombe United Women','Whitmore Athletic Women','Langford City Women','Redbridge Albion Women','Elmstead Women','Northgate Town Women'],pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Manchester',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
     m:{c:84,i:79,l:81,p:75,h:78,r:73},since:'2026-04-11',
     lvh:[['Bronze','Joined RYSEON','Apr 2025'],['Silver','Sustained for 8 weeks','Jul 2025'],['Gold','Sustained for 12 weeks','Dec 2025'],['High Performance','Sustained for 16 weeks','Sep 2026']],
     ins:'Mental training sessions were added before both matches. Learning time stayed above her monthly average.'}
@@ -1147,7 +1147,7 @@ var PERM_LABELS=[['schedule','Schedule'],['development','Development'],['trainin
 var SCENARIOS={
   parent1:{label:'Parent · 1 athlete',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}}]},
-  parent2:{label:'Parent · 2 sons (Smith)',role:'parent',plan:'individual',user:'Ivan',
+  parent2:{label:'Parent · son & daughter (Smith)',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'mateo',rel:'Parent',p:{health:1}}]},
   coach5:{label:'Private coach · 5 athletes',role:'coach',plan:'v5',user:'Ivan',
     con:[{a:'luka',rel:'Private Coach'},{a:'josip',rel:'Private Coach'},{a:'toni',rel:'Private Coach',p:{sleep:0}},{a:'dario',rel:'Private Coach'},{a:'nika',rel:'Private Coach',p:{reports:0}},
@@ -2764,7 +2764,7 @@ function hmin(m){return Math.floor(m/60)+'h '+pad(Math.round(m%60))+'m'}
 /* ---------- injuries (shared by the athlete in RYSEON) ---------- */
 var INJ={
   mateo:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
-    note:'Physio assessment recorded by Oliver: grade 1 strain. Return to full training expected in about three weeks.',
+    note:'Physio assessment recorded by Jenna: grade 1 strain. Return to full training expected in about three weeks.',
     pain:[7,6,5,5,4,3,3],
     log:[[0,'09:40','Light jogging done without pain. Mobility routine completed.'],[-1,'18:10','Physio session: soft-tissue work and light strengthening.'],[-3,'20:05','Soreness down to 4/10. Walking normally.'],[-5,'12:30','Ultrasound scan done at the club.'],[-6,'18:45','Felt tightness during a sprint in team training. Stopped the session.']],
     photos:[[-6,'Back of left thigh'],[-3,'Swelling check']],docs:[['Physio report','PDF',-5],['Ultrasound scan','Image',-5]]},
@@ -2786,9 +2786,9 @@ var TT=['Physio','Massage','Cryotherapy','Hydrotherapy','Stretching','Osteopath'
 KIND['Massage']='r';KIND['Cryotherapy']='r';KIND['Hydrotherapy']='r';KIND['Stretching']='r';KIND['Osteopath']='r';KIND['Modified Training']='t';
 function seedTher(){
   THER=[];var n=0;function add(a,off,time,dur,type,loc,by){THER.push({id:'t'+(++n),a:a,k:dkey(addDays(TODAY,off)),time:time,dur:dur,type:type,loc:loc,by:by})}
-  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Oliver');
-  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
-  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Jenna');
+  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Jenna');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Jenna');
+  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Jenna');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
+  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Ella');
   add('josip',-1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',2,'18:00',20,'Cryotherapy','Cryo Zagreb','Josip');
   add('matej',-2,'15:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',2,'14:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',3,'19:30',40,'Massage','Rijeka Sports Clinic','Matej');
   add('marko',2,'19:00',45,'Massage','Split Sports Recovery','Marko');add('filip',1,'13:00',45,'Hydrotherapy','Drava recovery pool','Filip');
@@ -3073,7 +3073,7 @@ function nt7(m){var t=[1,2,2.5,5,10,20,25,50,100,200,250,500,1000,2000,2500,5000
 /* ============================================================
    VANTAGE — prototype athlete photos + VANTAGE user's own photo
    ============================================================ */
-ATHLETES.luka.photo='james';ATHLETES.nika.photo='jenna';
+ATHLETES.luka.photo='james';ATHLETES.mateo.photo='jenna';
 try{var _ph=localStorage.getItem('vantage.photo');if(_ph) S.userPhoto=_ph}catch(e){}
 document.addEventListener('change',function(e){
   var t=e.target;if(t.id!=='me-file'||!t.files||!t.files[0]) return;

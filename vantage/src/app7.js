@@ -15,7 +15,7 @@ function hmin(m){return Math.floor(m/60)+'h '+pad(Math.round(m%60))+'m'}
 /* ---------- injuries (shared by the athlete in RYSEON) ---------- */
 var INJ={
   mateo:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
-    note:'Physio assessment recorded by Oliver: grade 1 strain. Return to full training expected in about three weeks.',
+    note:'Physio assessment recorded by Jenna: grade 1 strain. Return to full training expected in about three weeks.',
     pain:[7,6,5,5,4,3,3],
     log:[[0,'09:40','Light jogging done without pain. Mobility routine completed.'],[-1,'18:10','Physio session: soft-tissue work and light strengthening.'],[-3,'20:05','Soreness down to 4/10. Walking normally.'],[-5,'12:30','Ultrasound scan done at the club.'],[-6,'18:45','Felt tightness during a sprint in team training. Stopped the session.']],
     photos:[[-6,'Back of left thigh'],[-3,'Swelling check']],docs:[['Physio report','PDF',-5],['Ultrasound scan','Image',-5]]},
@@ -37,9 +37,9 @@ var TT=['Physio','Massage','Cryotherapy','Hydrotherapy','Stretching','Osteopath'
 KIND['Massage']='r';KIND['Cryotherapy']='r';KIND['Hydrotherapy']='r';KIND['Stretching']='r';KIND['Osteopath']='r';KIND['Modified Training']='t';
 function seedTher(){
   THER=[];var n=0;function add(a,off,time,dur,type,loc,by){THER.push({id:'t'+(++n),a:a,k:dkey(addDays(TODAY,off)),time:time,dur:dur,type:type,loc:loc,by:by})}
-  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Oliver');
-  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
-  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Jenna');
+  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Jenna');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Jenna');
+  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Jenna');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
+  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Ella');
   add('josip',-1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',2,'18:00',20,'Cryotherapy','Cryo Zagreb','Josip');
   add('matej',-2,'15:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',2,'14:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',3,'19:30',40,'Massage','Rijeka Sports Clinic','Matej');
   add('marko',2,'19:00',45,'Massage','Split Sports Recovery','Marko');add('filip',1,'13:00',45,'Hydrotherapy','Drava recovery pool','Filip');
