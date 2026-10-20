@@ -13,3 +13,10 @@ Never ask the user to do manual deploy steps.
 
 ## Viewing on iPhone
 Open the link in Safari → Share → Add to Home Screen → launch "RYSE" (fullscreen, edge to edge).
+
+## VANTAGE (separate product, separate folder)
+Live: https://sportynx.github.io/sportynx-ryse-prototype-/vantage/
+- Source of truth: `vantage/src/` (style.css, data.js, app1–3.js). Never touch the RYSEON files above when working on VANTAGE.
+- Build: `python3 vantage/build.py` → `vantage/index.html`, then commit and push to `main`.
+- Home-screen icon: `vantage/icon-*.png` (official VANTAGE logo). The logo is used only as the app icon, not inside the screens.
+- Same Claude artifact: "VANTAGE" — republish it from the same source.

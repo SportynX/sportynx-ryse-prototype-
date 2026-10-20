@@ -1,0 +1,2008 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VANTAGE">
+<meta name="theme-color" content="#03050A">
+<meta name="robots" content="noindex,nofollow">
+<title>VANTAGE</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png?v=1">
+<link rel="icon" type="image/png" href="icon-192.png?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* VANTAGE — built on the RYSEON design system.
+   Layout: desktop = sidebar + portfolio canvas; tablet = icon rail; phone = floating bottom nav (no + button). */
+:root{
+  --bg:#03050A; --bg-2:#060B18; --navy:#0A1430;
+  --card:rgba(255,255,255,.04); --card-2:rgba(255,255,255,.065); --card-solid:#0C1019;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14); --line-3:rgba(255,255,255,.28);
+  --text:#F5F7FB; --mut:rgba(200,207,221,.82); --faint:rgba(200,207,221,.55); --ghost:rgba(200,207,221,.32);
+  --blue:#1F6BFF; --blue-2:#6F98FF; --blue-3:#9DB8FF; --blue-glow:rgba(31,107,255,.24);
+  --warn:#E5484D;
+  --font-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --font-body:"Manrope",-apple-system,"SF Pro Text",system-ui,sans-serif;
+  --r-card:20px; --r-btn:16px; --r-sm:12px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:1.5px solid var(--blue-3);outline-offset:2px;border-radius:10px}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+.nb{white-space:nowrap}
+.tab{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Living background (RYSEON aura, calmer) ---------- */
+.aura{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--bg-2) 34%,var(--bg) 68%,#010204 100%)}
+.aura i{position:absolute;border-radius:50%;filter:blur(64px);mix-blend-mode:screen;will-change:transform,opacity}
+.aura .a1{width:130%;height:60%;left:-45%;top:-24%;background:radial-gradient(closest-side,rgba(38,86,214,.55),rgba(12,40,130,.28) 55%,transparent);animation:fl1 19s ease-in-out infinite alternate,pul 12s ease-in-out infinite alternate}
+.aura .a2{width:105%;height:52%;right:-55%;top:-6%;background:radial-gradient(closest-side,rgba(32,74,196,.42),rgba(10,32,110,.2) 60%,transparent);animation:fl2 21s ease-in-out infinite alternate,pul 14s ease-in-out -4s infinite alternate}
+.aura .a3{width:125%;height:52%;left:-60%;top:22%;background:radial-gradient(closest-side,rgba(16,42,128,.45),transparent 72%);animation:fl3 16s ease-in-out infinite alternate}
+.aura::after{content:"";position:absolute;inset:auto 0 0 0;height:55%;background:linear-gradient(180deg,transparent,rgba(2,3,7,.5))}
+.aura.calm{background:linear-gradient(180deg,#070D1E 0%,var(--bg) 46%,#010204 100%)}
+.aura.calm .a1{opacity:.42;animation-duration:30s,20s}.aura.calm .a2{opacity:.3}.aura.calm .a3{display:none}
+@keyframes fl1{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(22%,6%,0) scale(1.1)}100%{transform:translate3d(40%,10%,0) scale(1.04)}}
+@keyframes fl2{0%{transform:translate3d(0,0,0) scale(1.05)}50%{transform:translate3d(-26%,12%,0) scale(.94)}100%{transform:translate3d(-46%,14%,0) scale(1)}}
+@keyframes fl3{0%{transform:translate3d(0,0,0) scale(.95)}100%{transform:translate3d(50%,4%,0) scale(1.08)}}
+@keyframes pul{0%{opacity:.5}100%{opacity:1}}
+
+/* ---------- Motion primitives ---------- */
+.rise{animation:rise .9s var(--ease) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.5s}.d3{animation-delay:.75s}.d4{animation-delay:.95s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.fade{animation:fade .45s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hl .line{display:block;overflow:hidden;padding:.16em 0 .08em;margin:-.16em 0 -.08em}
+.hl .li{display:inline-block;animation:lineIn 1.15s cubic-bezier(.16,.84,.24,1) both}
+.hl .line:nth-child(2) .li{animation-delay:.2s}.hl .line:nth-child(3) .li{animation-delay:.4s}
+@keyframes lineIn{0%{transform:translate3d(0,105%,0);opacity:0;filter:blur(8px)}60%{opacity:1}100%{transform:none;opacity:1;filter:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
+
+/* ---------- Type ---------- */
+.display{font:700 clamp(32px,10.4cqw,42px)/.98 var(--font-display);letter-spacing:-.025em;text-transform:uppercase}
+.h2{font:700 30px/1 var(--font-display);letter-spacing:-.02em;text-transform:uppercase}
+.h3{font:700 19px/1.1 var(--font-display);letter-spacing:-.005em;text-transform:uppercase}
+.mlabel{display:flex;align-items:center;gap:6px;font:600 10.5px/1.2 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.mlabel.acc{color:var(--blue-2)}
+.mlabel svg{width:12px;height:12px}
+.sub{font:500 15px/1.5 var(--font-body);color:var(--mut)}
+.muted{color:var(--mut)}.faint{color:var(--faint)}
+.wm{font-weight:600;letter-spacing:.04em}
+.wm .on{color:var(--faint)}
+
+/* ---------- Buttons (RYSEON glass) ---------- */
+.btn{appearance:none;width:100%;min-height:56px;border-radius:var(--r-btn);border:1px solid rgba(255,255,255,.28);background:transparent;color:var(--text);cursor:pointer;
+  font:500 13.5px/1.25 var(--font-body);letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 18px;
+  transition:transform .15s ease,background-color .25s ease,border-color .25s ease,opacity .2s}
+.btn:hover{border-color:rgba(255,255,255,.5)}
+.btn:active{transform:scale(.985);background:rgba(255,255,255,.06)}
+.btn-primary{border-color:rgba(255,255,255,.44);background:linear-gradient(180deg,rgba(130,165,255,.11),rgba(70,110,230,.035));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.btn-primary:hover{border-color:rgba(255,255,255,.62)}
+.btn-blue{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 10px 30px rgba(31,107,255,.28)}
+.btn-blue:hover{border-color:#3C7FFF;background:#3C7FFF}
+.btn-quiet{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.025);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.btn[disabled]{opacity:.38;pointer-events:none}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-sm{min-height:42px;width:auto;border-radius:12px;font-size:11.5px;letter-spacing:.16em;padding:0 16px}
+.link{border:0;background:none;padding:0;cursor:pointer;color:var(--blue-2);font:600 13.5px/1.2 var(--font-body)}
+.link:hover{color:var(--blue-3)}
+.textbtn{border:0;background:none;padding:8px 0;cursor:pointer;font:600 11px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.textbtn:hover{color:var(--text)}
+.iconbtn{width:40px;height:40px;flex:none;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--text);transition:border-color .2s}
+.iconbtn:hover{border-color:var(--line-2)}
+.iconbtn svg{width:18px;height:18px}
+
+/* ---------- Cards ---------- */
+.card{border-radius:var(--r-card);border:1px solid var(--line);background:var(--card);padding:18px}
+.card.glass{border-color:rgba(255,255,255,.12);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02) 60%);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.card.focus{border-color:rgba(31,107,255,.45);background:linear-gradient(155deg,rgba(31,107,255,.22),rgba(255,255,255,.03) 58%)}
+.card.tap{cursor:pointer;transition:border-color .25s ease,transform .25s var(--ease),background-color .25s}
+.card.tap:hover{border-color:var(--line-2);transform:translateY(-2px)}
+.card.tap:active{transform:scale(.992)}
+.ai{padding:2px 0 2px 14px;box-shadow:inset 2px 0 0 rgba(127,162,255,.75)}
+.ai p{margin-top:8px;font:500 15px/1.5 var(--font-body);color:#D5DBE6}
+.ai .src{margin-top:8px;font:500 12px/1.3 var(--font-body);color:var(--faint)}
+.hr{height:1px;background:var(--line);border:0;margin:0}
+
+/* avatar monogram */
+.ava{--s:44px;width:var(--s);height:var(--s);flex:none;border-radius:50%;display:grid;place-items:center;position:relative;overflow:hidden;
+  font:700 calc(var(--s)*.34)/1 var(--font-display);letter-spacing:.01em;color:#fff;text-transform:uppercase;
+  background:radial-gradient(120% 120% at 30% 20%,hsl(var(--h,222) 60% 42%),hsl(var(--h,222) 55% 16%) 70%);border:1px solid rgba(255,255,255,.16)}
+.ava.lg{--s:84px}.ava.xl{--s:104px}.ava.sm{--s:32px}.ava.xs{--s:24px;border-width:1px}
+.ava.locked{filter:blur(0);background:rgba(255,255,255,.05);color:var(--faint)}
+.ava.ended{background:rgba(255,255,255,.04);color:var(--ghost);border-style:dashed}
+
+/* level ladder — clean text + 5 hairline steps, no medals */
+.ladder{display:flex;gap:4px}
+.ladder i{width:16px;height:3px;border-radius:2px;background:rgba(255,255,255,.14)}
+.ladder i.on{background:var(--blue)}
+.ladder.lg i{width:28px;height:4px}
+.lvl{font:700 15px/1 var(--font-display);letter-spacing:.02em;text-transform:uppercase}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;border:1px solid var(--line-2);font:600 10px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+.pill.blue{border-color:rgba(111,152,255,.45);color:var(--blue-3);background:rgba(31,107,255,.1)}
+.pill.solid{border-color:transparent;background:rgba(255,255,255,.08);color:var(--text)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.dotnew{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 3px rgba(31,107,255,.18);flex:none}
+
+/* segmented control (RYSEON progress) */
+.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border-radius:14px;border:1px solid var(--line);background:var(--card)}
+.seg button{height:36px;min-width:72px;padding:0 14px;border:0;border-radius:10px;background:transparent;color:var(--mut);font:600 13.5px/1 var(--font-body);cursor:pointer;transition:background-color .25s,color .25s}
+.seg button[aria-selected=true]{background:#F5F7FB;color:#0A0B0D}
+
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line-2);background:transparent;color:var(--mut);font:600 13px/1 var(--font-body);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .2s}
+.chip:hover{color:var(--text)}
+.chip[aria-pressed=true]{border-color:rgba(111,152,255,.6);color:var(--text);background:rgba(31,107,255,.14)}
+.chip .ava{--s:20px;font-size:8px}
+
+/* inputs */
+.field{display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;border-radius:var(--r-btn);border:1px solid var(--line-2);background:rgba(255,255,255,.04);transition:border-color .2s}
+.field:focus-within{border-color:rgba(111,152,255,.7);box-shadow:0 0 0 4px rgba(31,107,255,.12)}
+.field svg{width:20px;height:20px;flex:none;color:var(--mut)}
+.field input{flex:1;min-width:0;border:0;background:transparent;color:var(--text);font:500 16px/1.3 var(--font-body);outline:none}
+.field input::placeholder{color:var(--faint)}
+.field.sm{height:46px;border-radius:14px}
+.lbl-in{display:flex;flex-direction:column;gap:8px}
+
+/* ================= ONBOARDING ================= */
+.ob{position:fixed;inset:0;z-index:20;overflow:hidden}
+.ob-col{position:relative;z-index:2;height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;
+  padding:max(calc(var(--sat) + 54px),64px) max(28px,env(safe-area-inset-right,0px)) calc(var(--sab) + 34px) max(28px,env(safe-area-inset-left,0px));overflow-y:auto;scrollbar-width:none}
+.ob-col::-webkit-scrollbar{display:none}
+.ob-top{position:absolute;z-index:3;top:max(calc(var(--sat) + 8px),14px);left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;max-width:460px;margin:0 auto}
+.back{width:44px;height:44px;display:grid;place-items:center;border:0;background:transparent;color:rgba(245,247,251,.6);cursor:pointer;border-radius:12px}
+.back:hover{color:var(--text)}
+.back svg{width:22px;height:22px}
+.ob-steps{display:flex;gap:5px}
+.ob-steps i{width:18px;height:3px;border-radius:2px;background:rgba(255,255,255,.14);transition:background .4s}
+.ob-steps i.on{background:var(--blue)}
+.ob-body{margin-top:auto;display:flex;flex-direction:column;gap:22px}
+.ob-body.top{margin-top:8px}
+.ob-act{margin-top:40px;display:flex;flex-direction:column;gap:12px}
+.ob-foot{text-align:center;font:500 13.5px/1.4 var(--font-body);color:var(--mut);margin-top:6px}
+.ob-foot .link{margin-left:6px}
+.logo{display:block;width:76px;height:auto;border-radius:18px}
+.logo.sm{width:40px;border-radius:10px}
+.ob-brand{display:flex;align-items:center;gap:14px}
+.ob-brand .wm-v{font:700 15px/1 var(--font-display);letter-spacing:.32em;text-transform:uppercase}
+.ob-brand small{display:block;margin-top:6px;font:600 10px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+
+/* language rail (RYSEON) */
+.lang-head h1{font:700 clamp(30px,9cqw,38px)/1 var(--font-display);letter-spacing:-.02em;text-transform:uppercase;transition:opacity .25s}
+.lang-region{margin-top:12px;min-height:20px;font-size:14px;color:var(--mut)}
+.lang-rail{position:relative;margin:30px -28px 0}
+.lang-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px calc(50% - 85px)}
+.lang-track::-webkit-scrollbar{display:none}
+.lang-item{flex:none;width:170px;scroll-snap-align:center;border:0;background:transparent;color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:9px;padding:10px 0;opacity:.32;transform:scale(.86);transition:opacity .3s,transform .3s}
+.lang-item.on{opacity:1;transform:none}
+.lang-item b{font:600 30px/1.1 var(--font-display);white-space:nowrap}
+.lang-item small{font:600 10.5px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:rgba(157,184,255,.85);white-space:nowrap}
+.lang-rail::before,.lang-rail::after{content:"";position:absolute;top:8px;bottom:8px;width:1px;left:calc(50% - 98px);background:linear-gradient(180deg,transparent,rgba(255,255,255,.18),transparent)}
+.lang-rail::after{left:auto;right:calc(50% - 98px)}
+.lang-dial{display:flex;justify-content:center;align-items:flex-end;gap:5px;height:14px;margin-top:20px}
+.lang-dial i{width:2px;height:6px;border-radius:1px;background:rgba(255,255,255,.18);transition:height .3s,background-color .3s}
+.lang-dial i.on{height:14px;background:#C9D7FF}
+.lang-globe{flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:120px}
+.lang-globe svg{width:min(300px,80%);height:auto;opacity:.9}
+
+/* intro visual */
+.ob-visual{flex:1 0 auto;display:flex;align-items:center;justify-content:center;padding:20px 0 0;min-height:180px}
+.ob-visual svg{width:100%;max-width:340px;height:auto;overflow:visible}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.4s cubic-bezier(.45,0,.2,1) var(--d,0s) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.nodein{opacity:0;animation:fade .8s ease var(--d,0s) forwards}
+.concepts{position:relative;list-style:none;margin:4px 0 0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:12px}
+.concepts::before{content:"";position:absolute;left:3.5px;top:7px;bottom:7px;width:1px;background:linear-gradient(180deg,rgba(157,184,255,.55),rgba(245,247,251,.12));transform-origin:top;animation:rail .9s linear .9s both}
+@keyframes rail{from{transform:scaleY(0)}to{transform:none}}
+.concepts li{position:relative;font:600 12.5px/1.2 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:rgba(214,220,232,.9);animation:rise .9s var(--ease) both;animation-delay:calc(1s + var(--i,0)*.2s)}
+.concepts li::before{content:"";position:absolute;left:-22px;top:3px;width:8px;height:8px;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--blue-3)}
+
+/* role cards */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.role{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:132px;padding:16px;border-radius:20px;border:1px solid var(--line-2);
+  background:rgba(255,255,255,.03);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);cursor:pointer;text-align:left;transition:border-color .25s,background-color .25s,transform .2s}
+.role:hover{border-color:rgba(255,255,255,.3)}
+.role svg{width:24px;height:24px;color:var(--text);opacity:.9}
+.role b{margin-top:auto;font:700 16px/1 var(--font-display);letter-spacing:.04em;text-transform:uppercase}
+.role span{font:500 12.5px/1.35 var(--font-body);color:var(--mut)}
+.role[aria-checked=true]{border-color:rgba(111,152,255,.75);background:linear-gradient(155deg,rgba(31,107,255,.22),rgba(255,255,255,.03) 62%)}
+.role[aria-checked=true] svg{color:var(--blue-3)}
+.role .tick{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center}
+.role[aria-checked=true] .tick{background:var(--blue);border-color:var(--blue)}
+.role .tick svg{width:12px;height:12px;opacity:0;color:#fff}
+.role[aria-checked=true] .tick svg{opacity:1}
+.note{font:500 12.5px/1.45 var(--font-body);color:var(--faint)}
+
+/* how it works */
+.how{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;position:relative}
+.how::before{content:"";position:absolute;left:21px;top:30px;bottom:30px;width:1px;background:linear-gradient(180deg,rgba(111,152,255,.6),rgba(111,152,255,.12));transform-origin:top;animation:rail 1.2s ease .6s both}
+.how li{display:flex;gap:18px;align-items:flex-start;padding:12px 0;animation:rise .9s var(--ease) both;animation-delay:calc(.4s + var(--i)*.22s)}
+.how .n{position:relative;z-index:1;width:43px;height:43px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--bg-2);border:1px solid rgba(111,152,255,.5);color:var(--blue-3)}
+.how .n svg{width:19px;height:19px}
+.how b{display:block;font:700 22px/1 var(--font-display);text-transform:uppercase;letter-spacing:-.005em;margin-top:3px}
+.how p{margin-top:6px;font:500 14.5px/1.45 var(--font-body);color:var(--mut)}
+.control{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:20px;border:1px solid rgba(31,107,255,.45);background:linear-gradient(155deg,rgba(31,107,255,.2),rgba(255,255,255,.02) 62%)}
+.control svg{width:26px;height:26px;flex:none;color:var(--blue-3);margin-top:2px}
+.control b{display:block;font:700 18px/1.05 var(--font-display);text-transform:uppercase;letter-spacing:.01em}
+.control p{margin-top:7px;font:500 13.5px/1.45 var(--font-body);color:var(--mut)}
+
+/* auth */
+.btn-auth{position:relative;letter-spacing:.12em;font-size:13px;padding-left:50px}
+.btn-auth .ico{position:absolute;left:20px;width:19px;height:19px}
+
+/* search results */
+.results{display:flex;flex-direction:column;gap:10px}
+.res{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left;width:100%;transition:border-color .2s,background-color .2s}
+.res:hover{border-color:var(--line-2);background:var(--card-2)}
+.res .t{flex:1;min-width:0}
+.res b{display:block;font:600 16px/1.2 var(--font-body)}
+.res small{display:block;margin-top:4px;font:500 13px/1.3 var(--font-body);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res .id{font:600 10.5px/1 var(--font-body);letter-spacing:.14em;color:var(--faint);margin-top:6px;display:block}
+.res .chev{width:18px;height:18px;color:var(--faint);flex:none}
+.res .st{flex:none}
+.empty-s{padding:26px 18px;border-radius:20px;border:1px dashed var(--line-2);text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty-s svg{width:30px;height:30px;color:var(--mut)}
+.empty-s b{font:700 18px/1.1 var(--font-display);text-transform:uppercase}
+.empty-s p{font:500 14px/1.45 var(--font-body);color:var(--mut);max-width:34ch}
+
+/* identity card (pre-approval) */
+.idcard{padding:20px;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02) 60%)}
+.idcard .who{display:flex;align-items:center;gap:16px}
+.idcard .nm{font:700 22px/1.05 var(--font-display);text-transform:uppercase;letter-spacing:-.01em}
+.idcard .tag{display:block;margin-top:7px;font:600 10.5px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:rgba(157,184,255,.85)}
+.idcard dl{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line)}
+.idcard dt{font:600 10.5px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+.idcard dd{margin:0;font-size:15px;line-height:1.3}
+.relgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rel{height:52px;border-radius:14px;border:1px solid var(--line-2);background:rgba(255,255,255,.025);cursor:pointer;font:600 12px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);transition:all .2s}
+.rel[aria-checked=true]{border-color:rgba(111,152,255,.75);color:var(--text);background:rgba(31,107,255,.16)}
+
+/* waiting / connected states */
+.state{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+.orbit{position:relative;width:180px;height:180px;display:grid;place-items:center;margin:0 auto}
+.orbit .ava{--s:96px}
+.orbit .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(111,152,255,.4);animation:ring 3.4s ease-out infinite}
+.orbit .ring:nth-child(2){animation-delay:1.13s}.orbit .ring:nth-child(3){animation-delay:2.26s}
+@keyframes ring{0%{transform:scale(.55);opacity:.8}100%{transform:scale(1.15);opacity:0}}
+.orbit .lock{position:absolute;right:38px;bottom:38px;width:30px;height:30px;border-radius:50%;background:var(--bg-2);border:1px solid var(--line-2);display:grid;place-items:center;z-index:2}
+.orbit .lock svg{width:14px;height:14px;color:var(--mut)}
+.orbit.done .ring{border-color:rgba(111,152,255,.7);animation:none;transform:scale(.72);opacity:1}
+.orbit.done .ring:nth-child(2){transform:scale(.9);opacity:.35}.orbit.done .ring:nth-child(3){transform:scale(1.08);opacity:.12}
+.orbit .ok{position:absolute;right:38px;bottom:38px;width:30px;height:30px;border-radius:50%;background:var(--blue);display:grid;place-items:center;z-index:2;animation:pop .6s var(--ease) .3s both}
+.orbit .ok svg{width:15px;height:15px;color:#fff}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.locked-list{width:100%;display:flex;flex-direction:column;border-radius:18px;border:1px solid var(--line);overflow:hidden;text-align:left}
+.locked-list div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;border-top:1px solid var(--line);font:500 14px/1.2 var(--font-body);color:var(--faint)}
+.locked-list div:first-child{border-top:0}
+.locked-list i{display:block;height:8px;width:var(--w,60px);border-radius:4px;background:rgba(255,255,255,.06)}
+.locked-list svg{width:14px;height:14px;color:var(--ghost)}
+
+/* ================= APP SHELL ================= */
+.shell{position:fixed;inset:0;z-index:5;display:grid;grid-template-columns:256px 1fr}
+.side{position:relative;z-index:3;display:flex;flex-direction:column;gap:6px;padding:calc(var(--sat) + 22px) 14px 18px max(14px,env(safe-area-inset-left,0px));border-right:1px solid var(--line);background:rgba(4,7,15,.72);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);overflow-y:auto;scrollbar-width:none}
+.side::-webkit-scrollbar{display:none}
+.side-brand{display:flex;align-items:center;gap:12px;padding:4px 8px 22px}
+.side-brand .wm-v{font:700 13.5px/1 var(--font-display);letter-spacing:.3em;text-transform:uppercase}
+.side-brand small{display:block;margin-top:5px;font:600 9.5px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.snav{display:flex;flex-direction:column;gap:2px}
+.snav button{display:flex;align-items:center;gap:14px;height:46px;padding:0 12px;border:0;border-radius:12px;background:transparent;color:rgba(200,207,221,.66);font:600 14px/1 var(--font-body);cursor:pointer;text-align:left;transition:color .2s,background-color .2s}
+.snav button:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.snav button[aria-current=page]{color:var(--blue-2)}
+.snav svg{width:22px;height:22px;flex:none}
+.snav .cnt{margin-left:auto;font:600 11.5px/1 var(--font-body);color:var(--faint)}
+.snav .ava{--s:22px;font-size:8px}
+.snav button[aria-current=page] .ava{border-color:var(--blue-2)}
+.side-sec{margin-top:22px;padding:0 12px 8px;display:flex;align-items:center;justify-content:space-between}
+.side-list{display:flex;flex-direction:column;gap:2px}
+.side-list button{display:flex;align-items:center;gap:11px;padding:7px 10px;border:0;border-radius:12px;background:transparent;cursor:pointer;text-align:left;color:var(--mut);transition:background-color .2s,color .2s}
+.side-list button:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.side-list button[aria-current=true]{background:rgba(31,107,255,.12);color:var(--text)}
+.side-list .ava{--s:30px}
+.side-list .t{min-width:0;flex:1}
+.side-list b{display:block;font:600 13.5px/1.2 var(--font-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side-list small{display:block;font:500 11.5px/1.2 var(--font-body);color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.side-list .pend{opacity:.7}
+.side-req{margin-top:10px;display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:12px;border:1px dashed var(--line-2);background:transparent;color:var(--mut);cursor:pointer;font:600 12.5px/1 var(--font-body);transition:all .2s}
+.side-req:hover{color:var(--text);border-color:var(--line-3)}
+.side-req svg{width:16px;height:16px}
+.side-foot{margin-top:auto;padding:18px 10px 0;font:500 11.5px/1.45 var(--font-body);color:var(--faint)}
+.side-foot b{color:var(--mut);font-weight:600}
+
+.main{position:relative;z-index:2;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.page{max-width:1180px;margin:0 auto;padding-block:calc(var(--sat) + 34px) 64px;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+.page.narrow{max-width:760px}
+.ptop{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ptop .t{min-width:0}
+.ptitle{font:700 38px/1 var(--font-display);letter-spacing:-.02em;text-transform:uppercase}
+.psub{margin-top:9px;font:500 15px/1.4 var(--font-body);color:var(--mut)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:10px}
+.sec-h .h3{font-size:18px}
+
+/* bottom nav (phone) — RYSEON hnav, five tabs, no + */
+.bnav{display:none;position:fixed;z-index:30;left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));bottom:calc(var(--sab) + 14px);height:64px;padding:0 4px;border-radius:32px;border:1px solid var(--line);
+  background:rgba(22,23,27,.74);-webkit-backdrop-filter:blur(24px) saturate(140%);backdrop-filter:blur(24px) saturate(140%);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:0;background:transparent;cursor:pointer;color:rgba(200,207,221,.6);font:600 10px/1 var(--font-body);letter-spacing:.02em;transition:color .2s;min-width:0}
+.bnav svg{width:22px;height:22px}
+.bnav button[aria-current=page]{color:var(--blue-2)}
+.bnav .ava{--s:23px;font-size:8.5px}
+.bnav button[aria-current=page] .ava{border-color:var(--blue-2)}
+.mtop{display:none}
+
+/* tablet: icon rail */
+@container (max-width:1100px){
+  .shell{grid-template-columns:84px 1fr}
+  .side{padding-left:10px;padding-right:10px;align-items:center}
+  .side-brand{padding:0 0 18px}.side-brand .t{display:none}
+  .snav button{flex-direction:column;justify-content:center;gap:6px;height:62px;width:64px;padding:0;font-size:10px}
+  .snav .cnt,.side-sec,.side-list .t,.side-foot,.side-req span{display:none}
+  .side-list button{padding:6px;justify-content:center}
+  .side-list{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .side-req{width:44px;padding:0;justify-content:center}
+  .page{padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px))}
+}
+/* phone */
+@container (max-width:760px){
+  body{font-size:14.5px}
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .bnav{display:flex}
+  .page{padding-block:calc(var(--sat) + 18px) calc(var(--sab) + 110px);padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));gap:18px}
+  .ptitle{font-size:32px}
+  .mtop{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px}
+  .mtop .logo{width:32px;border-radius:8px}
+  .h2{font-size:26px}
+}
+
+/* ================= HOME ================= */
+.greet{font:600 13px/1.25 var(--font-body);letter-spacing:.16em;text-transform:uppercase}
+.home-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.count{display:flex;align-items:baseline;gap:12px}
+.count b{font:700 64px/.9 var(--font-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.count span{font:600 12px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.glance{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:12px}
+.gl{display:flex;flex-direction:column;gap:12px;padding:18px 18px 16px;border-radius:20px;border:1px solid var(--line);background:var(--card);text-align:left;cursor:pointer;transition:border-color .2s}
+.gl:hover{border-color:var(--line-2)}
+.gl.focus{border-color:rgba(31,107,255,.45);background:linear-gradient(155deg,rgba(31,107,255,.2),rgba(255,255,255,.03) 58%)}
+.gl .row{display:flex;gap:22px;flex-wrap:wrap}
+.gl .kv b{display:block;font:700 30px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.gl .kv span{display:block;margin-top:6px;font:500 13px/1.2 var(--font-body);color:var(--mut)}
+.gl .big{font:700 30px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.gl .big small{font:500 14px/1.2 var(--font-body);color:var(--mut);margin-left:8px;letter-spacing:0}
+.gl .ln{font:500 13px/1.4 var(--font-body);color:var(--mut)}
+@container (max-width:900px){.glance{grid-template-columns:1fr 1fr}.glance .gl:first-child{grid-column:1/-1}}
+@container (max-width:760px){.count b{font-size:52px}}
+
+/* athlete cards */
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.acard{position:relative;display:flex;flex-direction:column;gap:16px;padding:18px;border-radius:22px;border:1px solid var(--line);background:linear-gradient(170deg,rgba(255,255,255,.055),rgba(255,255,255,.015) 70%);cursor:pointer;text-align:left;
+  transition:border-color .3s,transform .3s var(--ease),box-shadow .3s;overflow:hidden}
+.acard::before{content:"";position:absolute;inset:-1px;border-radius:inherit;background:radial-gradient(80% 60% at 10% 0%,rgba(31,107,255,.14),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.acard:hover{border-color:rgba(111,152,255,.35);transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.acard:hover::before{opacity:1}
+.acard .who{position:relative;display:flex;align-items:center;gap:14px}
+.acard .who .t{min-width:0;flex:1}
+.acard .nm{display:block;font:700 20px/1.05 var(--font-display);text-transform:uppercase;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acard .meta{display:block;margin-top:6px;font:500 13px/1.3 var(--font-body);color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acard .lvl{white-space:nowrap}
+.acard .lvrow{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0 0;border-top:1px solid var(--line)}
+.acard .facts{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fact .mlabel{font-size:9.5px;margin-bottom:6px;color:var(--faint)}
+.fact b{display:block;font:600 14px/1.25 var(--font-body)}
+.fact span{display:block;font:500 12.5px/1.3 var(--font-body);color:var(--mut);margin-top:2px}
+.fact.match b{color:var(--text)}
+.acard .trend{font:600 12px/1 var(--font-body);color:var(--blue-2)}
+.acard .trend.st{color:var(--mut)}
+.acard.feature{padding:24px;gap:20px}
+.acard.feature .nm{font-size:28px}
+.acard.feature .ava{--s:72px}
+.spark{width:84px;height:26px;display:block}
+.spark path.l{fill:none;stroke:var(--blue-2);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.spark path.a{fill:url(#sg);opacity:.5}
+.spark circle{fill:var(--text)}
+
+/* status rows (pending / declined / ended) */
+.req{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+.req .t{flex:1;min-width:0}
+.req b{display:block;font:600 15px/1.2 var(--font-body)}
+.req p{margin-top:4px;font:500 13px/1.4 var(--font-body);color:var(--mut)}
+.req .acts{display:flex;gap:6px;flex:none}
+.req.pending{border-style:dashed;border-color:rgba(111,152,255,.35)}
+.reqs{display:flex;flex-direction:column;gap:10px}
+
+/* list view rows */
+.alist{display:flex;flex-direction:column;border-radius:20px;border:1px solid var(--line);overflow:hidden;background:var(--card)}
+.arow{display:grid;grid-template-columns:minmax(220px,1.6fr) 1fr 1.2fr 1.2fr 92px 20px;align-items:center;gap:16px;padding:12px 18px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;cursor:pointer;color:var(--text);transition:background-color .2s}
+.arow:first-child{border-top:0}
+.arow:hover{background:rgba(255,255,255,.03)}
+.arow .who{display:flex;align-items:center;gap:12px;min-width:0}
+.arow .who b{display:block;font:600 14.5px/1.2 var(--font-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arow .who small,.arow .c small{display:block;font:500 12px/1.3 var(--font-body);color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.arow .c{min-width:0;font:500 13.5px/1.3 var(--font-body)}
+.arow .c span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arow .ava{--s:36px}
+.arow svg.chev{width:16px;height:16px;color:var(--faint)}
+.arow.head{cursor:default;padding-block:10px;background:rgba(255,255,255,.015)}
+.arow.head:hover{background:rgba(255,255,255,.015)}
+@container (max-width:900px){.arow{grid-template-columns:1fr auto 20px}.arow .c.hide-m{display:none}}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.toolbar .field{flex:1 1 260px;max-width:420px}
+.toolbar .grow{flex:1}
+
+/* ================= ATHLETE PROFILE ================= */
+.switcher{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.switcher::-webkit-scrollbar{display:none}
+.switcher button{flex:none;border:0;background:transparent;padding:0;cursor:pointer;border-radius:50%;transition:transform .2s,opacity .2s;opacity:.55}
+.switcher button:hover{opacity:.9}
+.switcher button[aria-current=true]{opacity:1}
+.switcher button[aria-current=true] .ava{box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--blue)}
+.switcher .ava{--s:34px}
+.ahead{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:26px;border-radius:26px;border:1px solid rgba(255,255,255,.1);overflow:hidden;
+  background:radial-gradient(90% 140% at 0% 0%,rgba(31,107,255,.2),transparent 55%),linear-gradient(170deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 70%)}
+.ahead .nm{font:700 40px/.98 var(--font-display);text-transform:uppercase;letter-spacing:-.025em}
+.ahead .meta{margin-top:10px;font:500 15px/1.4 var(--font-body);color:var(--mut)}
+.ahead .meta b{color:var(--text);font-weight:600}
+.ahead .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.ahead .lv{display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right}
+.ahead .lv .lvl{font-size:24px}
+.ahead .lv .mlabel{justify-content:flex-end}
+@container (max-width:900px){.ahead{grid-template-columns:auto 1fr;padding:20px;gap:16px}.ahead .lv{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;text-align:left;padding-top:14px;border-top:1px solid var(--line)}.ahead .nm{font-size:30px}}
+@container (max-width:760px){.ahead .ava.xl{--s:72px}.ahead .nm{font-size:26px}.ahead .meta{font-size:13.5px}}
+.atabs{position:sticky;top:8px;z-index:4;padding:5px;border-radius:16px;border:1px solid var(--line);background:rgba(6,10,22,.72);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.atabs::-webkit-scrollbar{display:none}
+.atabs button{flex:none;height:40px;padding:0 16px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--mut);font:600 13.5px/1 var(--font-body);cursor:pointer;transition:all .2s}
+.atabs button:hover{color:var(--text)}
+.atabs button[aria-selected=true]{color:var(--text);border-color:var(--line-2);background:rgba(255,255,255,.07)}
+.atabs button[aria-selected=true]::after{content:"";display:block;height:2px;margin:6px auto 0;width:16px;border-radius:2px;background:var(--blue)}
+.atabs button{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.atabs button::after{content:"";display:block;height:2px;margin:6px auto 0;width:16px;border-radius:2px;background:transparent}
+
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+@container (max-width:1000px){.grid2{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}}
+@container (max-width:640px){.grid3{grid-template-columns:1fr}}
+.stat .v{font:700 30px/1 var(--font-display);font-variant-numeric:tabular-nums;margin-top:12px}
+.stat .v small{font:500 13.5px/1 var(--font-body);color:var(--mut);margin-left:5px;letter-spacing:0}
+.stat .d{margin-top:7px;font:500 12.5px/1.35 var(--font-body);color:var(--mut)}
+.stat .d.up{color:var(--blue-2)}
+.stat.off .v{font:600 14px/1.3 var(--font-body);color:var(--faint)}
+
+/* timeline list */
+.tl{display:flex;flex-direction:column}
+.tl .it{display:grid;grid-template-columns:62px 14px 1fr;gap:12px;align-items:start;padding:10px 0}
+.tl .tm{font:600 14px/1.2 var(--font-body);font-variant-numeric:tabular-nums;padding-top:1px}
+.tl .tm small{display:block;font:500 11.5px/1.2 var(--font-body);color:var(--faint);margin-top:3px}
+.tl .mk{position:relative;height:100%;display:flex;justify-content:center}
+.tl .mk::before{content:"";width:9px;height:9px;border-radius:50%;margin-top:5px;box-shadow:inset 0 0 0 1.5px var(--mut)}
+.tl .it:not(:last-child) .mk::after{content:"";position:absolute;top:18px;bottom:-14px;width:1px;background:var(--line)}
+.tl .it.m .mk::before{background:var(--blue);box-shadow:none}
+.tl .it.r .mk::before{box-shadow:inset 0 0 0 1.5px var(--blue-3)}
+.tl .it.l .mk::before{box-shadow:inset 0 0 0 1.5px var(--faint);background:rgba(255,255,255,.06)}
+.tl .it.past{opacity:.5}
+.tl .it.now .tm{color:var(--blue-2)}
+.tl b{display:block;font:600 15px/1.25 var(--font-body)}
+.tl p{margin-top:3px;font:500 13px/1.35 var(--font-body);color:var(--mut)}
+.tl .who{display:flex;align-items:center;gap:8px;margin-top:6px;font:500 12.5px/1 var(--font-body);color:var(--mut)}
+.tl .who .ava{--s:20px;font-size:7.5px}
+
+/* next match */
+.nm-card .vs{display:flex;align-items:center;gap:14px;margin-top:14px}
+.nm-card .vs b{font:700 22px/1.05 var(--font-display);text-transform:uppercase;letter-spacing:-.01em}
+.nm-card .when{margin-top:10px;font:500 14px/1.4 var(--font-body);color:var(--mut)}
+.nm-card .when b{color:var(--text);font-weight:600}
+
+/* drive */
+.drive .v{display:flex;align-items:baseline;gap:10px;margin-top:12px}
+.drive .v b{font:700 46px/.9 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.drive .v span{font:600 13px/1 var(--font-body);color:var(--blue-2)}
+.drive .v span.st{color:var(--mut)}
+.drive svg{display:block;width:100%;height:70px;margin-top:14px}
+
+/* locked section */
+.lockbox{display:flex;align-items:flex-start;gap:14px;padding:18px;border-radius:20px;border:1px dashed var(--line-2);background:rgba(255,255,255,.015)}
+.lockbox svg{width:22px;height:22px;flex:none;color:var(--mut);margin-top:1px}
+.lockbox b{display:block;font:600 15px/1.25 var(--font-body)}
+.lockbox p{margin-top:5px;font:500 13.5px/1.45 var(--font-body);color:var(--mut)}
+.mini-lock{display:inline-flex;align-items:center;gap:6px;font:500 13px/1.3 var(--font-body);color:var(--faint)}
+.mini-lock svg{width:13px;height:13px}
+
+/* charts */
+.chart{margin-top:14px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .gl{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.chart .gl.base{stroke-dasharray:none}
+.chart .gt{font:500 10.5px var(--font-body);fill:var(--faint)}
+.chart .bar{fill:rgba(255,255,255,.16)}
+.chart .bar.on{fill:var(--blue)}
+.chart .ln{fill:none;stroke:var(--blue-2);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .ar{fill:url(#ag)}
+.chart .pt{fill:var(--text)}
+.chart .lb{font:500 11px var(--font-body);fill:var(--faint);text-anchor:middle}
+.chart .vl{font:600 11px var(--font-body);fill:var(--text);text-anchor:middle}
+
+/* development metrics */
+.mets{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@container (max-width:900px){.mets{grid-template-columns:1fr 1fr}}
+@container (max-width:480px){.mets{grid-template-columns:1fr}}
+.met{padding:16px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+.met .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.met .top b{font:700 26px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.met .bar{margin-top:12px;height:4px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+.met .bar i{display:block;height:100%;border-radius:2px;background:var(--blue);transform-origin:left;animation:grow 1.1s var(--ease) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.met .tr{margin-top:10px;font:600 12px/1.2 var(--font-body);color:var(--blue-2)}
+.met .tr.st{color:var(--mut)}
+.met .tr.mo{color:#C9D3E6}
+
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:16px}
+.levels div{display:flex;flex-direction:column;gap:10px}
+.levels i{height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
+.levels .on i{background:var(--blue)}
+.levels .cur i{background:linear-gradient(90deg,var(--blue),var(--blue-3))}
+.levels span{font:600 10px/1.25 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.levels .on span{color:var(--mut)}.levels .cur span{color:var(--text)}
+.lvhist{margin-top:16px;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.lvhist div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font:500 13.5px/1.3 var(--font-body)}
+.lvhist span{color:var(--mut)}
+
+/* rows list (performance / learning / reports) */
+.rows{display:flex;flex-direction:column}
+.rows .r{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+.rows .r:first-child{border-top:0}
+.rows .r .t{flex:1;min-width:0}
+.rows .r b{display:block;font:600 14.5px/1.25 var(--font-body)}
+.rows .r small{display:block;margin-top:3px;font:500 12.5px/1.3 var(--font-body);color:var(--mut)}
+.rows .r .v{font:600 14px/1.2 var(--font-body);font-variant-numeric:tabular-nums;text-align:right;flex:none}
+.rows .r .v small{color:var(--faint)}
+.rows .r .ic{width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.rows .r .ic svg{width:17px;height:17px;color:var(--mut)}
+.rows button.r{width:100%;border-left:0;border-right:0;border-bottom:0;background:transparent;text-align:left;cursor:pointer;color:var(--text);padding-inline:4px;border-radius:0;transition:background-color .2s}
+.rows button.r:hover{background:rgba(255,255,255,.025)}
+.rows .r svg.chev{width:16px;height:16px;color:var(--faint);flex:none}
+.res-w{font-weight:700}
+
+/* schedule */
+.schedbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.datenav{display:flex;align-items:center;gap:6px}
+.datenav b{min-width:180px;text-align:center;font:600 14.5px/1 var(--font-body)}
+@container (max-width:760px){.datenav b{min-width:0;flex:1}.datenav{flex:1 1 100%}}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--font-body);color:var(--mut)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--mut)}
+.legend i.m{background:var(--blue);box-shadow:none}
+.legend i.r{box-shadow:inset 0 0 0 1.5px var(--blue-3)}
+.legend i.l{background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1.5px var(--faint)}
+.wk{overflow-x:auto;border-radius:20px;border:1px solid var(--line);background:var(--card)}
+.wk table{width:100%;min-width:860px;border-collapse:collapse;table-layout:fixed}
+.wk th{padding:12px 10px;font:600 10.5px/1.2 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-align:left;border-bottom:1px solid var(--line)}
+.wk th.today{color:var(--blue-2)}
+.wk th:first-child{width:190px}
+.wk td{padding:8px;vertical-align:top;border-bottom:1px solid var(--line);border-left:1px solid var(--line)}
+.wk tr:last-child td{border-bottom:0}
+.wk td:first-child{border-left:0;padding:12px}
+.wk td.today{background:rgba(31,107,255,.05)}
+.wk .ath{display:flex;align-items:center;gap:10px;min-width:0;cursor:pointer;background:none;border:0;padding:0;text-align:left;color:var(--text)}
+.wk .ath .ava{--s:28px}
+.wk .ath b{display:block;font:600 13px/1.2 var(--font-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wk .ath small{display:block;font:500 11px/1.2 var(--font-body);color:var(--faint)}
+.ev{display:block;margin-bottom:5px;padding:6px 8px;border-radius:9px;font:600 11.5px/1.25 var(--font-body);background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--text)}
+.ev small{display:block;font:500 10.5px/1.2 var(--font-body);color:var(--faint);font-variant-numeric:tabular-nums}
+.ev.m{background:rgba(31,107,255,.2);border-color:rgba(31,107,255,.55)}
+.ev.m small{color:var(--blue-3)}
+.ev.r{border-color:rgba(157,184,255,.3);background:rgba(157,184,255,.05)}
+.ev.l{background:transparent;border-style:dashed}
+.days{display:flex;flex-direction:column;gap:12px}
+.dayblk{padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+.dayblk.today{border-color:rgba(31,107,255,.4)}
+.dayblk h4{display:flex;justify-content:space-between;font:600 10.5px/1.2 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.dayblk.today h4{color:var(--blue-2)}
+.month{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.month .dh{padding:4px 2px 8px;font:600 10.5px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-align:center}
+.month .dc{min-height:96px;padding:8px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:5px;cursor:pointer;text-align:left;color:var(--text);transition:border-color .2s}
+.month .dc:hover{border-color:var(--line-2)}
+.month .dc.out{opacity:.3}
+.month .dc.today{border-color:var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.month .dc .n{font:600 13px/1 var(--font-body);font-variant-numeric:tabular-nums}
+.month .dc.today .n{color:var(--blue-2)}
+.month .dots{display:flex;flex-wrap:wrap;gap:3px}
+.month .dots i{width:6px;height:6px;border-radius:50%;box-shadow:inset 0 0 0 1.2px var(--mut)}
+.month .dots i.m{background:var(--blue);box-shadow:none}
+.month .dots i.r{box-shadow:inset 0 0 0 1.2px var(--blue-3)}
+.month .dots i.l{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.2px var(--faint)}
+.month .mt{font:600 10.5px/1.25 var(--font-body);color:var(--blue-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@container (max-width:760px){.month{gap:4px}.month .dc{min-height:58px;padding:6px;border-radius:10px}.month .mt{display:none}}
+
+/* reports */
+.rcard{display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:var(--card);cursor:pointer;text-align:left;width:100%;color:var(--text);transition:border-color .2s,background-color .2s}
+.rcard:hover{border-color:var(--line-2);background:var(--card-2)}
+.rcard .doc{width:44px;height:52px;flex:none;border-radius:10px;border:1px solid var(--line-2);background:linear-gradient(170deg,rgba(255,255,255,.08),rgba(255,255,255,.02));display:flex;flex-direction:column;justify-content:flex-end;padding:7px;gap:3px}
+.rcard .doc i{display:block;height:2px;border-radius:1px;background:rgba(255,255,255,.22)}
+.rcard .doc i:nth-child(2){width:70%}.rcard .doc i:last-child{background:var(--blue);width:45%}
+.rcard .t{flex:1;min-width:0}
+.rcard b{display:block;font:600 15px/1.25 var(--font-body)}
+.rcard small{display:block;margin-top:4px;font:500 13px/1.3 var(--font-body);color:var(--mut)}
+.rcard .r{display:flex;align-items:center;gap:10px;flex:none}
+.rcard svg.chev{width:16px;height:16px;color:var(--faint)}
+.rlist{display:flex;flex-direction:column;gap:10px}
+
+/* overlay sheet (report reader, confirm, prototype) */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(2,3,7,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fade .25s ease both;display:flex;align-items:center;justify-content:center;padding:24px}
+.sheet{position:relative;width:min(720px,100%);max-height:calc(100% - 32px);overflow-y:auto;border-radius:26px;border:1px solid var(--line-2);background:linear-gradient(180deg,#0B1223,#05080F);box-shadow:0 30px 90px rgba(0,0,0,.6);animation:sheetIn .45s var(--ease) both;scrollbar-width:thin}
+.sheet.sm{width:min(440px,100%)}
+@keyframes sheetIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.sheet-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 14px 24px;background:linear-gradient(180deg,#0B1223 80%,rgba(11,18,35,0))}
+.sheet-b{padding:4px 24px 28px;display:flex;flex-direction:column;gap:18px}
+@container (max-width:760px){
+  .scrim{align-items:flex-end;padding:0}
+  .sheet{width:100%;max-height:92%;border-radius:26px 26px 0 0;border-bottom:0;padding-bottom:var(--sab)}
+  .sheet-b{padding:4px 20px 28px}.sheet-h{padding-left:20px}
+}
+.rp-h{font:700 30px/1 var(--font-display);text-transform:uppercase;letter-spacing:-.02em}
+.rp-sec{padding-top:16px;border-top:1px solid var(--line)}
+.rp-kv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+.rp-kv b{display:block;font:700 22px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.rp-kv span{display:block;margin-top:6px;font:500 12.5px/1.3 var(--font-body);color:var(--mut)}
+.rp-foot{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line);font:500 12.5px/1.45 var(--font-body);color:var(--mut)}
+.rp-foot svg{width:16px;height:16px;flex:none;margin-top:1px;color:var(--blue-3)}
+
+/* access & privacy */
+.perm{display:flex;flex-direction:column;border-radius:20px;border:1px solid var(--line);background:var(--card);overflow:hidden}
+.perm .p{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 18px;border-top:1px solid var(--line)}
+.perm .p:first-child{border-top:0}
+.perm .p span{display:flex;align-items:center;gap:12px;font:500 15px/1.2 var(--font-body)}
+.perm .p span svg{width:18px;height:18px;color:var(--mut)}
+.perm .s{display:inline-flex;align-items:center;gap:7px;font:600 11px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-3)}
+.perm .s i{width:7px;height:7px;border-radius:50%;background:var(--blue)}
+.perm .s.no{color:var(--faint)}
+.perm .s.no i{background:transparent;box-shadow:inset 0 0 0 1.3px var(--faint)}
+.perm .p.sens{background:rgba(255,255,255,.012)}
+.shield{display:flex;gap:16px;align-items:center;padding:20px;border-radius:22px;border:1px solid rgba(31,107,255,.4);background:linear-gradient(155deg,rgba(31,107,255,.18),rgba(255,255,255,.02) 62%)}
+.shield svg{width:34px;height:34px;flex:none;color:var(--blue-3)}
+.shield b{display:block;font:700 19px/1.05 var(--font-display);text-transform:uppercase}
+.shield p{margin-top:6px;font:500 13.5px/1.45 var(--font-body);color:var(--mut)}
+
+/* pricing */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch}
+@container (max-width:900px){.plans{grid-template-columns:1fr}}
+.plan{position:relative;display:flex;flex-direction:column;gap:16px;padding:22px;border-radius:24px;border:1px solid var(--line-2);background:linear-gradient(170deg,rgba(255,255,255,.05),rgba(255,255,255,.012) 70%)}
+.plan.rec{border-color:rgba(31,107,255,.6);background:radial-gradient(100% 60% at 0% 0%,rgba(31,107,255,.22),transparent 60%),linear-gradient(170deg,rgba(255,255,255,.05),rgba(255,255,255,.012) 70%);box-shadow:0 20px 50px rgba(31,107,255,.12)}
+.plan .nm{font:700 15px/1 var(--font-display);letter-spacing:.2em;text-transform:uppercase}
+.plan .price{display:flex;align-items:baseline;gap:6px}
+.plan .price b{font:700 44px/1 var(--font-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.plan .price span{font:500 14px/1 var(--font-body);color:var(--mut)}
+.plan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font:500 14px/1.4 var(--font-body);color:var(--mut)}
+.plan li{display:flex;gap:10px}
+.plan li svg{width:16px;height:16px;flex:none;color:var(--blue-3);margin-top:2px}
+.plan li b{color:var(--text);font-weight:600}
+.plan .btn{margin-top:auto}
+.plan .cur{position:absolute;top:18px;right:18px}
+.calc{display:flex;flex-direction:column;gap:14px}
+.calc input[type=range]{width:100%;accent-color:var(--blue);height:24px}
+.calc .out{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.calc .out b{font:700 30px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.ticks{display:flex;justify-content:space-between;font:500 11px/1 var(--font-body);color:var(--faint);padding:0 6px}
+.rx{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:26px;border-radius:24px;border:1px solid var(--line-2);background:radial-gradient(80% 140% at 100% 100%,rgba(31,107,255,.18),transparent 60%),#05080F}
+.rx h3{font:700 26px/1.02 var(--font-display);text-transform:uppercase;letter-spacing:-.01em}
+.rx p{margin-top:8px;color:var(--mut);font:500 14px/1.45 var(--font-body);max-width:52ch}
+.family{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--line)}
+.family div{padding:18px;background:var(--bg)}
+.family div.here{background:linear-gradient(160deg,rgba(31,107,255,.16),var(--bg) 70%)}
+.family b{display:block;font:700 15px/1 var(--font-display);letter-spacing:.14em;text-transform:uppercase}
+.family p{margin-top:8px;font:500 13px/1.45 var(--font-body);color:var(--mut)}
+@container (max-width:760px){.family{grid-template-columns:1fr}}
+
+/* profile (VANTAGE user) */
+.me{display:flex;align-items:center;gap:18px}
+.me .ava{--s:72px}
+.me b{display:block;font:700 26px/1 var(--font-display);text-transform:uppercase}
+.me small{display:block;margin-top:7px;font:500 14px/1.3 var(--font-body);color:var(--mut)}
+.set{display:flex;flex-direction:column;border-radius:20px;border:1px solid var(--line);background:var(--card);overflow:hidden}
+.set>button,.set>div{display:flex;align-items:center;gap:14px;width:100%;min-height:58px;padding:12px 18px;border:0;border-top:1px solid var(--line);background:transparent;color:var(--text);text-align:left;font:500 15px/1.3 var(--font-body)}
+.set>:first-child{border-top:0}
+.set>button{cursor:pointer;transition:background-color .2s}
+.set>button:hover{background:rgba(255,255,255,.025)}
+.set svg.i{width:20px;height:20px;flex:none;color:var(--mut)}
+.set .t{flex:1;min-width:0}
+.set .t small{display:block;margin-top:3px;font-size:12.5px;color:var(--mut)}
+.set .v{color:var(--mut);font-size:14px;flex:none}
+.set svg.chev{width:16px;height:16px;color:var(--faint);flex:none}
+.usage{margin-top:14px;height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden;display:flex;gap:2px}
+.usage i{flex:1;background:rgba(255,255,255,.06)}
+.usage i.on{background:var(--blue)}
+
+/* access ended / not shared full states */
+.endstate{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:56px 22px;border-radius:26px;border:1px solid var(--line);background:var(--card)}
+.endstate h2{font:700 30px/1 var(--font-display);text-transform:uppercase;letter-spacing:-.02em}
+.endstate p{max-width:42ch;color:var(--mut);font:500 15px/1.5 var(--font-body)}
+
+/* toast */
+.toast{position:fixed;z-index:80;left:50%;bottom:calc(var(--sab) + 96px);transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;background:#F5F7FB;color:#0A0B0D;font:600 14px/1.2 var(--font-body);box-shadow:0 20px 50px rgba(0,0,0,.45);animation:toast 3.2s var(--ease) both;white-space:nowrap}
+.toast svg{width:16px;height:16px}
+@keyframes toast{0%{opacity:0;transform:translate(-50%,16px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,8px)}}
+@container (min-width:761px){.toast{bottom:32px}}
+
+/* prototype switcher (reviewer tool, not product UI) */
+.proto{position:fixed;z-index:60;top:max(calc(var(--sat) + 12px),12px);right:max(12px,env(safe-area-inset-right,0px));height:30px;padding:0 12px;border-radius:15px;border:1px solid rgba(255,255,255,.14);background:rgba(10,12,18,.7);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  color:rgba(200,207,221,.7);font:600 9.5px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:7px}
+.proto:hover{color:var(--text)}
+.proto i{width:6px;height:6px;border-radius:50%;background:#C9D7FF}
+@container (max-width:760px){.proto{top:max(calc(var(--sat) + 23px),23px);width:30px;padding:0;justify-content:center;font-size:0;gap:0;right:auto;left:50%;transform:translateX(-50%)}.proto.ob-on{left:auto;transform:none;right:max(16px,env(safe-area-inset-right,0px))}}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pbtn{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-2);background:rgba(255,255,255,.025);cursor:pointer;text-align:left;color:var(--text);transition:border-color .2s}
+.pbtn:hover{border-color:var(--line-3)}
+.pbtn[aria-pressed=true]{border-color:rgba(111,152,255,.7);background:rgba(31,107,255,.12)}
+.pbtn b{font:600 13.5px/1.2 var(--font-body)}
+.pbtn small{font:500 11.5px/1.3 var(--font-body);color:var(--mut)}
+
+/* ================= DEVICE STAGE (same as RYSEON) =================
+   Phone: full-bleed edge to edge. Wide screens: one iPhone-sized screen centred in a device frame. */
+html,body{background:#000}
+.stage{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(120% 80% at 50% 0%,#070b16 0%,#000 70%)}
+.device{--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg);isolation:isolate;transform:translateZ(0);container-type:inline-size;container-name:device}
+.statusbar{display:none;position:absolute;top:0;left:0;right:0;z-index:95;height:54px;padding:0 34px 0 44px;align-items:center;justify-content:space-between;font:600 16px/1 -apple-system,"SF Pro Text",var(--font-body);color:var(--text);pointer-events:none}
+.statusbar .icons{display:flex;gap:6px;align-items:center}
+@media (min-width:600px) and (min-height:760px){
+  .device{--sat:47px;--sab:20px;width:393px;height:852px;max-height:calc(100% - 48px);border-radius:54px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.07),0 0 0 11px #0b0c10,0 0 0 12px rgba(255,255,255,.06),0 40px 120px rgba(0,0,0,.7)}
+  .device::after{content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);width:122px;height:35px;border-radius:20px;background:#000;z-index:96;pointer-events:none}
+  .statusbar{display:flex}
+}
+.main,.ob-col,.sheet{scrollbar-width:none}
+.main::-webkit-scrollbar,.sheet::-webkit-scrollbar{display:none}
+.mwm{font:700 15px/1 var(--font-display);letter-spacing:.32em;text-transform:uppercase;color:var(--text)}
+.proto{top:calc(var(--sat) + 22px)!important}
+.proto.ob-on{top:calc(var(--sat) + 10px)!important}
+</style>
+</head>
+<body>
+<div class="stage"><div class="device" id="device">
+<div class="statusbar" aria-hidden="true"><span>9:41</span><span class="icons"><svg width="18" height="12" viewBox="0 0 18 12" fill="#F5F7FB"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="#F5F7FB"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.1-1.1A10 10 0 0 0 8 .7 10 10 0 0 0 .9 3.5L2 4.6a8.5 8.5 0 0 1 6-2.4Zm0 3.2c1.4 0 2.7.5 3.7 1.4l1.1-1.1A7 7 0 0 0 8 3.9a7 7 0 0 0-4.8 1.8l1.1 1.1A5.5 5.5 0 0 1 8 5.4Zm0 3.2c.6 0 1.1.2 1.5.6L8 10.7 6.5 9.2c.4-.4.9-.6 1.5-.6Z"/></svg><svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="#F5F7FB" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#F5F7FB"/></svg></span></div>
+<div class="aura" id="aura" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i></div>
+<div id="app"></div>
+</div></div>
+<script>
+/* ============================================================
+   VANTAGE prototype data — fictional athletes, clubs and values.
+   Schedules, matches and reports are generated relative to today
+   so the prototype always reads as current.
+   ============================================================ */
+var LEVELS=['Bronze','Silver','Gold','High Performance','Excellence'];
+
+var ATHLETES={
+  luka:{first:'Luka',last:'Marić',g:'m',age:16,club:'NK Sava Zagreb',team:'U17',pos:'Central Midfielder',ps:'CM',play:'Youth Academy',lvl:2,ryid:'RY-418273',h:222,city:'Zagreb',tpl:'youth',off:0,mday:6,mtime:'11:00',drive:74,dt:+5,
+    m:{c:81,i:72,l:78,p:70,h:76,r:66},since:'2026-03-14',
+    lvh:[['Bronze','Joined RYSEON','Sep 2025'],['Silver','Sustained for 8 weeks','Jan 2026'],['Gold','Sustained for 12 weeks','Jul 2026']],
+    ins:'Training load increased this week while sleep remained consistent. Recovery remained balanced.'},
+  petra:{first:'Petra',last:'Marić',g:'f',age:14,club:'ŽNK Sava Zagreb',team:'U15 Girls',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523904',h:204,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:61,dt:+4,
+    m:{c:66,i:62,l:71,p:55,h:58,r:63},since:'2026-05-02',
+    lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
+    ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
+  marko:{first:'Marko',last:'Babić',g:'m',age:19,club:'HNK Jadran Split',team:'First Team',pos:'Striker',ps:'ST',play:'Professional',lvl:3,ryid:'RY-305617',h:230,city:'Split',tpl:'pro',off:0,mday:6,mtime:'17:00',drive:82,dt:+3,
+    m:{c:86,i:80,l:74,p:85,h:84,r:78},since:'2025-11-20',
+    lvh:[['Bronze','Joined RYSEON','Jan 2025'],['Silver','Sustained for 8 weeks','Apr 2025'],['Gold','Sustained for 12 weeks','Sep 2025'],['High Performance','Sustained for 16 weeks','May 2026']],
+    ins:'Match preparation routine was completed before every fixture this month. Sleep was shorter after the evening cup match.'},
+  toni:{first:'Toni',last:'Vuković',g:'m',age:17,club:'NK Drava Osijek',team:'U19',pos:'Centre-Back',ps:'CB',play:'Youth Academy',lvl:2,ryid:'RY-611480',h:212,city:'Osijek',tpl:'youth',off:30,mday:6,mtime:'13:00',drive:70,dt:0,
+    m:{c:74,i:66,l:69,p:72,h:71,r:68},since:'2026-02-09',
+    lvh:[['Bronze','Joined RYSEON','Oct 2025'],['Silver','Sustained for 8 weeks','Feb 2026'],['Gold','Sustained for 12 weeks','Aug 2026']],
+    ins:'A steady week. Training and learning followed the usual pattern with no missed sessions.'},
+  ana:{first:'Ana',last:'Kovač',g:'f',age:18,club:'ŽNK Adria Rijeka',team:'Senior Women',pos:'Goalkeeper',ps:'GK',play:'Semi-professional',lvl:2,ryid:'RY-274091',h:236,city:'Rijeka',tpl:'pro',off:420,mday:0,mtime:'16:00',drive:77,dt:+6,
+    m:{c:79,i:83,l:72,p:76,h:74,r:80},since:'2026-01-18',
+    lvh:[['Bronze','Joined RYSEON','Jun 2025'],['Silver','Sustained for 8 weeks','Oct 2025'],['Gold','Sustained for 12 weeks','Apr 2026']],
+    ins:'Self-initiated individual sessions increased this month. Recovery days were planned around both matches.'},
+  josip:{first:'Josip',last:'Perić',g:'m',age:15,club:'NK Sava Zagreb',team:'U16',pos:'Right-Back',ps:'RB',play:'Youth Academy',lvl:1,ryid:'RY-688125',h:198,city:'Zagreb',tpl:'youth',off:-60,mday:6,mtime:'09:30',drive:58,dt:+7,
+    m:{c:60,i:57,l:64,p:52,h:56,r:61},since:'2026-06-03',
+    lvh:[['Bronze','Joined RYSEON','Mar 2026'],['Silver','Sustained for 8 weeks','Sep 2026']],
+    ins:'Consistency improved for the third week in a row. Bedtimes were more regular on school nights.'},
+  filip:{first:'Filip',last:'Novak',g:'m',age:21,club:'NK Drava Osijek',team:'First Team',pos:'Attacking Midfielder',ps:'AM',play:'Professional',lvl:4,ryid:'RY-120994',h:226,city:'Osijek',tpl:'pro',off:30,mday:0,mtime:'15:00',drive:88,dt:0,
+    m:{c:91,i:88,l:84,p:90,h:92,r:86},since:'2025-08-30',
+    lvh:[['Bronze','Joined RYSEON','Feb 2024'],['Silver','Sustained for 8 weeks','May 2024'],['Gold','Sustained for 12 weeks','Oct 2024'],['High Performance','Sustained for 16 weeks','Apr 2025'],['Excellence','Sustained for 24 weeks','Mar 2026']],
+    ins:'Development behaviour remained very stable. Video analysis was completed within 24 hours of each match.'},
+  dario:{first:'Dario',last:'Jurić',g:'m',age:16,club:'HNK Jadran Split',team:'U17',pos:'Defensive Midfielder',ps:'DM',play:'Youth Academy',lvl:0,ryid:'RY-734456',h:214,city:'Split',tpl:'youth',off:0,mday:6,mtime:'10:30',drive:49,dt:+8,
+    m:{c:52,i:48,l:58,p:44,h:47,r:50},since:'2026-09-21',
+    lvh:[['Bronze','Joined RYSEON','Aug 2026']],
+    ins:'First full month in RYSEON. Daily check-ins became a habit over the last two weeks.'},
+  matej:{first:'Matej',last:'Horvat',g:'m',age:20,club:'HNK Adria Rijeka',team:'First Team',pos:'Left-Back',ps:'LB',play:'Professional',lvl:3,ryid:'RY-209733',h:218,city:'Rijeka',tpl:'pro',off:0,mday:6,mtime:'19:00',drive:80,dt:-2,
+    m:{c:82,i:76,l:70,p:83,h:81,r:74},since:'2025-12-05',
+    lvh:[['Bronze','Joined RYSEON','Nov 2024'],['Silver','Sustained for 8 weeks','Feb 2025'],['Gold','Sustained for 12 weeks','Jul 2025'],['High Performance','Sustained for 16 weeks','Jan 2026']],
+    ins:'Two travel days affected sleep timing this week. Training sessions were all completed.'},
+  nika:{first:'Nika',last:'Pavlović',g:'f',age:17,club:'ŽNK Drava Osijek',team:'Senior Women',pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Osijek',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
+    m:{c:84,i:79,l:81,p:75,h:78,r:73},since:'2026-04-11',
+    lvh:[['Bronze','Joined RYSEON','Apr 2025'],['Silver','Sustained for 8 weeks','Jul 2025'],['Gold','Sustained for 12 weeks','Dec 2025'],['High Performance','Sustained for 16 weeks','Sep 2026']],
+    ins:'Mental training sessions were added before both matches. Learning time stayed above her monthly average.'}
+};
+/* RYSEON athletes who are findable but not connected in any scenario */
+var DIRECTORY={
+  luka2:{first:'Luka',last:'Marin',g:'m',age:17,club:'NK Una Karlovac',team:'U19',pos:'Goalkeeper',ps:'GK',ryid:'RY-447108',h:190,city:'Karlovac'},
+  luka3:{first:'Luka',last:'Mihalj',g:'m',age:15,club:'NK Sava Zagreb',team:'U16',pos:'Striker',ps:'ST',ryid:'RY-902215',h:240,city:'Zagreb'},
+  mia:{first:'Mia',last:'Tomić',g:'f',age:16,club:'ŽNK Sava Zagreb',team:'U17 Girls',pos:'Central Midfielder',ps:'CM',ryid:'RY-371559',h:202,city:'Zagreb'},
+  leon:{first:'Leon',last:'Kralj',g:'m',age:18,club:'NK Drava Osijek',team:'U19',pos:'Winger',ps:'RW',ryid:'RY-664020',h:232,city:'Osijek'},
+  bruno:{first:'Bruno',last:'Lovrić',g:'m',age:22,club:'HNK Jadran Split',team:'First Team',pos:'Centre-Back',ps:'CB',ryid:'RY-158347',h:210,city:'Split'},
+  karla:{first:'Karla',last:'Babić',g:'f',age:15,club:'ŽNK Adria Rijeka',team:'U16 Girls',pos:'Defender',ps:'CB',ryid:'RY-820473',h:216,city:'Rijeka'}
+};
+Object.keys(ATHLETES).forEach(function(k){ATHLETES[k].id=k;DIRECTORY[k]=ATHLETES[k]});
+Object.keys(DIRECTORY).forEach(function(k){DIRECTORY[k].id=k});
+
+var DEF_PERMS={schedule:1,development:1,training:1,matches:1,sleep:1,learning:1,reports:1,health:0,medical:0};
+var PERM_LABELS=[['schedule','Schedule'],['development','Development'],['training','Training'],['matches','Matches'],['sleep','Sleep & Recovery'],['learning','Learning'],['reports','Reports'],['health','Health / Injury'],['medical','Medical Documents']];
+
+/* Scenarios — who the VANTAGE user follows, under which plan */
+var SCENARIOS={
+  parent1:{label:'Parent · 1 athlete',role:'parent',plan:'individual',user:'Ivan',
+    con:[{a:'luka',rel:'Parent',p:{health:1}}]},
+  parent2:{label:'Parent · 2 children',role:'parent',plan:'individual',user:'Ivan',
+    con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'petra',rel:'Parent',p:{health:1}}]},
+  coach5:{label:'Private coach · 5 athletes',role:'coach',plan:'v5',user:'Ivan',
+    con:[{a:'luka',rel:'Private Coach'},{a:'josip',rel:'Private Coach'},{a:'toni',rel:'Private Coach',p:{sleep:0}},{a:'dario',rel:'Private Coach'},{a:'nika',rel:'Private Coach',p:{reports:0}},
+      {a:'mia',st:'pending',rel:'Private Coach',ago:2},{a:'leon',st:'declined',rel:'Private Coach'}]},
+  agent10:{label:'Agent · 10 athletes',role:'agent',plan:'pro',user:'Ivan',
+    con:[{a:'marko',rel:'Agent',p:{sleep:0}},{a:'filip',rel:'Agent'},{a:'matej',rel:'Agent'},{a:'ana',rel:'Agent',p:{learning:0}},{a:'nika',rel:'Agent'},{a:'luka',rel:'Agent',p:{sleep:0,reports:0}},
+      {a:'toni',rel:'Agent'},{a:'dario',rel:'Agent'},{a:'josip',rel:'Agent'},{a:'petra',rel:'Agent',p:{sleep:0}},{a:'bruno',st:'ended',rel:'Agent'}]},
+  empty:{label:'No athletes connected',role:'parent',plan:'individual',user:'Ivan',con:[]},
+  waiting:{label:'Waiting for approval',role:'parent',plan:'individual',user:'Ivan',con:[{a:'luka',st:'pending',rel:'Parent',ago:0}]}
+};
+
+var PLANS={
+  individual:{name:'VANTAGE Individual',short:'Individual',price:6.9,incl:1,max:3},
+  v5:{name:'VANTAGE 5',short:'VANTAGE 5',price:15.9,incl:5,max:9},
+  pro:{name:'VANTAGE Professional',short:'Professional',price:25.9,incl:10,max:10}
+};
+var EXTRA=3.9;
+
+/* ---------- Schedule generation ---------- */
+var TPL={
+  youth:{
+    1:[['Team Training','17:30',90,'NK pitch 2']],
+    2:[['Gym','16:00',45,'Academy gym'],['Team Training','17:30',90,'Main pitch']],
+    3:[['Video Analysis','16:45',30,'Club video assignment'],['Team Training','17:30',90,'Main pitch']],
+    4:[['Individual Training','16:30',60,'Finishing and first touch'],['Football Learning','20:00',20,'RYSEON learning']],
+    5:[['Match Preparation','17:00',60,'Team session'],['Sport Meditation','21:00',10,'Pre-match routine']],
+    6:[],
+    0:[['Recovery','10:00',40,'Light recovery'],['Mobility','18:00',20,'Mobility routine']]
+  },
+  pro:{
+    1:[['Recovery','10:00',60,'Post-match recovery'],['Gym','11:30',50,'Strength block']],
+    2:[['Team Training','10:00',100,'Training centre'],['Video Analysis','12:30',40,'Opponent analysis']],
+    3:[['Team Training','10:00',90,'Training centre'],['Physio','14:00',30,'Scheduled maintenance']],
+    4:[['Team Training','10:00',90,'Training centre'],['Mental Training','15:00',30,'Focus routine']],
+    5:[['Match Preparation','10:30',60,'Set pieces'],['Football Learning','18:00',20,'RYSEON learning']],
+    6:[],
+    0:[['Mobility','11:00',25,'Mobility routine']]
+  }
+};
+var KIND={'Match':'m','Team Training':'t','Individual Training':'t','Gym':'t','Match Preparation':'t','Recovery':'r','Mobility':'r','Physio':'r','Sport Meditation':'r','Video Analysis':'l','Football Learning':'l','Mental Training':'l'};
+var OPP={youth:['NK Lika Gospić','NK Una Karlovac','HNK Neretva','NK Velebit','NK Kupa Sisak','NK Mura Čakovec','NK Krka','HNK Cetina'],
+  pro:['NK Velebit','HNK Neretva','NK Mura Čakovec','NK Kupa Sisak','HNK Cetina','NK Lika Gospić','NK Una Karlovac','NK Krka']};
+var COMP={youth:'Youth League',pro:'Prva Liga'};
+
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)/4294967295}
+function addMin(t,m){var p=t.split(':'),x=(+p[0])*60+(+p[1])+m;x=Math.max(0,Math.min(23*60+30,x));return pad(Math.floor(x/60))+':'+pad(x%60)}
+function pad(n){return (n<10?'0':'')+n}
+var TODAY=new Date();TODAY.setHours(0,0,0,0);
+function dkey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+function weekNo(d){var x=new Date(d);x.setHours(0,0,0,0);return Math.floor((x-new Date(2026,0,5))/6048e5)}
+function sameDay(a,b){return dkey(a)===dkey(b)}
+
+/* special one-off events relative to today (keeps the demo varied) */
+var SPECIAL={marko:{0:[['Match','18:30',90,'Cup · Round of 16','NK Velebit','Home']]},ana:{0:[['Recovery','09:30',45,'Pool recovery'],['Mobility','17:00',25,'Mobility routine']]},
+  filip:{0:[['Recovery','10:00',60,'Post-match recovery'],['Physio','12:00',30,'Scheduled maintenance']]},matej:{0:[['Team Training','10:00',100,'Training centre']]}};
+
+function eventsFor(id,d){
+  var a=ATHLETES[id]; if(!a) return [];
+  var off=Math.round((d-TODAY)/864e5);
+  var sp=SPECIAL[id]&&SPECIAL[id][off];
+  var list=[];
+  if(sp){ sp.forEach(function(e){list.push(mk(a,d,e[0],e[1],e[2],e[3],e[4],e[5]))}); return sort(list) }
+  var dow=d.getDay();
+  var tp=dow===a.mday?[]:(TPL[a.tpl][dow]||[]);
+  if(a.mday===0&&dow===6) tp=[['Match Preparation','11:00',60,'Team session'],['Sport Meditation','21:00',10,'Pre-match routine']];
+  if(a.mday===0&&dow===1) tp=[['Recovery','10:00',45,'Post-match recovery']].concat(a.tpl==='pro'?[['Gym','11:30',50,'Strength block']]:[['Team Training','17:30',90,'Main pitch']]);
+  tp.forEach(function(e){
+    var t=a.tpl==='pro'?addMin(e[1],a.off>=360?0:a.off):addMin(e[1],a.off);
+    if(a.off>=360&&a.tpl==='pro'&&KIND[e[0]]==='t') t=addMin(e[1],420); // evening schedule (semi-pro)
+    list.push(mk(a,d,e[0],t,e[2],e[3]));
+  });
+  // match day: every week except one in four
+  var wn=weekNo(d), hasMatch=((wn+a.h)%4)!==0;
+  if(dow===a.mday&&hasMatch){
+    var opp=OPP[a.tpl][(wn+Math.round(a.h/7))%OPP[a.tpl].length];
+    var home=((wn+a.h)%2)===0;
+    list.push(mk(a,d,'Match',a.mtime,90,COMP[a.tpl],opp,home?'Home':'Away'));
+    if(a.mday===6&&!(TPL[a.tpl][0]||[]).length) {}
+  }
+  if(dow===a.mday&&!hasMatch){ list.push(mk(a,d,a.tpl==='pro'?'Team Training':'Individual Training',a.tpl==='pro'?'10:00':'10:30',75,'No fixture this week')) }
+  // athletes whose match is on Sunday recover on Monday instead; swap Sunday template for a light day
+  return sort(list);
+}
+function mk(a,d,type,time,dur,note,opp,ha){return {a:a.id,date:d,type:type,time:time,dur:dur,note:note||'',opp:opp,ha:ha,k:KIND[type]}}
+function sort(l){return l.sort(function(x,y){return x.time<y.time?-1:1})}
+function primary(evs){
+  if(!evs.length) return 'Rest';
+  if(evs.some(function(e){return e.k==='m'})) return 'Match';
+  if(evs.some(function(e){return e.k==='t'})) return 'Training';
+  if(evs.some(function(e){return e.k==='r'})) return 'Recovery';
+  return 'Learning';
+}
+function nextMatch(id,from){
+  from=from||TODAY;
+  for(var i=0;i<28;i++){var d=addDays(from,i);var m=eventsFor(id,d).filter(function(e){return e.k==='m'})[0];if(m) return m}
+  return null;
+}
+function pastMatches(id,n){
+  var out=[];
+  for(var i=1;i<120&&out.length<n;i++){var d=addDays(TODAY,-i);eventsFor(id,d).forEach(function(e){if(e.k==='m'){
+    var r=hash(id+dkey(d)),g1=Math.floor(r*4),g2=Math.floor(hash(dkey(d)+id)*3);
+    var mins=r>.2?90:(r>.1?72:61); if(ATHLETES[id].ps==='GK') mins=90;
+    e.score=(e.ha==='Home'?g1+'–'+g2:g2+'–'+g1); e.res=g1>g2?'W':(g1<g2?'L':'D'); e.mins=mins; e.rpe=6+Math.round(hash('rpe'+id+dkey(d))*3);
+    out.push(e)}})}
+  return out;
+}
+
+/* ---------- Development / performance series ---------- */
+function driveSeries(id,mode){
+  var a=ATHLETES[id],n=mode==='week'?7:(mode==='month'?5:12),out=[];
+  var step=mode==='week'?a.dt/7:(mode==='month'?a.dt/1.2:a.dt*1.1);
+  for(var i=0;i<n;i++){var back=n-1-i;var v=a.drive-step*back/ (mode==='week'?1:1)+ (hash(id+mode+i)-.5)*(mode==='year'?5:3);
+    if(mode==='year') v=a.drive-(a.dt*1.6+6)*(back/11)*1.4+(hash(id+'y'+i)-.5)*4;
+    out.push(Math.max(20,Math.min(99,Math.round(i===n-1?a.drive:v))))}
+  return out;
+}
+function seriesLabels(mode){
+  var out=[],i;
+  if(mode==='week'){for(i=6;i>=0;i--) out.push(fmt(addDays(TODAY,-i),'dow1'))}
+  else if(mode==='month'){for(i=4;i>=0;i--) out.push(i===0?'This wk':'W-'+i)}
+  else {for(i=11;i>=0;i--){var d=new Date(TODAY.getFullYear(),TODAY.getMonth()-i,1);out.push(d.toLocaleString('en-GB',{month:'short'}).slice(0,3))}}
+  return out;
+}
+function trainingWeeks(id){var a=ATHLETES[id],out=[];for(var i=5;i>=0;i--){var base=a.tpl==='pro'?470:390;out.push(Math.round(base+(hash(id+'tw'+i)-.45)*120+(i===0?a.dt*6:0)))}return out}
+function sleepNights(id){var a=ATHLETES[id],out=[];var base=a.age<17?8.6:(a.age<19?8.2:7.8);for(var i=6;i>=0;i--){var v=base+(hash(id+'sl'+i)-.5)*1.3;if(id==='matej'&&(i===2||i===3))v-=1.1;if(id==='marko'&&i===0)v-=.9;out.push(Math.round(v*10)/10)}return out}
+function hm(h){var m=Math.round(h*60);return Math.floor(m/60)+'h '+pad(m%60)+'m'}
+function weekSummary(id){
+  var evs=[],start=addDays(TODAY,-((TODAY.getDay()+6)%7));
+  for(var i=0;i<7;i++) evs=evs.concat(eventsFor(id,addDays(start,i)));
+  var done=evs.filter(function(e){return e.date<=TODAY});
+  var tr=done.filter(function(e){return e.k==='t'||e.k==='m'});
+  var mins=tr.reduce(function(s,e){return s+e.dur},0);
+  var lrn=evs.filter(function(e){return e.k==='l'});
+  return {sessions:tr.length,mins:mins,rpe:(6.1+hash(id+'rp')*1.4).toFixed(1),learn:lrn.length,planned:evs.length};
+}
+var LEARN_LIB=[['Scanning before receiving','Performance',6],['Pressing triggers in midfield','Training',8],['Body shape on the half-turn','Training',5],['Pre-match routine: visualisation','Mindset',7],
+  ['Sleep and performance','Performance',6],['Fuelling for a double session','Nutrition',5],['Defending the far post','Training',6],['Handling pressure in front of a crowd','Mindset',9],
+  ['How professionals prepare the day before','Pro Insights',7],['Hydration on match day','Nutrition',4],['Breathing reset between phases','Mindset',4],['Counter-pressing in the first five seconds','Training',7]];
+var CLUB_VIDEO=['Opponent analysis · weekend fixture','Set-piece responsibilities','Last match: build-up phase','Defensive shape clips'];
+function learning(id){
+  var a=ATHLETES[id],r=hash(id+'lr');
+  var mins=Math.round(55+r*70+(a.m.l-60)),vids=4+Math.floor(r*5),assigned=a.tpl==='pro'?4:3,clubDone=Math.min(assigned,assigned-(r>.6?1:0));
+  var items=[];for(var i=0;i<6;i++){var it=LEARN_LIB[Math.floor(hash(id+'li'+i)*LEARN_LIB.length)];items.push({t:it[0],c:it[1],min:it[2],d:addDays(TODAY,-Math.floor(i*1.3)-(i?0:0))})}
+  var club=[];for(var j=0;j<assigned;j++) club.push({t:CLUB_VIDEO[j],done:j<clubDone,d:addDays(TODAY,-(j*2+1))});
+  return {mins:mins,vids:vids,assigned:assigned,clubDone:clubDone,mental:a.m.p>70?3:2,items:items,club:club,weeks:[0,1,2,3,4,5].map(function(i){return Math.round(mins*(.7+hash(id+'lw'+i)*.5))}).reverse()};
+}
+function recoveryStatus(id){var a=ATHLETES[id];if(id==='matej') return ['Monitor','Travel affected sleep timing this week'];if(a.m.r>=70) return ['Balanced','Recovery days were completed as planned'];return ['Balanced','Planned recovery sessions completed']}
+
+/* ---------- Reports ---------- */
+function reportsFor(id){
+  var a=ATHLETES[id],out=[];
+  var mon=addDays(TODAY,-((TODAY.getDay()+6)%7)); // this week's Monday
+  for(var w=0;w<6;w++){var pub=addDays(mon,-7*w);if(pub>TODAY) continue;
+    var end=addDays(pub,-1),start=addDays(pub,-7);
+    out.push({id:id+'-w'+w,a:id,type:'Weekly Report',start:start,end:end,pub:pub,title:'Week of '+fmt(start,'d mon')})}
+  for(var m=0;m<3;m++){var p=new Date(TODAY.getFullYear(),TODAY.getMonth()-m,1);if(p>TODAY)continue;var s=new Date(p.getFullYear(),p.getMonth()-1,1);
+    out.push({id:id+'-m'+m,a:id,type:'Monthly Report',start:s,end:addDays(p,-1),pub:p,title:s.toLocaleString('en-GB',{month:'long',year:'numeric'})})}
+  var q=new Date(2026,6,1);
+  out.push({id:id+'-d0',a:id,type:'Development Report',start:new Date(2026,3,1),end:addDays(q,-1),pub:q,title:'Q2 2026 · April – June'});
+  return out.sort(function(x,y){return y.pub-x.pub});
+}
+
+/* ---------- Formatting ---------- */
+var DOW=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmt(d,f){
+  if(!(d instanceof Date)) d=new Date(d);
+  if(f==='dow') return DOW[d.getDay()];
+  if(f==='dow3') return DOW[d.getDay()].slice(0,3);
+  if(f==='dow1') return DOW[d.getDay()].slice(0,3);
+  if(f==='d mon') return d.getDate()+' '+MON[d.getMonth()];
+  if(f==='d mon y') return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear();
+  if(f==='rel'){var o=Math.round((d-TODAY)/864e5);if(o===0)return 'Today';if(o===1)return 'Tomorrow';if(o===-1)return 'Yesterday';if(o>1&&o<7)return DOW[d.getDay()];return DOW[d.getDay()].slice(0,3)+' '+d.getDate()+' '+MON[d.getMonth()]}
+  return d.toDateString();
+}
+
+/* ============================================================
+   VANTAGE V1 prototype — core, icons, onboarding & connection flow
+   READ-ONLY: nothing here edits athlete data. The only writes are the
+   VANTAGE user's own account, plan and connection requests.
+   ============================================================ */
+var LOGO='';
+var I={
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+  chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5.5 6.5 6.5L9 18.5"/></svg>',
+  left:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>',
+  right:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 5.5 6.5 6.5-6.5 6.5"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10.2 12 4l7.5 6.2V19a1 1 0 0 1-1 1H15v-5.2H9V20H5.5a1 1 0 0 1-1-1Z"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.2" r="3.4"/><path d="M3 19.5c.6-3.3 3.1-5.3 6-5.3s5.4 2 6 5.3"/><path d="M15.2 4.9a3.4 3.4 0 0 1 0 6.6M17.6 14.6c1.8.7 3 2.4 3.4 4.9"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.8h17M8 3v4M16 3v4"/><path d="M7.5 13.5h2M11 13.5h2M14.5 13.5h2M7.5 16.8h2M11 16.8h2" opacity=".7"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h7.5l4.5 4.5v11a1.5 1.5 0 0 1-1.5 1.5h-10.5A1.5 1.5 0 0 1 5 19V5a1.5 1.5 0 0 1 1.5-1.5Z"/><path d="M13.5 3.5V8.5h5"/><path d="M8.5 16.5v-2M11.5 16.5v-4.5M14.5 16.5v-3"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2.2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 19 6v5.6c0 4.3-2.9 7.9-7 9.2-4.1-1.3-7-4.9-7-9.2V6Z"/><path d="m9 12 2.2 2.2L15.3 10"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  spark:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.8 9.4 6.6 14.2 8 9.4 9.4 8 14.2 6.6 9.4 1.8 8 6.6 6.6Z" fill="currentColor"/></svg>',
+  parent:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="6.5" r="2.8"/><circle cx="16.5" cy="10.5" r="2.2"/><path d="M3.5 20v-3.2a5 5 0 0 1 10 0V20"/><path d="M13.6 20v-1.8a2.9 2.9 0 0 1 5.8 0V20"/></svg>',
+  agent:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7.5" width="17" height="12" rx="2.2"/><path d="M9 7.5V6a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 6v1.5M3.5 12.5h17"/></svg>',
+  coach:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9.5h6.2v3.2L14 14"/><circle cx="9" cy="13.5" r="5.5"/><path d="M9 8V4.5h5"/><circle cx="9" cy="13.5" r="1.6"/></svg>',
+  other:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.8 7-5.8s6.2 2.2 7 5.8"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 3.5 10 14M20.5 3.5 14 20.5l-4-6.5-6.5-4Z"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  apple:'<svg class="ico" viewBox="0 0 24 24"><path fill="#F5F7FB" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>',
+  google:'<svg class="ico" viewBox="0 0 48 48"><path fill="#F5F7FB" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#F5F7FB" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#F5F7FB" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#F5F7FB" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',
+  mail:'<svg class="ico" viewBox="0 0 24 24" fill="none"><rect x="3" y="5.5" width="18" height="13" rx="2.5" stroke="#F5F7FB" stroke-width="1.4"/><path d="m4 7.5 8 6 8-6" stroke="#F5F7FB" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  pitch:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M12 5v14"/><circle cx="12" cy="12" r="2.6"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19.5V14M10 19.5V9M15 19.5v-7M20 19.5V5.5"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.6A7.5 7.5 0 0 1 9.4 4.5a7.5 7.5 0 1 0 10.1 10.1Z"/></svg>',
+  wave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3.5l2-5 3.5 10 2.5-7 1.5 2H21"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2.4"/><path d="M10.2 9.3v5.4l4.4-2.7Z" fill="currentColor"/></svg>',
+  card:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.4"/><path d="M3 10h18M6.5 14.5h4"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.5 5.2 3.5 8.5s-1.1 6.1-3.5 8.5M12 3.5C9.6 5.9 8.5 8.7 8.5 12s1.1 6.1 3.5 8.5"/></svg>',
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h4a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-4M10 16.5 5.5 12 10 7.5M5.5 12H15"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.5 6.5h11M8.5 12h11M8.5 17.5h11"/><circle cx="4.6" cy="6.5" r=".9" fill="currentColor"/><circle cx="4.6" cy="12" r=".9" fill="currentColor"/><circle cx="4.6" cy="17.5" r=".9" fill="currentColor"/></svg>',
+  reqp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 19.5c.7-3.4 3.3-5.5 6.5-5.5 1.3 0 2.5.3 3.5.9"/><circle cx="17.5" cy="16.5" r="3"/><path d="m19.7 18.7 1.8 1.8"/></svg>',
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.4"/></svg>',
+  role:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2.4"/><circle cx="12" cy="10" r="2.6"/><path d="M8 16.5c.6-1.8 2.1-2.8 4-2.8s3.4 1 4 2.8"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10Z"/></svg>',
+  folder:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7a1.5 1.5 0 0 1 1.5-1.5h4.5l2 2H19a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18Z"/></svg>'
+};
+var PERM_ICON={schedule:I.cal,development:I.bolt,training:I.pitch,matches:I.pitch,sleep:I.moon,learning:I.play,reports:I.doc,health:I.heart,medical:I.folder};
+
+/* ---------- Languages (same set and treatment as RYSEON) ---------- */
+var LANGS=[
+ ['en','English','English','United Kingdom · United States · Canada · Australia','Choose your language','Continue',-30,45],
+ ['zh-Hans','中文','Chinese · 简体','中国 · 新加坡','选择你的语言','继续',116,35],
+ ['es-ES','Español','España','España','Elige tu idioma','Continuar',-3.7,40.3],
+ ['es-MX','Español','México','México','Elige tu idioma','Continuar',-99,19.4],
+ ['es-AR','Español','Argentina','Argentina','Elegí tu idioma','Continuar',-58.4,-34.6],
+ ['ar','العربية','Arabic','العالم العربي','اختر لغتك','متابعة',40,25],
+ ['fr','Français','French','France · Belgique · Suisse · Québec','Choisis ta langue','Continuer',2.35,48.9],
+ ['pt-BR','Português','Brasil','Brasil','Escolha seu idioma','Continuar',-47.9,-15.8],
+ ['pt-PT','Português','Portugal','Portugal','Escolhe o teu idioma','Continuar',-9.1,38.7],
+ ['de','Deutsch','German','Deutschland · Österreich · Schweiz','Sprache wählen','Weiter',11,50],
+ ['it','Italiano','Italian','Italia','Scegli la lingua','Continua',12.5,42],
+ ['hr','Hrvatski','Croatian','Hrvatska','Odaberi jezik','Nastavi',16,45.5],
+ ['sl','Slovenščina','Slovenian','Slovenija','Izberi jezik','Nadaljuj',14.5,46],
+ ['sr-Latn','Srpski','Latinica','Srbija · Crna Gora','Izaberi jezik','Nastavi',20.5,44.8],
+ ['nl','Nederlands','Dutch','Nederland · België','Kies je taal','Doorgaan',4.9,52.4],
+ ['pl','Polski','Polish','Polska','Wybierz język','Dalej',21,52.2],
+ ['cs','Čeština','Czech','Česko','Vyber si jazyk','Pokračovat',14.4,50.1],
+ ['ro','Română','Romanian','România · Moldova','Alege limba','Continuă',26.1,44.4],
+ ['el','Ελληνικά','Greek','Ελλάδα · Κύπρος','Επίλεξε γλώσσα','Συνέχεια',23.7,38],
+ ['tr','Türkçe','Turkish','Türkiye','Dilini seç','Devam et',32.9,39.9],
+ ['sv','Svenska','Swedish','Sverige','Välj ditt språk','Fortsätt',18,59.3],
+ ['da','Dansk','Danish','Danmark','Vælg dit sprog','Fortsæt',12.6,55.7],
+ ['nb-NO','Norsk','Norwegian','Norge','Velg språket ditt','Fortsett',10.8,59.9],
+ ['ja','日本語','Japanese','日本','言語を選択','続ける',139.7,35.7]
+];
+
+/* ---------- State ---------- */
+var S={ob:true,step:'lang',lang:0,role:null,user:'Ivan',email:'ivan@example.com',scn:null,plan:'individual',cons:[],
+  view:'home',aid:null,atab:'overview',sch:{mode:'day',date:new Date(TODAY),who:'all'},asch:{mode:'day',date:new Date(TODAY)},dev:'week',
+  athQ:'',athF:'all',athV:'cards',repF:'all',repA:'all',read:{},req:{q:'',sel:null,rel:null,src:'ob'},ov:null,calcN:null,plan2:null,trail:[]};
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function A(id){return DIRECTORY[id]}
+function nm(a){return a.first+' '+a.last}
+function he(a){return a.g==='f'?'she':'he'}
+function his(a){return a.g==='f'?'her':'his'}
+function him(a){return a.g==='f'?'her':'him'}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function ava(a,cls,st){return '<span class="ava '+(cls||'')+(st?' '+st:'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(st==='locked'?'':'')+a.first[0]+a.last[0]+'</span>'}
+function conOf(id){for(var i=0;i<S.cons.length;i++) if(S.cons[i].a===id) return S.cons[i];return null}
+function live(){return S.cons.filter(function(c){return c.st==='connected'})}
+function liveIds(){return live().map(function(c){return c.a})}
+function others(){return S.cons.filter(function(c){return c.st!=='connected'})}
+function P(id){var c=conOf(id);if(!c||c.st!=='connected') return {};var p={},k;for(k in DEF_PERMS)p[k]=DEF_PERMS[k];for(k in (c.p||{}))p[k]=c.p[k];return p}
+function roleLabel(r){return {parent:'Parent',agent:'Agent',coach:'Private Coach',other:'Other'}[r]||'Parent'}
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\u0111/g,'d')}
+function toast(t){var el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.innerHTML=I.check+'<span>'+esc(t)+'</span>';document.body.appendChild(el);setTimeout(function(){el.remove()},3300)}
+function greeting(){var h=new Date().getHours();return h<12?'Good morning':(h<18?'Good afternoon':'Good evening')}
+function store(){try{localStorage.setItem('vantage.v1',JSON.stringify({scn:S.scn,ob:S.ob,lang:S.lang}))}catch(e){}}
+
+/* ================= ONBOARDING ================= */
+var OB_FLOW=['lang','intro','role','how','account','find','request','sent','approved'];
+var OB_DOTS=['role','how','account','find','request'];
+function obHead(showBack){
+  var i=OB_DOTS.indexOf(S.step);
+  return '<div class="ob-top">'+(showBack?'<button class="back" type="button" data-a="obBack" aria-label="Back">'+I.back+'</button>':'<span></span>')+
+    (i>=0?'<span class="ob-steps" aria-label="Step '+(i+1)+' of '+OB_DOTS.length+'">'+OB_DOTS.map(function(_,j){return '<i class="'+(j<=i?'on':'')+'"></i>'}).join('')+'</span>':'<span></span>')+'<span style="width:44px"></span></div>';
+}
+function hl(lines){return '<h1 class="display hl">'+lines.map(function(l){return '<span class="line"><span class="li">'+l+'</span></span>'}).join('')+'</h1>'}
+
+function renderOb(){
+  var s=S.step,h='';
+  if(s==='lang'){
+    var L=LANGS[S.lang];
+    h='<div class="ob-col">'+
+      '<div class="ob-brand rise d1"><span><span class="wm-v">Vantage</span><small>by <span class="wm">RYSE<span class="on">ON</span></span></small></span></div>'+
+      '<div class="lang-globe rise d1"><canvas id="globe" width="600" height="600" aria-hidden="true" style="width:min(280px,70vw);height:auto;aspect-ratio:1"></canvas></div>'+
+      '<div class="lang-head"><h1 id="lang-title" class="rise d1">'+esc(L[4])+'</h1><p class="lang-region rise d2" id="lang-region">'+esc(L[3])+'</p></div>'+
+      '<div class="lang-rail rise d2"><div class="lang-track" id="lang-track" role="listbox" aria-label="Language">'+
+        LANGS.map(function(l,i){return '<button class="lang-item'+(i===S.lang?' on':'')+'" type="button" role="option" aria-selected="'+(i===S.lang)+'" data-a="lang" data-i="'+i+'"><b>'+esc(l[1])+'</b><small>'+esc(l[2])+'</small></button>'}).join('')+
+      '</div></div>'+
+      '<div class="lang-dial rise d2" id="lang-dial" aria-hidden="true">'+LANGS.map(function(_,i){return '<i class="'+(i===S.lang?'on':'')+'"></i>'}).join('')+'</div>'+
+      '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="intro" id="lang-go">'+esc(L[5])+'</button></div>'+
+    '</div>';
+  }
+  else if(s==='intro'){
+    h=obHead(true)+'<div class="ob-col">'+
+      '<div class="ob-visual">'+introSvg()+'</div>'+
+      '<div class="ob-body">'+
+        '<div class="ob-brand rise d1"><span><span class="wm-v">Vantage</span><small>by <span class="wm">RYSE<span class="on">ON</span></span></small></span></div>'+
+        hl(['Stay connected','to their','development.'])+
+        '<p class="sub rise d2">Follow the athletes who choose to share their <b class="wm" style="color:var(--text)">RYSE<span class="on">ON</span></b> development with you.</p>'+
+        '<ul class="concepts"><li style="--i:0">Progress</li><li style="--i:1">Schedule</li><li style="--i:2">Development</li></ul>'+
+      '</div>'+
+      '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="role">Get started</button>'+
+      '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p></div>'+
+    '</div>';
+  }
+  else if(s==='role'){
+    var R=[['parent','Parent','Follow your child’s development.',I.parent],['agent','Agent','Follow the players you represent.',I.agent],['coach','Private Coach','Follow the athletes you train.',I.coach],['other','Other','A trusted person in an athlete’s development.',I.other]];
+    h=obHead(true)+'<div class="ob-col">'+
+      '<div class="ob-body">'+hl(['How will you','use Vantage?'])+
+      '<p class="sub rise d2">This shapes how VANTAGE is set up for you.</p>'+
+      '<div class="roles rise d2" role="radiogroup" aria-label="Your role">'+R.map(function(r){return '<button class="role" type="button" role="radio" aria-checked="'+(S.role===r[0])+'" data-a="role" data-r="'+r[0]+'"><span class="tick">'+I.check+'</span>'+r[3]+'<b>'+r[1]+'</b><span>'+r[2]+'</span></button>'}).join('')+'</div>'+
+      '<p class="note rise d3">Your role doesn’t change what athletes share with you. Only they decide that.</p></div>'+
+      '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="obGo" data-to="how"'+(S.role?'':' disabled')+'>Continue</button></div>'+
+    '</div>';
+  }
+  else if(s==='how'){
+    h=obHead(true)+'<div class="ob-col">'+
+      '<div class="ob-body">'+hl(['How Vantage','works.'])+
+      '<ol class="how">'+
+        '<li style="--i:0"><span class="n">'+I.search+'</span><span><b>Find</b><p>Find an athlete on RYSEON by name or RYSEON ID.</p></span></li>'+
+        '<li style="--i:1"><span class="n">'+I.send+'</span><span><b>Request</b><p>Send a request. The athlete approves it in RYSEON.</p></span></li>'+
+        '<li style="--i:2"><span class="n">'+I.eye+'</span><span><b>Follow</b><p>Follow the development information they choose to share.</p></span></li>'+
+      '</ol>'+
+      '<div class="control rise d4">'+I.shield+'<span><b>The athlete stays in control.</b><p>They choose what you see and can end access at any time. VANTAGE is read-only.</p></span></div>'+
+      '</div>'+
+      '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="obGo" data-to="account">Continue</button></div>'+
+    '</div>';
+  }
+  else if(s==='account'){
+    h=obHead(true)+'<div class="ob-col"><div class="ob-body">'+hl(['Create your','account.'])+
+      '<p class="sub rise d2">Your VANTAGE account is yours. It’s separate from any athlete’s RYSEON profile.</p></div>'+
+      (S.emailMode?
+      '<form class="ob-act rise d1" data-f="email" novalidate><label class="lbl-in"><span class="mlabel">Your name</span><span class="field"><input id="in-name" autocomplete="name" value="'+esc(S.user)+'" required></span></label>'+
+        '<label class="lbl-in"><span class="mlabel">Email</span><span class="field"><input id="in-mail" type="email" autocomplete="email" value="'+esc(S.email)+'" required></span></label>'+
+        '<p class="note">We’ll send a sign-in link to this address.</p>'+
+        '<button class="btn btn-primary" type="submit">Continue</button></form>'
+      :
+      '<div class="ob-act rise d3">'+
+        '<button class="btn btn-quiet btn-auth" type="button" data-a="auth">'+I.apple+'Continue with Apple</button>'+
+        '<button class="btn btn-quiet btn-auth" type="button" data-a="auth">'+I.google+'Continue with Google</button>'+
+        '<button class="btn btn-quiet btn-auth" type="button" data-a="authMail">'+I.mail+'Continue with email</button>'+
+        '<p class="ob-foot">Already have an account?<button class="link" type="button" data-a="login">Log in</button></p></div>')+
+    '</div>';
+  }
+  else if(s==='find'){ h=obHead(true)+'<div class="ob-col">'+findBody(true)+'</div>' }
+  else if(s==='request'){ h=obHead(true)+'<div class="ob-col">'+requestBody(true)+'</div>' }
+  else if(s==='sent'){ h='<div class="ob-col">'+sentBody(true)+'</div>' }
+  else if(s==='approved'){ h='<div class="ob-col">'+approvedBody(true)+'</div>' }
+  return '<div class="ob" id="ob">'+h+'</div>';
+}
+
+function introSvg(){
+  // three athlete trajectories rising and converging on one point of view
+  var paths=['M10 230 C 90 222, 140 200, 190 168 S 270 92, 312 64','M10 250 C 100 246, 160 224, 210 186 S 280 104, 312 64','M10 270 C 110 268, 170 252, 226 210 S 290 116, 312 64'];
+  return '<svg viewBox="0 0 340 290" aria-hidden="true">'+
+    '<defs><linearGradient id="tg" x1="0" x2="1"><stop offset="0" stop-color="#F5F7FB" stop-opacity=".08"/><stop offset="1" stop-color="#9DB8FF" stop-opacity=".95"/></linearGradient></defs>'+
+    [0,1,2,3].map(function(i){return '<path d="M10 '+(110+i*50)+'H330" stroke="rgba(255,255,255,.06)" stroke-width="1"/>'}).join('')+
+    paths.map(function(p,i){return '<path class="draw" pathLength="1" d="'+p+'" fill="none" stroke="url(#tg)" stroke-width="'+(1.8-i*.35)+'" stroke-linecap="round" style="--d:'+(.3+i*.25)+'s"/>'}).join('')+
+    [[190,168,.9],[210,186,1.15],[226,210,1.4],[120,214,.7],[150,240,1],[96,262,1.2]].map(function(p){return '<circle class="nodein" cx="'+p[0]+'" cy="'+p[1]+'" r="2.4" fill="rgba(245,247,251,.6)" style="--d:'+p[2]+'s"/>'}).join('')+
+    '<circle class="nodein" cx="312" cy="64" r="5" fill="#9DB8FF" style="--d:2s"/>'+
+    '<circle cx="312" cy="64" r="5" fill="none" stroke="rgba(157,184,255,.6)" stroke-width="1"><animate attributeName="r" values="5;34" dur="3.6s" begin="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;0" dur="3.6s" begin="2.2s" repeatCount="indefinite"/></circle>'+
+    '<circle cx="312" cy="64" r="5" fill="none" stroke="rgba(157,184,255,.4)" stroke-width="1"><animate attributeName="r" values="5;34" dur="3.6s" begin="4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="3.6s" begin="4s" repeatCount="indefinite"/></circle>'+
+  '</svg>';
+}
+
+/* ---------- Find / request / sent / approved (shared by onboarding and in-app) ---------- */
+function searchDir(q){
+  q=norm(q.trim()); if(q.length<2) return [];
+  var qid=q.replace(/[^a-z0-9]/g,'');
+  return Object.keys(DIRECTORY).map(function(k){return DIRECTORY[k]}).filter(function(a){
+    return norm(nm(a)).indexOf(q)>=0||norm(a.last+' '+a.first).indexOf(q)>=0||(qid.length>=3&&a.ryid.toLowerCase().replace(/[^a-z0-9]/g,'').indexOf(qid)>=0);
+  }).sort(function(x,y){return nm(x)<nm(y)?-1:1});
+}
+function resultsHtml(){
+  var q=S.req.q,res=searchDir(q);
+  if(q.trim().length<2) return '<div class="card" style="display:flex;gap:14px;align-items:flex-start">'+'<span style="color:var(--blue-3);flex:none;width:22px;height:22px;display:block">'+I.info+'</span><p class="sub" style="font-size:14px">Ask the athlete for their RYSEON ID. They can find it in RYSEON under Profile. Searching by ID avoids sending a request to the wrong person.</p></div>';
+  if(!res.length) return '<div class="empty-s fade">'+I.search+'<b>Athlete not found</b><p>No RYSEON athlete matches “'+esc(q.trim())+'”. Check the spelling, or ask the athlete for their RYSEON ID.</p></div>';
+  return '<p class="mlabel" style="margin-bottom:-2px">'+res.length+' athlete'+(res.length>1?'s':'')+' on RYSEON</p>'+res.map(function(a){
+    var c=conOf(a.id),st='';
+    if(c&&c.st==='connected') st='<span class="pill blue st">Following</span>';
+    else if(c&&c.st==='pending') st='<span class="pill st">Requested</span>';
+    return '<button class="res fade" type="button" data-a="pick" data-id="'+a.id+'">'+ava(a,'')+'<span class="t"><b>'+esc(nm(a))+'</b><small>'+esc(a.club)+' · '+esc(a.team)+'</small><small>'+esc(a.pos)+' · '+esc(a.city)+'</small><span class="id">'+a.ryid+'</span></span>'+(st||I.chev)+'</button>';
+  }).join('');
+}
+function findBody(ob){
+  return '<div class="ob-body '+(ob?'':'top')+'">'+(ob?hl(['Find an','athlete.']):'<h1 class="ptitle">Request another athlete</h1>')+
+    '<p class="sub rise d2">Search RYSEON by name or RYSEON ID.</p>'+
+    '<label class="field rise d2">'+I.search+'<span class="sr">Search athletes</span><input id="find-q" data-in="find" placeholder="Name or RYSEON ID, e.g. RY-418273" autocomplete="off" value="'+esc(S.req.q)+'"></label>'+
+    '<div class="results" id="results">'+resultsHtml()+'</div>'+
+    '<p class="note">Before an athlete approves your request, VANTAGE only shows the basic profile they make visible on RYSEON.</p>'+
+  '</div>'+
+  (ob?'<div class="ob-act" style="margin-top:28px"><button class="textbtn" type="button" data-a="skipFind" style="align-self:center">Skip for now</button></div>':'');
+}
+function idCard(a){
+  return '<div class="idcard"><div class="who">'+ava(a,'lg')+'<div><div class="nm">'+esc(nm(a))+'</div><span class="tag">'+esc(a.pos)+'</span></div></div>'+
+    '<dl><div><dt>Club</dt><dd>'+esc(a.club)+'</dd></div><div><dt>Team</dt><dd>'+esc(a.team)+'</dd></div><div><dt>City</dt><dd>'+esc(a.city)+'</dd></div><div><dt>RYSEON ID</dt><dd>'+a.ryid+'</dd></div></dl></div>';
+}
+function planNote(){
+  var n=live().length+S.cons.filter(function(c){return c.st==='pending'}).length, pl=PLANS[S.plan];
+  if(n<pl.incl) return '';
+  if(n>=pl.max) return '';
+  return '<p class="note">If approved, this adds €3.90 / month to your '+pl.name+' plan.</p>';
+}
+function requestBody(ob){
+  var a=A(S.req.sel); if(!a) return '';
+  var rels=['Parent','Agent','Private Coach','Other'];
+  return '<div class="ob-body '+(ob?'':'top')+'">'+(ob?hl(['Request','access.']):'<h1 class="ptitle">Request access</h1>')+
+    '<div class="rise d1">'+idCard(a)+'</div>'+
+    '<div class="rise d2" style="display:flex;flex-direction:column;gap:12px"><span class="mlabel">Your relationship to '+esc(a.first)+'</span>'+
+    '<div class="relgrid" role="radiogroup" aria-label="Relationship">'+rels.map(function(r){return '<button class="rel" type="button" role="radio" aria-checked="'+(S.req.rel===r)+'" data-a="rel" data-r="'+r+'">'+r+'</button>'}).join('')+'</div></div>'+
+    '<p class="sub rise d2" style="font-size:14px">'+esc(a.first)+' will see your name, email and relationship in RYSEON. Nothing is shared with you until '+he(a)+' approves, and '+he(a)+' decides what you can see.</p>'+
+    planNote()+
+  '</div>'+
+  '<div class="ob-act rise d3"><button class="btn btn-primary" type="button" data-a="sendReq"'+(S.req.rel?'':' disabled')+'>Request access</button></div>';
+}
+function sentBody(ob){
+  var a=A(S.req.sel);
+  return '<div class="state" style="margin:auto 0">'+
+    '<div class="orbit rise d1"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a,'','locked')+'<span class="lock">'+I.lock+'</span></div>'+
+    '<span class="pill rise d1"><span class="dot"></span>Pending approval</span>'+
+    '<h1 class="display hl" style="text-align:center"><span class="line"><span class="li">Request sent</span></span></h1>'+
+    '<p class="sub rise d2" style="max-width:34ch">'+esc(a.first)+' needs to approve your connection before you can view '+his(a)+' development.</p>'+
+    '<div class="locked-list rise d3">'+['Schedule','Development','Reports'].map(function(t,i){return '<div><span>'+t+'</span><span style="display:flex;align-items:center;gap:10px"><i style="--w:'+(70-i*14)+'px"></i>'+I.lock+'</span></div>'}).join('')+'</div>'+
+    '<p class="note rise d3">No information is available until '+esc(a.first)+' approves.</p>'+
+  '</div>'+
+  '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="'+(ob?'enterApp':'doneReq')+'">'+(ob?'Continue to VANTAGE':'Done')+'</button>'+
+    (ATHLETES[a.id]?'<button class="textbtn" type="button" data-a="'+(ob?'simApprove':'simApproveApp')+'" data-id="'+a.id+'" style="align-self:center">Prototype · simulate '+esc(a.first)+' approving</button>':'')+
+  '</div>';
+}
+function approvedBody(ob){
+  var a=A(S.req.sel),p=P(a.id),sh=PERM_LABELS.filter(function(x){return p[x[0]]}).map(function(x){return x[1]});
+  return '<div class="state" style="margin:auto 0">'+
+    '<div class="orbit done rise d1"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a)+'<span class="ok">'+I.check+'</span></div>'+
+    '<h1 class="display hl" style="text-align:center"><span class="line"><span class="li">You’re connected.</span></span></h1>'+
+    '<p class="sub rise d2" style="max-width:36ch">'+esc(a.first)+' approved your request. You can now follow the development '+he(a)+' shares with you.</p>'+
+    '<div class="card rise d3" style="width:100%;text-align:left"><span class="mlabel acc">'+esc(a.first)+' is sharing</span><p style="margin-top:10px;font:500 14.5px/1.55 var(--font-body)">'+sh.join(' · ')+'</p></div>'+
+  '</div>'+
+  '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="openNew" data-id="'+a.id+'">Open VANTAGE</button></div>';
+}
+
+/* ---------- Globe for the language screen (canvas; quiet rotating dot sphere) ---------- */
+var globeRAF=null,globeRot={lon:-30,lat:30,tl:-30,tt:30};
+function startGlobe(){
+  var cv=document.getElementById('globe'); if(!cv) return; var ctx=cv.getContext('2d'); var N=900,pts=[];
+  for(var i=0;i<N;i++){var y=1-(i/(N-1))*2,r=Math.sqrt(1-y*y),t=i*2.399963;pts.push([Math.cos(t)*r,y,Math.sin(t)*r])}
+  cancelAnimationFrame(globeRAF);
+  var L=LANGS[S.lang];globeRot.tl=L[6];globeRot.tt=L[7]*.6;
+  function frame(){
+    if(!document.getElementById('globe')) return;
+    globeRot.lon+=(globeRot.tl-globeRot.lon)*.06; globeRot.lat+=(globeRot.tt-globeRot.lat)*.06;
+    var W=600,R=250,cx=300,cy=300;ctx.clearRect(0,0,W,W);
+    var lo=globeRot.lon*Math.PI/180,la=globeRot.lat*Math.PI/180,cl=Math.cos(lo),sl=Math.sin(lo),ca=Math.cos(la),sa=Math.sin(la);
+    var g=ctx.createRadialGradient(cx-60,cy-80,20,cx,cy,R);g.addColorStop(0,'rgba(47,107,255,.16)');g.addColorStop(1,'rgba(47,107,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke();
+    for(var i=0;i<N;i++){var p=pts[i];var x=p[0]*cl-p[2]*sl,z=p[0]*sl+p[2]*cl,y=p[1];var y2=y*ca-z*sa,z2=y*sa+z*ca;
+      if(z2<0) continue; ctx.fillStyle='rgba(214,224,245,'+(0.08+z2*.42)+')';ctx.beginPath();ctx.arc(cx+x*R,cy-y2*R,1.5+z2*.9,0,7);ctx.fill()}
+    // marker at language centre (front-facing after rotation)
+    var Lc=LANGS[S.lang],mlon=Lc[6]*Math.PI/180,mlat=Lc[7]*Math.PI/180;
+    var mx=Math.cos(mlat)*Math.sin(mlon),my=Math.sin(mlat),mz=Math.cos(mlat)*Math.cos(mlon);
+    var qx=mx*cl-mz*sl,qz=mx*sl+mz*cl,qy=my*ca-qz*sa;
+    var t=Date.now()/1000, rr=8+((t%2.4)/2.4)*26;
+    var px=cx+qx*R,py=cy-qy*R;
+    ctx.fillStyle='#9DB8FF';ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();
+    ctx.strokeStyle='rgba(157,184,255,'+(1-(rr-8)/26)*.7+')';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(px,py,rr,0,7);ctx.stroke();
+    globeRAF=requestAnimationFrame(frame);
+  }
+  frame();
+}
+function bindLangRail(){
+  var tr=document.getElementById('lang-track'); if(!tr) return;
+  var it=tr.querySelectorAll('.lang-item');
+  // centre the selected language without animation
+  var el=it[S.lang]; tr.scrollLeft=el.offsetLeft-(tr.clientWidth-el.clientWidth)/2;
+  var to=null;
+  tr.addEventListener('scroll',function(){clearTimeout(to);to=setTimeout(function(){
+    var mid=tr.scrollLeft+tr.clientWidth/2,best=0,bd=1e9;
+    it.forEach(function(b,i){var c=b.offsetLeft+b.clientWidth/2,d=Math.abs(c-mid);if(d<bd){bd=d;best=i}});
+    if(best!==S.lang) setLang(best,false);
+  },70)},{passive:true});
+}
+function setLang(i,scroll){
+  S.lang=i; var L=LANGS[i];
+  var t=document.getElementById('lang-title'),r=document.getElementById('lang-region'),g=document.getElementById('lang-go');
+  if(t){t.textContent=L[4];t.dir=L[0]==='ar'?'rtl':'ltr'} if(r) r.textContent=L[3]; if(g) g.textContent=L[5];
+  document.querySelectorAll('.lang-item').forEach(function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-selected',j===i)});
+  document.querySelectorAll('#lang-dial i').forEach(function(b,j){b.classList.toggle('on',j===i)});
+  globeRot.tl=L[6];globeRot.tt=L[7]*.6;
+  if(scroll){var tr=document.getElementById('lang-track'),el=tr.querySelectorAll('.lang-item')[i];tr.scrollTo({left:el.offsetLeft-(tr.clientWidth-el.clientWidth)/2,behavior:'smooth'})}
+}
+
+/* ============================================================
+   VANTAGE — app shell & read-only views
+   ============================================================ */
+
+/* ---------- small chart helpers (one scale per chart) ---------- */
+function lineChart(vals,labels,o){
+  o=o||{};var W=600,H=o.h||170,pl=30,pr=14,pt=14,pb=26,mn=o.min!=null?o.min:Math.min.apply(null,vals)-6,mx=o.max!=null?o.max:Math.max.apply(null,vals)+6;
+  mn=Math.floor(mn/10)*10;mx=Math.ceil(mx/10)*10;if(mx===mn)mx=mn+10;
+  var x=function(i){return pl+(W-pl-pr)*(vals.length===1?.5:i/(vals.length-1))},y=function(v){return pt+(H-pt-pb)*(1-(v-mn)/(mx-mn))};
+  var g='',step=(mx-mn)/2;for(var k=0;k<=2;k++){var v=mn+step*k;g+='<line class="gl'+(k===0?' base':'')+'" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text class="gt" x="'+(pl-8)+'" y="'+(y(v)+3.5)+'" text-anchor="end">'+Math.round(v)+'</text>'}
+  var d=vals.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)}).join(' ');
+  var area=d+' L'+x(vals.length-1)+' '+y(mn)+' L'+x(0)+' '+y(mn)+'Z';
+  var lb=labels.map(function(l,i){return '<text class="lb" x="'+x(i)+'" y="'+(H-6)+'">'+esc(l)+'</text>'}).join('');
+  var last=vals.length-1;
+  return '<div class="chart"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.label||'Trend')+'"><defs><linearGradient id="ag" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1F6BFF" stop-opacity=".32"/><stop offset="1" stop-color="#1F6BFF" stop-opacity="0"/></linearGradient></defs>'+g+
+    '<path class="ar" d="'+area+'"/><path class="ln" d="'+d+'"/>'+
+    vals.map(function(v,i){return '<circle class="pt" cx="'+x(i)+'" cy="'+y(v)+'" r="'+(i===last?4.5:2.4)+'" '+(i===last?'':'opacity=".55"')+'/>'}).join('')+
+    '<text class="vl" x="'+Math.min(x(last),W-pr-12)+'" y="'+(y(vals[last])-12)+'">'+vals[last]+'</text>'+lb+'</svg></div>';
+}
+function barChart(vals,labels,o){
+  o=o||{};var W=600,H=o.h||160,pl=34,pr=8,pt=18,pb=26,mx=o.max||Math.max.apply(null,vals)*1.15,n=vals.length,bw=(W-pl-pr)/n;
+  var tick=o.tick||niceTick(mx),top=Math.ceil(mx/tick)*tick;var y=function(v){return pt+(H-pt-pb)*(1-v/top)};
+  var g='';for(var v=0;v<=top+1e-9;v+=tick){g+='<line class="gl'+(v===0?' base':'')+'" x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v)+'" y2="'+y(v)+'"/><text class="gt" x="'+(pl-8)+'" y="'+(y(v)+3.5)+'" text-anchor="end">'+(o.fmt?o.fmt(v):v)+'</text>'}
+  var b=vals.map(function(v,i){var w=Math.min(46,bw*.56),xx=pl+bw*i+(bw-w)/2;return '<rect class="bar'+(i===n-1?' on':'')+'" x="'+xx+'" y="'+y(v)+'" width="'+w+'" height="'+Math.max(0,y(0)-y(v))+'" rx="5"/>'+(i===n-1?'<text class="vl" x="'+(xx+w/2)+'" y="'+(y(v)-7)+'">'+(o.vfmt?o.vfmt(v):v)+'</text>':'')+'<text class="lb" x="'+(xx+w/2)+'" y="'+(H-6)+'">'+esc(labels[i])+'</text>'}).join('');
+  return '<div class="chart"><svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.label||'Bars')+'">'+g+b+'</svg></div>';
+}
+function niceTick(m){var s=[1,2,2.5,5,10,20,25,50,100,200,250,500];for(var i=0;i<s.length;i++) if(m/s[i]<=4) return s[i];return 1000}
+function spark(vals){
+  var W=84,H=26,mn=Math.min.apply(null,vals)-2,mx=Math.max.apply(null,vals)+2;var x=function(i){return 2+(W-4)*i/(vals.length-1)},y=function(v){return 3+(H-6)*(1-(v-mn)/(mx-mn))};
+  var d=vals.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)}).join(' ');
+  return '<svg class="spark" viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><path class="l" d="'+d+'"/><circle cx="'+x(vals.length-1)+'" cy="'+y(vals[vals.length-1])+'" r="2.4"/></svg>';
+}
+function ladder(l,lg){var h='<span class="ladder'+(lg?' lg':'')+'" aria-hidden="true">';for(var i=0;i<5;i++)h+='<i class="'+(i<=l?'on':'')+'"></i>';return h+'</span>'}
+function trendTxt(d,unit){if(d>0) return '+'+d+(unit||'')+' ';if(d<0) return '−'+Math.abs(d)+(unit||'')+' ';return 'Stable '}
+
+/* ---------- shell ---------- */
+var NAV=[['home','Home',I.home],['athletes','Athletes',I.users],['schedule','Schedule',I.cal],['reports','Reports',I.doc],['profile','Profile',null]];
+function meAva(cls){return '<span class="ava '+(cls||'')+'" style="--h:226" aria-hidden="true">'+esc(S.user.split(' ').map(function(w){return w[0]}).join('').slice(0,2))+'</span>'}
+function navCur(k){var v=S.view;if(v==='athlete'||v==='request') v='athletes';if(v==='pricing') v='profile';return v===k}
+function renderShell(){
+  var L=live(),pl=PLANS[S.plan];
+  var side='<aside class="side" aria-label="Main">'+
+    '<div class="side-brand"><span class="t"><span class="wm-v">Vantage</span><small>RYSEON family</small></span></div>'+
+    '<nav class="snav">'+NAV.map(function(n){return '<button type="button" data-a="nav" data-v="'+n[0]+'"'+(navCur(n[0])?' aria-current="page"':'')+'>'+(n[2]||meAva('sm'))+'<span>'+n[1]+'</span>'+(n[0]==='athletes'&&L.length?'<span class="cnt">'+L.length+'</span>':'')+(n[0]==='reports'&&newReports().length?'<span class="cnt"><i class="dotnew" style="display:inline-block"></i></span>':'')+'</button>'}).join('')+'</nav>'+
+    (S.cons.length?'<div class="side-sec"><span class="mlabel">Your athletes</span></div><div class="side-list">'+
+      L.map(function(c){var a=A(c.a);return '<button type="button" data-a="openA" data-id="'+a.id+'"'+(S.view==='athlete'&&S.aid===a.id?' aria-current="true"':'')+' title="'+esc(nm(a))+'">'+ava(a)+'<span class="t"><b>'+esc(nm(a))+'</b><small>'+esc(a.ps)+' · '+esc(LEVELS[a.lvl])+'</small></span></button>'}).join('')+
+      others().filter(function(c){return c.st==='pending'}).map(function(c){var a=A(c.a);return '<button type="button" class="pend" data-a="openA" data-id="'+a.id+'" title="'+esc(nm(a))+' · pending">'+ava(a,'','locked')+'<span class="t"><b>'+esc(nm(a))+'</b><small>Waiting for approval</small></span></button>'}).join('')+
+    '</div>':'')+
+    '<button class="side-req" type="button" data-a="reqNew" title="Request another athlete">'+I.reqp+'<span>Request another athlete</span></button>'+
+    '<div class="side-foot"><b>'+pl.name+'</b><br>'+L.length+' of '+pl.max+' athletes<div class="usage">'+usageBar()+'</div></div>'+
+  '</aside>';
+  var bnav='<nav class="bnav" aria-label="Main">'+NAV.map(function(n){return '<button type="button" data-a="nav" data-v="'+n[0]+'"'+(navCur(n[0])?' aria-current="page"':'')+'>'+(n[2]||meAva())+'<span>'+n[1]+'</span></button>'}).join('')+'</nav>';
+  return '<div class="shell">'+side+'<main class="main" id="main">'+renderView()+'</main></div>'+bnav;
+}
+function usageBar(){var pl=PLANS[S.plan],n=live().length,h='';for(var i=0;i<pl.max;i++)h+='<i class="'+(i<n?'on':'')+'"></i>';return h}
+function mtop(){return '<div class="mtop"><span class="mwm" aria-label="VANTAGE">Vantage</span><button class="iconbtn" type="button" data-a="reqNew" aria-label="Request another athlete">'+I.reqp+'</button></div>'}
+
+function renderView(){
+  var v=S.view;
+  if(v==='home') return viewHome();
+  if(v==='athletes') return viewAthletes();
+  if(v==='athlete') return viewAthlete();
+  if(v==='schedule') return viewSchedule();
+  if(v==='reports') return viewReports();
+  if(v==='profile') return viewProfile();
+  if(v==='pricing') return viewPricing();
+  if(v==='request') return viewRequest();
+  return viewHome();
+}
+
+/* ---------- HOME ---------- */
+function newReports(){
+  var mon=addDays(TODAY,-((TODAY.getDay()+6)%7)),out=[];
+  liveIds().forEach(function(id){if(!P(id).reports) return;reportsFor(id).forEach(function(r){if(r.pub>=mon&&!S.read[r.id]) out.push(r)})});
+  return out;
+}
+function todayCounts(ids){
+  var c={Training:0,Recovery:0,Match:0,Learning:0,Rest:0};ids.forEach(function(id){c[primary(eventsFor(id,TODAY))]++});return c;
+}
+function weekMatches(ids){var n=0,end=7-((TODAY.getDay()+6)%7);ids.forEach(function(id){for(var i=0;i<end;i++) if(eventsFor(id,addDays(TODAY,i)).some(function(e){return e.k==='m'})) n++});return n}
+function viewHome(){
+  var L=live(),ids=liveIds(),h='<div class="page">'+mtop();
+  h+='<div class="home-hero rise d1"><div><p class="greet">'+greeting()+', '+esc(S.user.split(' ')[0])+'</p><p class="psub">'+(L.length?(L.length===1?'Your athlete at a glance.':'Your athletes at a glance.'):'Welcome to VANTAGE.')+'</p></div>'+
+    (L.length?'<div class="count"><b>'+L.length+'</b><span>'+(L.length===1?'Athlete':'Athletes')+'</span></div>':'')+'</div>';
+  h+=statusNotices();
+  if(!L.length){ return h+zeroHome()+'</div>' }
+  var sch=ids.filter(function(id){return P(id).schedule}),c=todayCounts(sch),wm=weekMatches(ids.filter(function(id){return P(id).schedule&&P(id).matches})),nr=newReports();
+  var todayRows=[['Training',c.Training],['Recovery',c.Recovery],['Match',c.Match],['Learning',c.Learning],['Rest',c.Rest]].filter(function(x){return x[1]>0});
+  h+='<div class="glance rise d1">'+
+    '<button class="gl focus" type="button" data-a="nav" data-v="schedule"><span class="mlabel acc">Today · '+fmt(TODAY,'dow')+'</span><span class="row">'+todayRows.map(function(x){return '<span class="kv"><b>'+x[1]+'</b><span>'+x[0]+'</span></span>'}).join('')+'</span>'+(sch.length<ids.length?'<span class="ln">'+(ids.length-sch.length)+' not sharing schedule</span>':'')+'</button>'+
+    '<button class="gl" type="button" data-a="schedWeek"><span class="mlabel">Upcoming</span><span class="big">'+wm+'<small>'+(wm===1?'match':'matches')+' this week</small></span>'+upcomingLine(ids)+'</button>'+
+    '<button class="gl" type="button" data-a="nav" data-v="reports"><span class="mlabel">Latest reports</span><span class="big">'+nr.length+'<small>new weekly '+(nr.length===1?'report':'reports')+'</small></span><span class="ln">'+(nr.length?'From '+uniq(nr.map(function(r){return A(r.a).first})).slice(0,3).join(', ')+(uniq(nr.map(function(r){return r.a})).length>3?' and others':''):'You’re up to date')+'</span></button>'+
+  '</div>';
+  if(L.length===1){
+    var a=A(L[0].a);
+    h+='<div class="grid2 rise d2"><div class="col">'+athleteCard(a,true)+'</div><div class="col">'+todayCard(a)+aiCard(a)+'</div></div>';
+  } else {
+    h+='<div class="sec-h rise d2"><h2 class="h3">Your athletes</h2><button class="link" type="button" data-a="nav" data-v="athletes">View all</button></div>';
+    h+='<div class="agrid rise d2">'+sortForHome(L).map(function(c){return athleteCard(A(c.a))}).join('')+'</div>';
+  }
+  return h+'</div>';
+}
+function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i})}
+function upcomingLine(ids){
+  var best=null;ids.forEach(function(id){if(!P(id).schedule||!P(id).matches)return;var m=nextMatch(id);if(m&&(!best||m.date<best.date||(+m.date===+best.date&&m.time<best.time))) best=m});
+  if(!best) return '<span class="ln">No matches shared</span>';
+  return '<span class="ln">Next: '+esc(A(best.a).first)+' · '+fmt(best.date,'rel')+' '+best.time+'</span>';
+}
+function sortForHome(L){var ord={Match:0,Training:1,Recovery:2,Learning:3,Rest:4};return L.slice().sort(function(x,y){var px=P(x.a).schedule?ord[primary(eventsFor(x.a,TODAY))]:5,py=P(y.a).schedule?ord[primary(eventsFor(y.a,TODAY))]:5;return px-py})}
+function statusNotices(){
+  var o=others();if(!o.length) return '';
+  return '<div class="reqs rise d1">'+o.map(function(c){var a=A(c.a);
+    if(c.st==='pending') return '<div class="req pending">'+ava(a,'','locked')+'<span class="t"><b>Request pending · '+esc(nm(a))+'</b><p>'+esc(a.first)+' needs to approve your connection in RYSEON. Nothing is shared until then.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="openA" data-id="'+a.id+'">View</button></span></div>';
+    if(c.st==='declined') return '<div class="req">'+ava(a,'','ended')+'<span class="t"><b>Request declined · '+esc(nm(a))+'</b><p>'+esc(a.first)+' chose not to share '+his(a)+' development. No information was shared.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Dismiss</button></span></div>';
+    if(c.st==='ended') return '<div class="req">'+ava(a,'','ended')+'<span class="t"><b>Access ended · '+esc(nm(a))+'</b><p>This athlete is no longer sharing their RYSEON development with you.</p></span><span class="acts"><button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Dismiss</button></span></div>';
+    return '';}).join('')+'</div>';
+}
+function zeroHome(){
+  var pend=others().some(function(c){return c.st==='pending'});
+  return '<div class="endstate rise d2">'+
+    '<div class="orbit" style="width:150px;height:150px"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span style="position:relative;width:14px;height:14px;border-radius:50%;background:var(--blue-3);box-shadow:0 0 24px rgba(111,152,255,.7)"></span></div>'+
+    '<h2>'+(pend?'Waiting for approval':'No athletes connected')+'</h2>'+
+    '<p>'+(pend?'Your request has been sent. As soon as the athlete approves it in RYSEON, their shared development appears here.':'Find an athlete on RYSEON and request access. Once they approve, you’ll follow the development they choose to share.')+'</p>'+
+    '<div style="width:min(320px,100%);margin-top:6px"><button class="btn btn-primary" type="button" data-a="reqNew">'+(pend?'Request another athlete':'Find an athlete')+'</button></div>'+
+  '</div>'+
+  '<div class="grid3 rise d3">'+[['Find',I.search,'Search by name or RYSEON ID.'],['Request',I.send,'The athlete approves in RYSEON.'],['Follow',I.eye,'See what they choose to share.']].map(function(s){return '<div class="card"><span class="mlabel acc">'+s[1].replace('<svg','<svg style="width:14px;height:14px"')+s[0]+'</span><p class="sub" style="margin-top:8px;font-size:14px">'+s[2]+'</p></div>'}).join('')+'</div>';
+}
+function evLabel(e){return e.k==='m'?(e.ha==='Away'?'@ ':'vs ')+e.opp:e.type}
+function todayFact(a){
+  var p=P(a.id);if(!p.schedule) return '<div class="fact"><span class="mlabel">Today</span><span class="mini-lock">'+I.lock+'Not shared</span></div>';
+  var evs=eventsFor(a.id,TODAY),m=evs.filter(function(e){return e.k==='m'})[0],t=m||evs.filter(function(e){return e.k==='t'})[0]||evs[0];
+  if(!t) return '<div class="fact"><span class="mlabel">Today</span><b>Rest day</b><span>Nothing scheduled</span></div>';
+  return '<div class="fact"><span class="mlabel">Today</span><b>'+esc(m?'Match':t.type)+' · '+t.time+'</b><span>'+(evs.length>1?(evs.length-1)+' more planned':esc(t.note))+'</span></div>';
+}
+function matchFact(a){
+  var p=P(a.id);if(!p.schedule||!p.matches) return '<div class="fact"><span class="mlabel">Next match</span><span class="mini-lock">'+I.lock+'Not shared</span></div>';
+  var m=nextMatch(a.id);if(!m) return '<div class="fact"><span class="mlabel">Next match</span><b>None scheduled</b></div>';
+  return '<div class="fact match"><span class="mlabel">Next match</span><b>'+fmt(m.date,'rel')+' · '+m.time+'</b><span>'+(m.ha==='Away'?'@ ':'vs ')+esc(m.opp)+'</span></div>';
+}
+function athleteCard(a,feature){
+  var p=P(a.id),dv=p.development;
+  return '<button class="acard'+(feature?' feature':'')+'" type="button" data-a="openA" data-id="'+a.id+'">'+
+    '<span class="who">'+ava(a,feature?'':'')+'<span class="t"><span class="nm">'+esc(nm(a))+'</span><span class="meta">'+a.age+' · '+esc(a.pos)+' · '+esc(a.club)+'</span></span></span>'+
+    '<span class="facts">'+todayFact(a)+matchFact(a)+'</span>'+
+    '<span class="lvrow"><span><span class="mlabel" style="font-size:9.5px;color:var(--faint);margin-bottom:6px">Development</span>'+(dv?'<span style="display:flex;align-items:center;gap:10px"><span class="lvl">'+LEVELS[a.lvl]+'</span>'+ladder(a.lvl)+'</span>':'<span class="mini-lock">'+I.lock+'Not shared</span>')+'</span>'+
+      (dv?'<span style="display:flex;align-items:center;gap:10px"><span class="trend'+(a.dt?'':' st')+'">'+(a.dt>0?'+'+a.dt:(a.dt<0?'−'+Math.abs(a.dt):'Stable'))+'</span>'+spark(driveSeries(a.id,'week'))+'</span>':'')+'</span>'+
+  '</button>';
+}
+function todayCard(a){
+  var p=P(a.id);
+  if(!p.schedule) return lockbox(a,'Schedule');
+  var evs=eventsFor(a.id,TODAY);
+  return '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><span class="mlabel acc">Today · '+fmt(TODAY,'dow')+'</span><button class="link" type="button" data-a="openA" data-id="'+a.id+'" data-t="schedule">Full schedule</button></div>'+
+    (evs.length?'<div class="tl" style="margin-top:8px">'+evs.map(function(e){return tlItem(e)}).join('')+'</div>':'<p class="sub" style="margin-top:12px">Rest day. Nothing scheduled.</p>')+'</div>';
+}
+function nowMin(){var d=new Date();return d.getHours()*60+d.getMinutes()}
+function tlItem(e,withWho){
+  var t=e.time.split(':'),st=(+t[0])*60+(+t[1]),isToday=sameDay(e.date,TODAY),past=e.date<TODAY||(isToday&&st+e.dur<nowMin()),now=isToday&&st<=nowMin()&&st+e.dur>=nowMin();
+  var a=A(e.a);
+  return '<div class="it '+e.k+(past?' past':'')+(now?' now':'')+'"><span class="tm">'+e.time+'<small>'+e.dur+' min</small></span><span class="mk"></span><span><b>'+esc(e.k==='m'?'Match '+(e.ha==='Away'?'@ ':'vs ')+e.opp:e.type)+'</b><p>'+esc(e.k==='m'?e.note+' · '+e.ha:e.note)+(now?' · <span style="color:var(--blue-2)">Now</span>':'')+'</p>'+(withWho?'<span class="who">'+ava(a,'')+esc(nm(a))+'</span>':'')+'</span></div>';
+}
+function aiCard(a){
+  if(!P(a.id).development) return '';
+  return '<div class="ai"><span class="mlabel acc">'+I.spark+'RYSEON AI insight</span><p>'+esc(a.ins)+'</p><span class="src">Shared by '+esc(a.first)+' · This week</span></div>';
+}
+function lockbox(a,what){return '<div class="lockbox">'+I.lock+'<span><b>'+esc(what)+' not shared</b><p>'+esc(a.first)+' hasn’t shared '+esc(what.toLowerCase())+' with you. Only '+esc(a.first)+' can change this in RYSEON.</p></span></div>'}
+
+/* ---------- ATHLETES ---------- */
+function viewAthletes(){
+  var L=live(),h='<div class="page">'+mtop();
+  h+='<div class="ptop rise d1"><div class="t"><h1 class="ptitle">Athletes</h1><p class="psub">'+L.length+' of '+PLANS[S.plan].max+' on '+PLANS[S.plan].name+'</p></div>'+
+    '<button class="btn btn-primary btn-sm" type="button" data-a="reqNew">'+I.reqp+'Request another athlete</button></div>';
+  h+=statusNotices();
+  if(!L.length) return h+zeroHome()+'</div>';
+  if(L.length>2){
+    var levelsHere=uniq(L.map(function(c){return A(c.a).lvl})).sort();
+    h+='<div class="toolbar rise d1"><label class="field sm">'+I.search+'<span class="sr">Search your athletes</span><input id="ath-q" data-in="athQ" placeholder="Search your athletes" value="'+esc(S.athQ)+'"></label>'+
+      '<div class="chips" role="group" aria-label="Filter">'+[['all','All'],['match','Match this week']].concat(levelsHere.map(function(l){return ['l'+l,LEVELS[l]]})).map(function(f){return '<button class="chip" type="button" data-a="athF" data-f="'+f[0]+'" aria-pressed="'+(S.athF===f[0])+'">'+f[1]+'</button>'}).join('')+'</div>'+
+      '<span class="grow"></span><div class="seg" role="tablist" aria-label="Layout"><button type="button" role="tab" data-a="athV" data-f="cards" aria-selected="'+(S.athV==='cards')+'" aria-label="Cards" style="min-width:48px">'+I.grid.replace('<svg','<svg style="width:17px;height:17px"')+'</button><button type="button" role="tab" data-a="athV" data-f="list" aria-selected="'+(S.athV==='list')+'" aria-label="List" style="min-width:48px">'+I.list.replace('<svg','<svg style="width:17px;height:17px"')+'</button></div></div>';
+  }
+  h+='<div id="ath-out">'+athOut()+'</div>';
+  return h+'</div>';
+}
+function athFiltered(){
+  var q=norm(S.athQ.trim()),f=S.athF;
+  return live().map(function(c){return A(c.a)}).filter(function(a){
+    if(q&&norm(nm(a)+' '+a.club+' '+a.pos).indexOf(q)<0) return false;
+    if(f==='match'){var m=P(a.id).matches&&nextMatch(a.id);if(!m||(m.date-TODAY)/864e5>=7-((TODAY.getDay()+6)%7)) return false}
+    if(f.charAt(0)==='l'&&a.lvl!==+f.slice(1)) return false;
+    return true;
+  });
+}
+function athOut(){
+  var list=athFiltered();
+  if(!list.length) return '<div class="empty-s">'+I.search+'<b>No athletes match</b><p>Try another name or clear the filter.</p></div>';
+  if(S.athV==='list'&&live().length>2){
+    return '<div class="alist fade"><div class="arow head"><span class="mlabel">Athlete</span><span class="mlabel c hide-m">Level</span><span class="mlabel c hide-m">Today</span><span class="mlabel c hide-m">Next match</span><span class="mlabel c">Drive</span><span></span></div>'+
+      list.map(function(a){var p=P(a.id),evs=p.schedule?eventsFor(a.id,TODAY):[],m=p.matches&&p.schedule?nextMatch(a.id):null,t=evs.filter(function(e){return e.k==='m'})[0]||evs.filter(function(e){return e.k==='t'})[0]||evs[0];
+        return '<button class="arow" type="button" data-a="openA" data-id="'+a.id+'"><span class="who">'+ava(a)+'<span style="min-width:0"><b>'+esc(nm(a))+'</b><small>'+a.age+' · '+esc(a.ps)+' · '+esc(a.club)+'</small></span></span>'+
+        '<span class="c hide-m">'+(p.development?'<span>'+LEVELS[a.lvl]+'</span>':'<span class="faint">Not shared</span>')+'</span>'+
+        '<span class="c hide-m">'+(p.schedule?(t?'<span>'+esc(t.k==='m'?'Match':t.type)+' · '+t.time+'</span>':'<span class="muted">Rest day</span>'):'<span class="faint">Not shared</span>')+'</span>'+
+        '<span class="c hide-m">'+(m?'<span>'+fmt(m.date,'rel')+' · '+m.time+'</span><small>'+(m.ha==='Away'?'@ ':'vs ')+esc(m.opp)+'</small>':'<span class="faint">'+(p.matches&&p.schedule?'None':'Not shared')+'</span>')+'</span>'+
+        '<span class="c tab">'+(p.development?'<span>'+a.drive+' <small style="display:inline;color:'+(a.dt>0?'var(--blue-2)':'var(--faint)')+'">'+(a.dt>0?'+'+a.dt:(a.dt<0?'−'+Math.abs(a.dt):'±0'))+'</small></span>':'<span class="faint">—</span>')+'</span>'+I.chev+'</button>'}).join('')+'</div>';
+  }
+  return '<div class="agrid fade">'+list.map(function(a){return athleteCard(a)}).join('')+'</div>';
+}
+
+/* ---------- ATHLETE PROFILE ---------- */
+var ATABS=[['overview','Overview'],['schedule','Schedule'],['development','Development'],['performance','Performance'],['learning','Learning'],['reports','Reports'],['access','Access']];
+function viewAthlete(){
+  var a=A(S.aid),c=conOf(S.aid),h='<div class="page">';
+  var L=live();
+  h+='<div class="ptop" style="align-items:center"><button class="textbtn" type="button" data-a="nav" data-v="athletes" style="display:flex;align-items:center;gap:6px">'+I.left.replace('<svg','<svg style="width:16px;height:16px"')+'Athletes</button>'+
+    (L.length>1?'<div class="switcher" role="group" aria-label="Switch athlete">'+L.map(function(x){var b=A(x.a);return '<button type="button" data-a="openA" data-id="'+b.id+'" aria-current="'+(b.id===S.aid)+'" title="'+esc(nm(b))+'">'+ava(b)+'</button>'}).join('')+'</div>':'')+'</div>';
+  if(!c||c.st==='ended') return h+endedState(a)+'</div>';
+  if(c.st==='pending') return h+pendingState(a,c)+'</div>';
+  if(c.st==='declined') return h+declinedState(a)+'</div>';
+  var p=P(a.id);
+  h+='<header class="ahead fade">'+ava(a,'xl')+'<div style="min-width:0"><div class="nm">'+esc(a.first)+'<br>'+esc(a.last)+'</div>'+
+    '<p class="meta"><b>'+a.age+'</b> · '+esc(a.pos)+' · <b>'+esc(a.club)+'</b> '+esc(a.team)+'</p>'+
+    '<div class="tags"><span class="pill solid">'+esc(a.play)+'</span><span class="pill">'+esc(a.ps)+'</span><span class="pill blue"><span class="dot"></span>Shared with you as '+esc(c.rel)+'</span></div></div>'+
+    '<div class="lv"><span class="mlabel">Athlete level</span>'+(p.development?'<span class="lvl">'+LEVELS[a.lvl]+'</span>'+ladder(a.lvl,true):'<span class="mini-lock">'+I.lock+'Not shared</span>')+'</div></header>';
+  h+='<div class="atabs" role="tablist" aria-label="'+esc(nm(a))+'">'+ATABS.map(function(t){return '<button type="button" role="tab" data-a="atab" data-t="'+t[0]+'" aria-selected="'+(S.atab===t[0])+'">'+t[1]+'</button>'}).join('')+'</div>';
+  h+='<div id="atab-body" class="fade">'+athTab(a,p)+'</div>';
+  return h+'</div>';
+}
+function athTab(a,p){
+  var t=S.atab;
+  if(t==='overview') return tabOverview(a,p);
+  if(t==='schedule') return p.schedule?scheduleBlock([a.id],S.asch,true):lockbox(a,'Schedule');
+  if(t==='development') return p.development?tabDevelopment(a):lockbox(a,'Development');
+  if(t==='performance') return tabPerformance(a,p);
+  if(t==='learning') return p.learning?tabLearning(a):lockbox(a,'Learning');
+  if(t==='reports') return p.reports?tabReports(a,p):lockbox(a,'Reports');
+  if(t==='access') return tabAccess(a,p);
+  return '';
+}
+function tabOverview(a,p){
+  var ws=weekSummary(a.id),sl=sleepNights(a.id),avgS=sl.reduce(function(s,v){return s+v},0)/sl.length,lr=learning(a.id),rec=recoveryStatus(a.id),m=p.matches&&p.schedule?nextMatch(a.id):null;
+  var left='<div class="col">'+todayCard(a)+
+    (p.development?'<div class="card drive"><div style="display:flex;justify-content:space-between;align-items:center"><span class="mlabel acc">Development Drive</span><button class="link" type="button" data-a="atab" data-t="development">Development</button></div>'+
+      '<div class="v"><b>'+a.drive+'</b><span class="'+(a.dt?'':'st')+'">'+(a.dt>0?'+'+a.dt+' this week':(a.dt<0?'−'+Math.abs(a.dt)+' this week':'Stable this week'))+'</span></div>'+lineChart(driveSeries(a.id,'month'),seriesLabels('month'),{h:130,label:'Development Drive, last 5 weeks'})+'</div>':lockbox(a,'Development'))+
+  '</div>';
+  var right='<div class="col">'+
+    (p.schedule&&p.matches?(m?'<div class="card focus nm-card"><span class="mlabel acc">Next match</span><div class="vs"><b>'+(m.ha==='Away'?'@ ':'vs ')+esc(m.opp)+'</b></div><p class="when"><b>'+fmt(m.date,'rel')+' · '+m.time+'</b> · '+esc(m.note)+' · '+m.ha+'</p></div>':'<div class="card"><span class="mlabel">Next match</span><p class="sub" style="margin-top:10px">No match in the next four weeks.</p></div>'):lockbox(a,'Matches'))+
+    aiCard(a)+
+    '<div class="grid4" style="grid-template-columns:1fr 1fr">'+
+      statTile('Training',p.training,ws.sessions+'<small>sessions</small>',ws.mins+' min this week')+
+      statTile('Sleep',p.sleep,avgS.toFixed(1).replace('.0','')+'<small>h avg</small>','Last 7 nights')+
+      statTile('Recovery',p.sleep,'<span style="font-size:22px">'+rec[0]+'</span>',rec[1])+
+      statTile('Football learning',p.learning,lr.mins+'<small>min</small>','This month · '+lr.vids+' videos')+
+    '</div>'+
+    (p.development?'<button class="card tap" type="button" data-a="atab" data-t="development" style="text-align:left;width:100%"><span class="mlabel">Athlete level</span><span style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="lvl" style="font-size:20px">'+LEVELS[a.lvl]+'</span>'+ladder(a.lvl,true)+'</span><p class="sub" style="margin-top:10px;font-size:13px">'+(a.lvl<4?'Next: '+LEVELS[a.lvl+1]+'. Levels reflect sustained development behaviour.':'Highest level. Levels reflect sustained development behaviour.')+'</p></button>':'')+
+  '</div>';
+  return '<div class="grid2">'+left+right+'</div>';
+}
+function statTile(label,ok,v,d){return '<div class="card stat'+(ok?'':' off')+'"><span class="mlabel">'+label+'</span>'+(ok?'<div class="v">'+v+'</div><p class="d">'+d+'</p>':'<div class="v" style="display:flex;align-items:center;gap:6px">'+I.lock.replace('<svg','<svg style="width:13px;height:13px"')+'Not shared</div>')+'</div>'}
+
+var METS=[['c','Consistency','Showing up for planned sessions, week after week.'],['i','Self-Initiative','Sessions and learning started without being assigned.'],['l','Football Learning','Videos, club assignments and learning time.'],['p','Preparation','Match preparation and pre-session routines.'],['h','Professional Habits','Check-ins, sleep timing and daily routine.'],['r','Recovery Discipline','Completing planned recovery and mobility.']];
+function tabDevelopment(a){
+  var mode=S.dev,vals=driveSeries(a.id,mode),lab=seriesLabels(mode);
+  var d=vals[vals.length-1]-vals[0];
+  var h='<div class="grid2"><div class="col">'+
+    '<div class="card drive"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Development Drive</span><div class="v"><b>'+a.drive+'</b><span class="'+(d?'':'st')+'">'+(d>0?'+'+d:(d<0?'−'+Math.abs(d):'±0'))+' over '+(mode==='week'?'7 days':(mode==='month'?'5 weeks':'12 months'))+'</span></div></div>'+
+      '<div class="seg" role="tablist" aria-label="Range">'+[['week','Weekly'],['month','Monthly'],['year','Yearly']].map(function(m){return '<button type="button" role="tab" data-a="dev" data-m="'+m[0]+'" aria-selected="'+(mode===m[0])+'">'+m[1]+'</button>'}).join('')+'</div></div>'+
+      lineChart(vals,lab,{h:190,label:'Development Drive'})+
+      '<p class="note" style="margin-top:10px">Development Drive summarises the behaviours below. It becomes more reliable as RYSEON collects more history.</p></div>'+
+    '<div class="mets">'+METS.map(function(m,i){var v=a.m[m[0]],tr=Math.round((hash(a.id+m[0]+mode)-.35)*8);
+      return '<div class="met"><div class="top"><span class="mlabel">'+m[1]+'</span><b>'+v+'</b></div><div class="bar"><i style="width:'+v+'%;animation-delay:'+(i*.06)+'s"></i></div><p class="tr'+(tr>0?'':(tr<0?' mo':' st'))+'">'+(tr>0?'+'+tr+' ':(tr<0?'−'+Math.abs(tr)+' ':'Stable '))+(mode==='week'?'this week':(mode==='month'?'this month':'this year'))+'</p><p class="note" style="margin-top:6px">'+m[2]+'</p></div>'}).join('')+'</div>'+
+  '</div><div class="col">'+
+    '<div class="card"><span class="mlabel acc">Athlete level</span><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:12px"><span class="lvl" style="font-size:26px">'+LEVELS[a.lvl]+'</span><span class="muted" style="font-size:13px">Level '+(a.lvl+1)+' of 5</span></div>'+
+      '<div class="levels">'+LEVELS.map(function(l,i){return '<div class="'+(i<a.lvl?'on':(i===a.lvl?'cur':''))+'"><i></i><span>'+l+'</span></div>'}).join('')+'</div>'+
+      '<div class="lvhist">'+a.lvh.slice().reverse().map(function(x){return '<div><b style="font-weight:600">'+x[0]+'</b><span>'+x[2]+'</span></div>'}).join('')+'</div>'+
+      '<p class="note" style="margin-top:14px">Athlete Level represents sustained development behaviour. It does not measure talent, playing ability, fame or popularity.</p></div>'+
+    aiCard(a)+
+  '</div></div>';
+  return h;
+}
+function tabPerformance(a,p){
+  var h='<div class="grid2"><div class="col">';
+  if(p.training){var tw=trainingWeeks(a.id),ws=weekSummary(a.id);
+    h+='<div class="card"><span class="mlabel acc">Training</span><div class="rp-kv"><div><b>'+ws.sessions+'</b><span>Sessions this week</span></div><div><b>'+ws.mins+'</b><span>Minutes this week</span></div><div><b>'+ws.rpe+'</b><span>Avg RPE · self-reported</span></div></div>'+
+      barChart(tw,['W-5','W-4','W-3','W-2','W-1','This wk'],{h:160,label:'Training minutes per week'})+'<p class="note">Training minutes per week, from sessions logged in RYSEON.</p></div>';
+  } else h+=lockbox(a,'Training');
+  if(p.matches){var pm=pastMatches(a.id,5);
+    h+='<div class="card"><span class="mlabel acc">Recent matches</span><div class="rows" style="margin-top:6px">'+(pm.length?pm.map(function(m){return '<div class="r"><span class="ic">'+I.pitch+'</span><span class="t"><b>'+(m.ha==='Away'?'@ ':'vs ')+esc(m.opp)+'</b><small>'+fmt(m.date,'d mon')+' · '+esc(m.note)+' · '+m.mins+' min played · RPE '+m.rpe+'</small></span><span class="v"><span class="res-w">'+m.res+'</span> '+m.score+'</span></div>'}).join(''):'<p class="sub">No matches logged yet.</p>')+'</div></div>';
+  } else h+=lockbox(a,'Matches');
+  h+='</div><div class="col">';
+  if(p.sleep){var sl=sleepNights(a.id),avg=sl.reduce(function(s,v){return s+v},0)/sl.length,rec=recoveryStatus(a.id),lab=[];for(var i=6;i>=0;i--) lab.push(fmt(addDays(TODAY,-i),'dow3'));
+    h+='<div class="card"><span class="mlabel acc">Sleep</span><div class="rp-kv" style="grid-template-columns:1fr 1fr"><div><b>'+hm(avg)+'</b><span>Average, last 7 nights</span></div><div><b>'+hm(sl[6])+'</b><span>Last night</span></div></div>'+
+      barChart(sl,lab,{h:150,max:10,tick:2.5,fmt:function(v){return v+'h'},vfmt:function(v){return v+'h'},label:'Sleep hours per night'})+'<p class="note">From the health data '+esc(a.first)+' connects to RYSEON.</p></div>'+
+      '<div class="card"><span class="mlabel acc">Recovery</span><div style="display:flex;align-items:baseline;gap:12px;margin-top:12px"><b style="font:700 24px/1 var(--font-display);text-transform:uppercase">'+rec[0]+'</b><span class="muted" style="font-size:13.5px">'+rec[1]+'</span></div>'+
+      '<div class="rows" style="margin-top:10px">'+recoveryRows(a)+'</div></div>';
+  } else h+=lockbox(a,'Sleep & Recovery');
+  h+='<div class="rp-foot">'+I.info+'<span>VANTAGE shows what '+esc(a.first)+' logs and shares in RYSEON. It doesn’t draw medical conclusions. Health and injury information is only visible if '+esc(a.first)+' shares it separately.</span></div>';
+  return h+'</div></div>';
+}
+function recoveryRows(a){
+  var out=[];for(var i=0;i<10&&out.length<3;i++){var d=addDays(TODAY,-i);eventsFor(a.id,d).forEach(function(e){if(e.k==='r'&&out.length<3&&(i>0||e.time<pad(new Date().getHours())+':00')) out.push(e)})}
+  if(!out.length) return '<p class="sub">No recovery sessions in the last 10 days.</p>';
+  return out.map(function(e){return '<div class="r"><span class="ic">'+I.wave+'</span><span class="t"><b>'+esc(e.type)+'</b><small>'+fmt(e.date,'rel')+' · '+e.dur+' min · '+esc(e.note)+'</small></span><span class="v muted" style="font-weight:500">Completed</span></div>'}).join('');
+}
+function tabLearning(a){
+  var lr=learning(a.id);
+  return '<div class="grid2"><div class="col">'+
+    '<div class="card"><span class="mlabel acc">Football learning · this month</span><div class="rp-kv" style="grid-template-columns:repeat(4,1fr)"><div><b>'+lr.mins+'</b><span>Minutes</span></div><div><b>'+lr.vids+'</b><span>Videos completed</span></div><div><b>'+lr.clubDone+'/'+lr.assigned+'</b><span>Club videos</span></div><div><b>'+lr.mental+'</b><span>Mental prep</span></div></div>'+
+      barChart(lr.weeks,['W-5','W-4','W-3','W-2','W-1','This wk'],{h:150,label:'Learning minutes per week'})+'<p class="note">Learning minutes per week across RYSEON, club assignments and mental preparation.</p></div>'+
+    '<div class="card"><span class="mlabel acc">Recently completed in RYSEON</span><div class="rows" style="margin-top:6px">'+lr.items.map(function(x){return '<div class="r"><span class="ic">'+I.play+'</span><span class="t"><b>'+esc(x.t)+'</b><small>'+esc(x.c)+' · '+x.min+' min</small></span><span class="v muted" style="font-weight:500;font-size:13px">'+fmt(x.d,'rel')+'</span></div>'}).join('')+'</div></div>'+
+  '</div><div class="col">'+
+    '<div class="card"><span class="mlabel acc">Club learning</span><p class="sub" style="margin-top:8px;font-size:13.5px">Video assignments from '+esc(a.club)+'.</p><div class="rows" style="margin-top:6px">'+lr.club.map(function(x){return '<div class="r"><span class="ic">'+I.play+'</span><span class="t"><b>'+esc(x.t)+'</b><small>Assigned '+fmt(x.d,'rel')+'</small></span><span class="v" style="font-weight:600;font-size:13px;color:'+(x.done?'var(--blue-3)':'var(--faint)')+'">'+(x.done?'Watched':'Not yet')+'</span></div>'}).join('')+'</div></div>'+
+    '<div class="card"><span class="mlabel acc">Mental preparation</span><div class="rows" style="margin-top:6px">'+
+      '<div class="r"><span class="ic">'+I.wave+'</span><span class="t"><b>Sport Meditation</b><small>Pre-match routine</small></span><span class="v">'+lr.mental+'<small> this month</small></span></div>'+
+      '<div class="r"><span class="ic">'+I.bolt+'</span><span class="t"><b>Mental Training</b><small>Focus and pressure routines</small></span><span class="v">'+(lr.mental-1)+'<small> this month</small></span></div></div></div>'+
+    '<p class="note">Development goes beyond the pitch. Learning shows how '+esc(a.first)+' studies the game and prepares mentally.</p>'+
+  '</div></div>';
+}
+function tabReports(a,p){
+  var rs=reportsFor(a.id);
+  return '<div class="grid2"><div class="col"><div class="rlist">'+rs.map(reportCard).join('')+'</div></div><div class="col">'+
+    '<div class="shield">'+I.shield+'<span><b>Shared by '+esc(a.first)+'</b><p>Reports summarise schedule, development, training and learning. Health and injury details are never included unless shared separately.</p></span></div></div></div>';
+}
+function reportCard(r,withName){
+  var a=A(r.a),isNew=!S.read[r.id]&&r.pub>=addDays(TODAY,-((TODAY.getDay()+6)%7));
+  return '<button class="rcard" type="button" data-a="openR" data-r="'+r.id+'"><span class="doc"><i></i><i></i><i></i></span><span class="t"><b>'+esc(r.type)+(withName?' · '+esc(nm(a)):'')+'</b><small>'+esc(r.title)+' · Published '+fmt(r.pub,'d mon')+'</small></span><span class="r">'+(isNew?'<span class="pill blue">New</span>':'')+I.chev+'</span></button>';
+}
+function tabAccess(a,p){
+  var c=conOf(a.id);
+  return '<div class="grid2"><div class="col">'+
+    '<div class="shield">'+I.shield+'<span><b>Access provided by '+esc(a.first)+'</b><p>'+esc(a.first)+' decides what you can see and can change it or end access at any time in RYSEON.</p></span></div>'+
+    permList(p)+
+    '<p class="note">You can’t turn these on from VANTAGE. Health, injury and medical documents always need a separate, explicit choice by the athlete.</p>'+
+  '</div><div class="col">'+
+    '<div class="card"><span class="mlabel">Connection</span><div class="rows" style="margin-top:6px">'+
+      '<div class="r"><span class="t"><b>Relationship</b></span><span class="v">'+esc(c.rel)+'</span></div>'+
+      '<div class="r"><span class="t"><b>Connected since</b></span><span class="v">'+fmt(new Date(c.since||a.since),'d mon y')+'</span></div>'+
+      '<div class="r"><span class="t"><b>RYSEON ID</b></span><span class="v">'+a.ryid+'</span></div>'+
+      '<div class="r"><span class="t"><b>Your access</b></span><span class="v">Read-only</span></div></div></div>'+
+    '<div class="card"><span class="mlabel">Stop following</span><p class="sub" style="margin-top:8px;font-size:14px">This ends your access to '+esc(a.first)+'’s shared information. To follow again, you’ll need to send a new request.</p><div style="margin-top:14px"><button class="btn btn-quiet btn-sm" type="button" data-a="askStop" data-id="'+a.id+'">Stop following '+esc(a.first)+'</button></div></div>'+
+  '</div></div>';
+}
+function permList(p){
+  return '<div class="perm">'+PERM_LABELS.map(function(x){var on=!!p[x[0]],sens=x[0]==='health'||x[0]==='medical';return '<div class="p'+(sens?' sens':'')+'"><span>'+PERM_ICON[x[0]]+x[1]+'</span><span class="s'+(on?'':' no')+'"><i></i>'+(on?'Shared':'Not shared')+'</span></div>'}).join('')+'</div>';
+}
+function endedState(a){
+  return '<div class="endstate fade"><span class="ava xl ended" style="--h:'+a.h+'">'+a.first[0]+a.last[0]+'</span><span class="pill">Access ended</span><h2>Access ended</h2><p>This athlete is no longer sharing their RYSEON development with you. Previously shared information is no longer available.</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px"><button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Remove from list</button><button class="btn btn-primary btn-sm" type="button" data-a="reqAgain" data-id="'+a.id+'">Request again</button></div></div>';
+}
+function pendingState(a,c){
+  return '<div class="endstate fade"><div class="orbit"><span class="ring"></span><span class="ring"></span><span class="ring"></span>'+ava(a,'','locked')+'<span class="lock">'+I.lock+'</span></div><span class="pill"><span class="dot"></span>Request pending</span><h2>'+esc(nm(a))+'</h2><p>'+esc(a.first)+' needs to approve your connection in RYSEON before you can view '+his(a)+' development. No information is shared until then.</p>'+
+    '<p class="note">Requested '+(c.ago?c.ago+' days ago':'today')+' as '+esc(c.rel)+'</p>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn btn-quiet btn-sm" type="button" data-a="cancelReq" data-id="'+a.id+'">Cancel request</button>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'" style="border-style:dashed">Prototype · simulate approval</button>':'')+'</div></div>';
+}
+function declinedState(a){
+  return '<div class="endstate fade"><span class="ava xl ended" style="--h:'+a.h+'">'+a.first[0]+a.last[0]+'</span><span class="pill">Request declined</span><h2>Request declined</h2><p>'+esc(a.first)+' chose not to share '+his(a)+' RYSEON development. No information was shared.</p>'+
+    '<button class="btn btn-quiet btn-sm" type="button" data-a="dismiss" data-id="'+a.id+'">Remove from list</button></div>';
+}
+
+/* ============================================================
+   VANTAGE — schedule, reports, profile, pricing, request flow,
+   overlays, prototype controls, events & boot
+   ============================================================ */
+
+/* ---------- SCHEDULE (view-only: no add / edit / delete / reschedule) ---------- */
+function isPhone(){var d=document.getElementById('device');return (d?d.clientWidth:window.innerWidth)<=760}
+function weekStart(d){return addDays(d,-((d.getDay()+6)%7))}
+function scheduleBlock(ids,st,single){
+  var key=single?'a':'p',mode=st.mode,d=st.date,label;
+  if(mode==='day') label=(sameDay(d,TODAY)?'Today · ':'')+fmt(d,'dow')+' '+fmt(d,'d mon');
+  else if(mode==='week'){var ws=weekStart(d);label=fmt(ws,'d mon')+' – '+fmt(addDays(ws,6),'d mon')}
+  else label=d.toLocaleString('en-GB',{month:'long',year:'numeric'});
+  var h='<div class="schedbar" style="margin-bottom:14px"><div class="seg" role="tablist" aria-label="Range">'+[['day','Day'],['week','Week'],['month','Month']].map(function(m){return '<button type="button" role="tab" data-a="schMode" data-s="'+key+'" data-m="'+m[0]+'" aria-selected="'+(mode===m[0])+'">'+m[1]+'</button>'}).join('')+'</div>'+
+    '<div class="datenav"><button class="iconbtn" type="button" data-a="schNav" data-s="'+key+'" data-d="-1" aria-label="Previous">'+I.left+'</button><b>'+esc(label)+'</b><button class="iconbtn" type="button" data-a="schNav" data-s="'+key+'" data-d="1" aria-label="Next">'+I.right+'</button></div>'+
+    '<button class="textbtn" type="button" data-a="schNav" data-s="'+key+'" data-d="0">Today</button><span style="flex:1"></span>'+
+    '<div class="legend"><span><i class="m"></i>Match</span><span><i></i>Training</span><span><i class="r"></i>Recovery</span><span><i class="l"></i>Learning</span></div></div>';
+  if(mode==='day'){
+    var evs=[];ids.forEach(function(id){evs=evs.concat(eventsFor(id,d))});evs.sort(function(x,y){return x.time<y.time?-1:(x.time>y.time?1:0)});
+    h+='<div class="card">'+(evs.length?'<div class="tl">'+evs.map(function(e){return tlItem(e,!single)}).join('')+'</div>':'<p class="sub">Nothing scheduled.</p>')+'</div>';
+  } else if(mode==='week'){
+    var ws2=weekStart(d),days=[];for(var i=0;i<7;i++) days.push(addDays(ws2,i));
+    if(single||isPhone()){
+      h+='<div class="days">'+days.map(function(day){var ev=[];ids.forEach(function(id){ev=ev.concat(eventsFor(id,day))});ev.sort(function(x,y){return x.time<y.time?-1:1});
+        return '<div class="dayblk'+(sameDay(day,TODAY)?' today':'')+'"><h4><span>'+fmt(day,'dow')+' '+fmt(day,'d mon')+'</span><span>'+(sameDay(day,TODAY)?'Today':'')+'</span></h4>'+(ev.length?'<div class="tl">'+ev.map(function(e){return tlItem(e,!single)}).join('')+'</div>':'<p class="sub" style="padding:8px 0 4px;font-size:14px">Rest day</p>')+'</div>'}).join('')+'</div>';
+    } else {
+      h+='<div class="wk"><table><thead><tr><th>Athlete</th>'+days.map(function(day){return '<th class="'+(sameDay(day,TODAY)?'today':'')+'">'+fmt(day,'dow3')+' '+day.getDate()+'</th>'}).join('')+'</tr></thead><tbody>'+
+        ids.map(function(id){var a=A(id);return '<tr><td><button class="ath" type="button" data-a="openA" data-id="'+id+'" data-t="schedule">'+ava(a)+'<span style="min-width:0"><b>'+esc(nm(a))+'</b><small>'+esc(a.ps)+' · '+esc(a.team)+'</small></span></button></td>'+
+          days.map(function(day){var ev=eventsFor(id,day);return '<td class="'+(sameDay(day,TODAY)?'today':'')+'">'+ev.map(function(e){return '<span class="ev '+e.k+'"><small>'+e.time+'</small>'+esc(e.k==='m'?(e.ha==='Away'?'@ ':'vs ')+e.opp:e.type)+'</span>'}).join('')+'</td>'}).join('')+'</tr>'}).join('')+
+      '</tbody></table></div>';
+    }
+  } else {
+    var first=new Date(d.getFullYear(),d.getMonth(),1),gs=weekStart(first),cells=[];for(var j=0;j<42;j++) cells.push(addDays(gs,j));
+    if(cells[35].getMonth()!==d.getMonth()) cells=cells.slice(0,35);
+    h+='<div class="month">'+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(function(x){return '<span class="dh">'+x+'</span>'}).join('')+
+      cells.map(function(day){var ev=[];ids.forEach(function(id){ev=ev.concat(eventsFor(id,day))});var ms=ev.filter(function(e){return e.k==='m'});
+        var dots=ids.length>3?ms.map(function(){return '<i class="m"></i>'}).join(''):ev.map(function(e){return '<i class="'+e.k+'"></i>'}).join('');
+        var mt=ms.length?(ids.length>1?(ms.length===1?A(ms[0].a).first+' · '+ms[0].time:ms.length+' matches'):(ms[0].ha==='Away'?'@ ':'vs ')+ms[0].opp):'';
+        return '<button class="dc'+(day.getMonth()!==d.getMonth()?' out':'')+(sameDay(day,TODAY)?' today':'')+'" type="button" data-a="schDay" data-s="'+key+'" data-k="'+dkey(day)+'" aria-label="'+fmt(day,'dow')+' '+fmt(day,'d mon')+(ms.length?', '+ms.length+' match':'')+'"><span class="n">'+day.getDate()+'</span><span class="dots">'+dots+'</span>'+(mt?'<span class="mt">'+esc(mt)+'</span>':'')+'</button>'}).join('')+'</div>';
+    if(ids.length>3) h+='<p class="note" style="margin-top:10px">With several athletes, the month view shows matches. Select a day or one athlete for every session.</p>';
+  }
+  return h;
+}
+function viewSchedule(){
+  var ids=liveIds(),shared=ids.filter(function(id){return P(id).schedule}),notS=ids.filter(function(id){return !P(id).schedule});
+  var h='<div class="page">'+mtop()+'<div class="ptop rise d1"><div class="t"><h1 class="ptitle">Schedule</h1><p class="psub">Shared RYSEON schedules. View only.</p></div></div>';
+  if(!ids.length) return h+zeroHome()+'</div>';
+  if(!shared.length) return h+'<div class="endstate"><h2>No schedules shared</h2><p>None of your athletes are sharing their schedule with you.</p></div></div>';
+  if(shared.length>1){
+    h+='<div class="chips rise d1" role="group" aria-label="Athletes"><button class="chip" type="button" data-a="schWho" data-id="all" aria-pressed="'+(S.sch.who==='all')+'">All athletes</button>'+shared.map(function(id){var a=A(id);return '<button class="chip" type="button" data-a="schWho" data-id="'+id+'" aria-pressed="'+(S.sch.who===id)+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div>';
+  }
+  var sel=S.sch.who==='all'||shared.indexOf(S.sch.who)<0?shared:[S.sch.who];
+  h+='<div class="rise d2">'+scheduleBlock(sel,S.sch,sel.length===1&&shared.length===1)+'</div>';
+  if(notS.length) h+='<p class="note">'+notS.map(function(id){return A(id).first}).join(', ')+(notS.length>1?' aren’t':' isn’t')+' sharing a schedule with you.</p>';
+  return h+'</div>';
+}
+
+/* ---------- REPORTS ---------- */
+function viewReports(){
+  var ids=liveIds(),shared=ids.filter(function(id){return P(id).reports}),notS=ids.filter(function(id){return !P(id).reports});
+  var h='<div class="page'+(ids.length>1?'':' narrow')+'">'+mtop()+'<div class="ptop rise d1"><div class="t"><h1 class="ptitle">Reports</h1><p class="psub">Reports your athletes have chosen to share with you.</p></div></div>';
+  if(!ids.length) return h+zeroHome()+'</div>';
+  var all=[];shared.forEach(function(id){all=all.concat(reportsFor(id))});
+  h+='<div class="toolbar rise d1"><div class="chips" role="group" aria-label="Type">'+[['all','All'],['Weekly Report','Weekly'],['Monthly Report','Monthly'],['Development Report','Development']].map(function(f){return '<button class="chip" type="button" data-a="repF" data-f="'+f[0]+'" aria-pressed="'+(S.repF===f[0])+'">'+f[1]+'</button>'}).join('')+'</div>'+
+    (shared.length>1?'<div class="chips" role="group" aria-label="Athlete"><button class="chip" type="button" data-a="repA" data-f="all" aria-pressed="'+(S.repA==='all')+'">Everyone</button>'+shared.map(function(id){var a=A(id);return '<button class="chip" type="button" data-a="repA" data-f="'+id+'" aria-pressed="'+(S.repA===id)+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div>':'')+'</div>';
+  var list=all.filter(function(r){return (S.repF==='all'||r.type===S.repF)&&(S.repA==='all'||r.a===S.repA)}).sort(function(x,y){return y.pub-x.pub||(x.a<y.a?-1:1)});
+  var mon=weekStart(TODAY),nw=list.filter(function(r){return r.pub>=mon}),old=list.filter(function(r){return r.pub<mon});
+  h+='<div class="rise d2" style="display:flex;flex-direction:column;gap:22px">';
+  if(nw.length) h+='<div><div class="sec-h" style="margin:0 0 12px"><span class="mlabel acc">This week</span></div><div class="rlist">'+nw.map(function(r){return reportCard(r,shared.length>1)}).join('')+'</div></div>';
+  h+='<div><div class="sec-h" style="margin:0 0 12px"><span class="mlabel">Earlier</span></div><div class="rlist">'+(old.length?old.slice(0,24).map(function(r){return reportCard(r,shared.length>1)}).join(''):'<p class="sub">No earlier reports.</p>')+'</div></div>';
+  h+='</div>';
+  if(notS.length) h+='<p class="note">'+notS.map(function(id){return A(id).first}).join(', ')+(notS.length>1?' aren’t':' isn’t')+' sharing reports with you.</p>';
+  h+='<div class="rp-foot">'+I.shield+'<span>Health, injury and medical information is never included in reports unless the athlete shares it separately.</span></div>';
+  return h+'</div>';
+}
+function findReport(rid){var id=rid.split('-')[0],rs=reportsFor(id);for(var i=0;i<rs.length;i++) if(rs[i].id===rid) return rs[i];return null}
+function reportSheet(rid){
+  var r=findReport(rid),a=A(r.a),p=P(a.id),rh=function(k){return hash(rid+k)};
+  var weekly=r.type==='Weekly Report',monthly=r.type==='Monthly Report',mult=weekly?1:(monthly?4.3:13);
+  var sess=Math.round((a.tpl==='pro'?8:6)*mult*(.85+rh('s')*.2)),mins=Math.round(sess*(70+rh('m')*15)),matches=Math.round((weekly?1:(monthly?4:11))*(.8+rh('x')*.25)),
+    lmin=Math.round((weekly?28:(monthly?110:330))*(.8+rh('l')*.5)),slp=(a.age<17?8.4:7.9)+(rh('z')-.5)*.6,dd=Math.round((rh('d')-.3)*(weekly?6:10));
+  var sum=weekly?a.ins:(monthly?'Training and learning followed a consistent pattern across the month. '+(dd>0?'Development Drive rose by '+dd+' points.':'Development Drive held steady.'):'Development behaviour across the quarter was sustained, supporting the current '+LEVELS[a.lvl]+' level.');
+  S.read[rid]=1;
+  return '<div class="sheet-h"><span style="display:flex;align-items:center;gap:12px;min-width:0">'+ava(a,'sm')+'<span class="mlabel" style="min-width:0">'+esc(nm(a))+' · '+esc(r.type)+'</span></span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div>'+
+    '<div class="sheet-b"><div><h2 class="rp-h">'+esc(r.title)+'</h2><p class="sub" style="margin-top:8px;font-size:14px">'+fmt(r.start,'d mon')+' – '+fmt(r.end,'d mon y')+' · Published '+fmt(r.pub,'d mon')+' · Shared by '+esc(a.first)+'</p></div>'+
+    '<div class="ai"><span class="mlabel acc">'+I.spark+'RYSEON AI summary</span><p>'+esc(sum)+'</p></div>'+
+    (p.training||p.matches?'<div class="rp-sec"><span class="mlabel">Training & matches</span><div class="rp-kv"><div><b>'+(p.training?sess:'—')+'</b><span>Sessions</span></div><div><b>'+(p.training?mins:'—')+'</b><span>Training minutes</span></div><div><b>'+(p.matches?matches:'—')+'</b><span>Matches</span></div></div></div>':'')+
+    (p.development?'<div class="rp-sec"><span class="mlabel">Development</span><div class="rp-kv"><div><b>'+a.drive+'</b><span>Development Drive</span></div><div><b>'+(dd>0?'+'+dd:(dd<0?'−'+Math.abs(dd):'±0'))+'</b><span>Change in period</span></div><div><b style="font-size:17px;text-transform:uppercase">'+LEVELS[a.lvl]+'</b><span>Athlete level</span></div></div></div>':'')+
+    (p.learning?'<div class="rp-sec"><span class="mlabel">Learning</span><div class="rp-kv"><div><b>'+lmin+'</b><span>Learning minutes</span></div><div><b>'+Math.max(1,Math.round(lmin/7))+'</b><span>Videos completed</span></div><div><b>'+Math.round(weekly?1:(monthly?4:12))+'</b><span>Club videos watched</span></div></div></div>':'')+
+    (p.sleep?'<div class="rp-sec"><span class="mlabel">Sleep & recovery</span><div class="rp-kv" style="grid-template-columns:1fr 1fr"><div><b>'+hm(slp)+'</b><span>Average sleep</span></div><div><b>'+Math.round((weekly?2:(monthly?9:26))*(.9+rh('r')*.2))+'</b><span>Recovery sessions</span></div></div></div>':'')+
+    '<div class="rp-foot">'+I.lock+'<span>'+(p.health?'Health and injury information is shared separately in RYSEON and is not part of this report.':'Health and injury information is not included. '+esc(a.first)+' hasn’t shared it with you.')+'</span></div></div>';
+}
+
+/* ---------- PROFILE (the VANTAGE user's own account) ---------- */
+function viewProfile(){
+  var pl=PLANS[S.plan],L=live(),n=L.length;
+  var h='<div class="page narrow">'+mtop()+'<div class="me rise d1">'+meAva()+'<div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
+  h+='<div class="card focus rise d1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Your plan</span><p style="margin-top:10px;font:700 22px/1 var(--font-display);text-transform:uppercase">'+pl.name+'</p><p class="sub" style="margin-top:8px;font-size:14px">'+n+' of '+pl.max+' athletes · €'+price(S.plan,Math.max(n,1)).toFixed(2)+' / month</p></div>'+
+    '<button class="btn btn-primary btn-sm" type="button" data-a="nav" data-v="pricing">Manage plan</button></div><div class="usage">'+usageBar()+'</div></div>';
+  h+='<div class="sec-h rise d2"><h2 class="h3">Connections</h2><button class="link" type="button" data-a="reqNew">Request another athlete</button></div>';
+  h+='<div class="set rise d2">'+(S.cons.length?S.cons.map(function(c){var a=A(c.a),st={connected:['Connected','blue'],pending:['Pending',''],declined:['Declined',''],ended:['Access ended','']}[c.st];
+      return '<button type="button" data-a="openA" data-id="'+a.id+'"'+(c.st==='connected'?' data-t="access"':'')+'>'+ava(a,'',c.st==='connected'?'':(c.st==='pending'?'locked':'ended'))+'<span class="t">'+esc(nm(a))+'<small>'+esc(c.rel)+(c.st==='connected'?' · '+PERM_LABELS.filter(function(x){return P(a.id)[x[0]]}).length+' of 9 areas shared':'')+'</small></span><span class="pill '+st[1]+'">'+st[0]+'</span>'+I.chev+'</button>'}).join(''):'<div><span class="t muted">No connections yet</span></div>')+'</div>';
+  h+='<div class="sec-h rise d2"><h2 class="h3">Account</h2></div><div class="set rise d2">'+
+    '<button type="button" data-a="ovRole">'+I.role.replace('<svg','<svg class="i"')+'<span class="t">How you use VANTAGE<small>Personalises VANTAGE. It doesn’t change what athletes share.</small></span><span class="v">'+roleLabel(S.role)+'</span>'+I.chev+'</button>'+
+    '<button type="button" data-a="goLang">'+I.globe.replace('<svg','<svg class="i"')+'<span class="t">Language</span><span class="v">'+esc(LANGS[S.lang][1])+'</span>'+I.chev+'</button>'+
+    '<button type="button" data-a="nav" data-v="pricing">'+I.card.replace('<svg','<svg class="i"')+'<span class="t">Subscription & billing</span><span class="v">'+pl.short+'</span>'+I.chev+'</button>'+
+    '<button type="button" data-a="signOut">'+I.out.replace('<svg','<svg class="i"')+'<span class="t">Sign out</span></button></div>';
+  h+='<div class="sec-h rise d3"><h2 class="h3">Privacy</h2></div><div class="shield rise d3">'+I.shield+'<span><b>The athlete stays in control</b><p>VANTAGE is read-only. Athletes approve every connection, choose what you see, and can end access at any time from RYSEON. Health and medical information is private unless an athlete shares it separately.</p></span></div>';
+  h+='<div class="sec-h rise d3"><h2 class="h3">RYSEON product family</h2></div>'+familyHtml();
+  return h+'</div>';
+}
+function familyHtml(){
+  return '<div class="family rise d3"><div><b class="wm">RYSE<span class="on">ON</span></b><p>For athlete development.</p></div><div class="here"><b>Vantage</b><p>For parents, private coaches and agents with athlete-approved viewing access.</p></div><div><b class="wm">RYSE<span class="on">ON</span> X</b><p>Professional command centre for teams, academies, national teams and football organisations.</p></div></div>';
+}
+
+/* ---------- PRICING ---------- */
+function price(k,n){var p=PLANS[k];if(n>p.max) return null;return p.price+Math.max(0,n-p.incl)*EXTRA}
+function bestPlan(n){var best=null;['individual','v5','pro'].forEach(function(k){var v=price(k,n);if(v!=null&&(best===null||v<best[1]-1e-9)) best=[k,v]});return best}
+function viewPricing(){
+  var n=S.calcN||Math.max(1,live().length),bp=bestPlan(n),cur=S.plan;
+  var feats={individual:['<b>1 athlete</b> included','Add athletes for <b>€3.90</b> / athlete / month','Up to 3 athletes'],
+    v5:['<b>Up to 5 athletes</b> included','Add athletes for <b>€3.90</b> / athlete / month','Up to 9 athletes'],
+    pro:['<b>Up to 10 athletes</b> included','Built for agents and coaches with a full portfolio','10 athletes is the VANTAGE maximum']};
+  var h='<div class="page">'+mtop()+'<div class="ptop rise d1"><div class="t"><button class="textbtn" type="button" data-a="nav" data-v="profile" style="display:flex;align-items:center;gap:6px;margin-bottom:10px">'+I.left.replace('<svg','<svg style="width:16px;height:16px"')+'Profile</button><h1 class="ptitle">Choose your plan</h1><p class="psub">Every plan includes the full read-only VANTAGE experience. Athletes always decide what you see.</p></div></div>';
+  h+='<div class="plans rise d2">'+['individual','v5','pro'].map(function(k){var p=PLANS[k];return '<div class="plan'+(k==='v5'?' rec':'')+'">'+(k===cur?'<span class="pill blue cur">Current plan</span>':(k==='v5'?'<span class="pill cur">Most chosen</span>':''))+
+    '<span class="nm">'+p.name+'</span><div class="price"><b>€'+p.price.toFixed(2)+'</b><span>/ month</span></div>'+
+    '<ul>'+feats[k].map(function(f){return '<li>'+I.check+'<span>'+f+'</span></li>'}).join('')+'</ul>'+
+    '<button class="btn '+(k===cur?'btn-quiet':'btn-primary')+'" type="button" data-a="choosePlan" data-p="'+k+'"'+(k===cur||live().length>p.max?' disabled':'')+'>'+(k===cur?'Your plan':(live().length>p.max?'Follows up to '+p.max:'Choose '+p.short))+'</button></div>'}).join('')+'</div>';
+  h+='<div class="card rise d2 calc"><div class="out"><span class="mlabel acc">How many athletes will you follow?</span><span class="muted" style="font-size:13.5px">Best value</span></div>'+
+    '<div class="out"><b><span id="calc-n">'+n+'</span> <span style="font-size:15px;font-family:var(--font-body);font-weight:500;color:var(--mut)">athlete'+(n>1?'s':'')+'</span></b><b id="calc-out">'+PLANS[bp[0]].short+' · €'+bp[1].toFixed(2)+'</b></div>'+
+    '<input type="range" id="calc" min="1" max="11" step="1" value="'+n+'" data-in="calc" aria-label="Number of athletes"><div class="ticks">'+[1,2,3,4,5,6,7,8,9,10,'10+'].map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><p class="note" id="calc-note">'+calcNote(n)+'</p></div>';
+  h+='<div class="rx rise d3"><div><span class="mlabel acc">RYSEON X</span><h3 style="margin-top:10px">Managing more than<br>10 athletes?</h3><p>RYSEON X is the professional command centre for teams, academies, national teams and football organisations.</p></div><a class="btn btn-quiet btn-sm" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a></div>';
+  h+='<p class="note">Prices include VAT where applicable. Cancel any time. Prototype only — no payment is taken.</p>';
+  return h+'</div>';
+}
+function calcNote(n){
+  if(n>10) return 'VANTAGE follows up to 10 athletes. For larger groups, RYSEON X is built for teams and organisations.';
+  var b=bestPlan(n),parts=['individual','v5','pro'].map(function(k){var v=price(k,n);return v==null?null:PLANS[k].short+' €'+v.toFixed(2)}).filter(Boolean);
+  return 'Options for '+n+': '+parts.join(' · ')+'.';
+}
+
+/* ---------- REQUEST ANOTHER ATHLETE (in-app) ---------- */
+function slotsUsed(){return S.cons.filter(function(c){return c.st==='connected'||c.st==='pending'}).length}
+function viewRequest(){
+  var st=S.req.stage,h='<div class="page narrow">'+mtop()+'<div><button class="textbtn" type="button" data-a="reqBack" style="display:flex;align-items:center;gap:6px">'+I.left.replace('<svg','<svg style="width:16px;height:16px"')+(st==='find'?'Athletes':'Back')+'</button></div>';
+  if(st==='find'){
+    h+='<div class="rise d1" style="display:flex;flex-direction:column;gap:6px"><span class="mlabel acc">Search → Request → Athlete approval → Connected</span></div>'+findBody(false);
+  } else if(st==='request') h+=requestBody(false);
+  else if(st==='sent') h+=sentBody(false);
+  else if(st==='approved') h+=approvedBody(false);
+  return h+'</div>';
+}
+
+/* ---------- overlays ---------- */
+function renderOv(){
+  var o=S.ov;if(!o) return '';
+  var inner='',cls='sheet';
+  if(o.t==='report') inner=reportSheet(o.id);
+  else if(o.t==='stop'){cls+=' sm';var a=A(o.id);inner='<div class="sheet-b" style="padding-top:26px"><h2 class="rp-h" style="font-size:24px">Stop following '+esc(a.first)+'?</h2><p class="sub">You’ll lose access to everything '+esc(a.first)+' shares with you. To follow again, you’ll need to send a new request and '+esc(a.first)+' will need to approve it.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="doStop" data-id="'+a.id+'">Stop following</button><button class="btn btn-quiet" type="button" data-a="closeOv">Keep following</button></div></div>'}
+  else if(o.t==='limit'){cls+=' sm';var pl=PLANS[S.plan];
+    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE follows up to 10 athletes. RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
+      :'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">'+pl.name+'</span><h2 class="rp-h" style="font-size:26px">Your plan is full</h2><p class="sub">'+pl.name+' follows up to '+pl.max+' athletes. Move to a larger plan to request another athlete.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="nav" data-v="pricing">See plans</button><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
+  else if(o.t==='role'){cls+=' sm';inner='<div class="sheet-h"><span class="mlabel">How you use VANTAGE</span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div><div class="sheet-b"><div class="roles" role="radiogroup">'+[['parent','Parent',I.parent],['agent','Agent',I.agent],['coach','Private Coach',I.coach],['other','Other',I.other]].map(function(r){return '<button class="role" type="button" role="radio" style="min-height:104px" aria-checked="'+(S.role===r[0])+'" data-a="setRole" data-r="'+r[0]+'"><span class="tick">'+I.check+'</span>'+r[2]+'<b>'+r[1]+'</b></button>'}).join('')+'</div><p class="note">This personalises VANTAGE. It doesn’t change what any athlete shares with you.</p></div>'}
+  else if(o.t==='proto'){
+    var L=live(),pend=others().filter(function(c){return c.st==='pending'});
+    inner='<div class="sheet-h"><span class="mlabel acc">Prototype controls</span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div><div class="sheet-b">'+
+      '<p class="note" style="margin-top:-6px">For reviewing VANTAGE only. Not part of the product.</p>'+
+      '<div><span class="mlabel" style="margin-bottom:10px">Portfolio</span><div class="pgrid">'+Object.keys(SCENARIOS).map(function(k){var s=SCENARIOS[k];return '<button class="pbtn" type="button" data-a="scn" data-k="'+k+'" aria-pressed="'+(S.scn===k&&!S.ob)+'"><b>'+s.label+'</b><small>'+PLANS[s.plan].name+'</small></button>'}).join('')+'</div></div>'+
+      '<div><span class="mlabel" style="margin-bottom:10px">Onboarding</span><div class="pgrid"><button class="pbtn" type="button" data-a="restart"><b>Start onboarding</b><small>Language → connected</small></button><button class="pbtn" type="button" data-a="protoNF"><b>Athlete not found</b><small>Search with no match</small></button></div></div>'+
+      (L.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate an athlete ending access</span><div class="chips" style="flex-wrap:wrap">'+L.map(function(c){var a=A(c.a);return '<button class="chip" type="button" data-a="revoke" data-id="'+a.id+'">'+ava(a)+esc(a.first)+'</button>'}).join('')+'</div></div>':'')+
+      (pend.length?'<div><span class="mlabel" style="margin-bottom:10px">Simulate a response</span><div style="display:flex;flex-direction:column;gap:8px">'+pend.map(function(c){var a=A(c.a);return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:120px;font-weight:600">'+esc(nm(a))+'</span>'+(ATHLETES[a.id]?'<button class="btn btn-quiet btn-sm" type="button" data-a="simApproveApp" data-id="'+a.id+'">Approve</button>':'')+'<button class="btn btn-quiet btn-sm" type="button" data-a="simDecline" data-id="'+a.id+'">Decline</button></div>'}).join('')+'</div></div>':'')+
+    '</div>';
+  }
+  return '<div class="scrim" data-a="scrim"><div class="'+cls+'" role="dialog" aria-modal="true">'+inner+'</div></div>';
+}
+
+/* ---------- state transitions ---------- */
+function loadScenario(k){
+  var s=SCENARIOS[k];S.scn=k;S.role=s.role;S.plan=s.plan;S.user='Ivan';S.ob=false;S.view='home';S.aid=null;S.atab='overview';S.read={};S.athF='all';S.athQ='';S.repA='all';S.repF='all';S.sch.who='all';
+  S.athV=s.con.length>6?'cards':'cards';
+  S.cons=s.con.map(function(c){return {a:c.a,st:c.st||'connected',rel:c.rel,p:c.p||{},ago:c.ago,since:A(c.a).since}});
+  store();
+}
+function go(view,o){
+  S.view=view;S.ov=null;o=o||{};
+  if(view==='athlete'){ if(o.id&&o.id!==S.aid){S.aid=o.id;S.asch={mode:'day',date:new Date(TODAY)}} if(o.t) S.atab=o.t }
+  if(view==='request'){S.req={q:'',sel:null,rel:roleLabel(S.role),src:'app',stage:'find'}}
+  render(true);
+}
+function startRequest(){
+  if(slotsUsed()>=PLANS[S.plan].max){S.ov={t:'limit'};render();return}
+  go('request');
+}
+
+/* ---------- render ---------- */
+var root;
+function render(top){
+  var main=document.getElementById('main'),sc=main?main.scrollTop:0;
+  var aura=document.getElementById('aura');aura.className='aura'+(S.ob?'':' calm');
+  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+'<button class="proto'+(S.ob?' ob-on':'')+'" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>';
+  var m2=document.getElementById('main');if(m2) m2.scrollTop=top?0:sc;
+  if(S.ob&&S.step==='lang'){bindLangRail();startGlobe()}
+  var col=document.querySelector('.ob-col');if(col&&top) col.scrollTop=0;
+}
+function obGo(to){S.trail.push(S.step);S.step=to;render(true)}
+
+/* ---------- events ---------- */
+function onClick(e){
+  var t=e.target.closest('[data-a]');if(!t) return;
+  var a=t.getAttribute('data-a'),d=t.dataset;
+  if(a==='scrim'){if(e.target===t){S.ov=null;render()}return}
+  switch(a){
+    case 'lang': setLang(+d.i,true);break;
+    case 'obGo': obGo(d.to);break;
+    case 'obBack': S.step=S.trail.pop()||'lang';if(S.step==='account') S.emailMode=false;render(true);break;
+    case 'role': S.role=d.r;render();break;
+    case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
+    case 'authMail': S.emailMode=true;render();break;
+    case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
+    case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
+      if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
+      S.req.sel=d.id; if(!S.req.rel) S.req.rel=roleLabel(S.role); if(S.ob) obGo('request'); else {S.req.stage='request';render(true)} break;
+    case 'rel': S.req.rel=d.r;render();break;
+    case 'sendReq':
+      var ex=conOf(S.req.sel); if(ex){ex.st='pending';ex.rel=S.req.rel;ex.ago=0;ex.p={}} else S.cons.push({a:S.req.sel,st:'pending',rel:S.req.rel,p:{},ago:0,since:dkey(TODAY)});
+      if(S.ob) obGo('sent'); else {S.req.stage='sent';render(true)} break;
+    case 'skipFind': S.cons=[];S.scn='empty';S.ob=false;S.view='home';render(true);break;
+    case 'enterApp': S.ob=false;S.scn='custom';S.view='home';render(true);break;
+    case 'simApprove': approve(d.id);if(S.ob) obGo('approved');break;
+    case 'simApproveApp': approve(d.id);S.req.sel=d.id;S.ov=null;if(S.view==='request'){S.req.stage='approved';render(true)} else {go('athlete',{id:d.id,t:'overview'});toast(A(d.id).first+' approved your request')} break;
+    case 'simDecline': var cd=conOf(d.id);cd.st='declined';S.ov=null;render();toast(A(d.id).first+' declined the request');break;
+    case 'openNew': S.ob=false;if(!S.scn||S.scn==='empty') S.scn='custom';go('athlete',{id:d.id,t:'overview'});break;
+    case 'doneReq': go('athletes');break;
+    case 'nav': if(d.v==='pricing') S.calcN=null; go(d.v);break;
+    case 'openA': S.atab=d.t||(S.view==='athlete'?S.atab:'overview');go('athlete',{id:d.id,t:S.atab});break;
+    case 'atab': S.atab=d.t;var b=document.getElementById('atab-body');if(b){document.querySelectorAll('.atabs button').forEach(function(x){x.setAttribute('aria-selected',x.dataset.t===d.t)});b.classList.remove('fade');void b.offsetWidth;b.classList.add('fade');b.innerHTML=athTab(A(S.aid),P(S.aid))}break;
+    case 'dev': S.dev=d.m;render();break;
+    case 'athF': S.athF=d.f;render();break;
+    case 'athV': S.athV=d.f;render();break;
+    case 'repF': S.repF=d.f;render();break;
+    case 'repA': S.repA=d.f;render();break;
+    case 'schMode': var st=d.s==='a'?S.asch:S.sch;st.mode=d.m;render();break;
+    case 'schNav': var st2=d.s==='a'?S.asch:S.sch,n=+d.d;if(n===0) st2.date=new Date(TODAY);else if(st2.mode==='day') st2.date=addDays(st2.date,n);else if(st2.mode==='week') st2.date=addDays(st2.date,7*n);else st2.date=new Date(st2.date.getFullYear(),st2.date.getMonth()+n,1);render();break;
+    case 'schDay': var st3=d.s==='a'?S.asch:S.sch,pp=d.k.split('-');st3.date=new Date(+pp[0],+pp[1]-1,+pp[2]);st3.mode='day';render();break;
+    case 'schWho': S.sch.who=d.id;render();break;
+    case 'schedWeek': S.sch.mode='week';S.sch.date=new Date(TODAY);go('schedule');break;
+    case 'openR': S.ov={t:'report',id:d.r};render();break;
+    case 'closeOv': S.ov=null;render();break;
+    case 'reqNew': startRequest();break;
+    case 'reqAgain': var cr=conOf(d.id);S.cons.splice(S.cons.indexOf(cr),1);if(slotsUsed()>=PLANS[S.plan].max){S.ov={t:'limit'};render();break}S.view='request';S.req={q:'',sel:d.id,rel:cr.rel,src:'app',stage:'request'};render(true);break;
+    case 'reqBack': if(S.req.stage==='request'){S.req.stage='find';render(true)} else go('athletes');break;
+    case 'cancelReq': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('Request cancelled');break;
+    case 'dismiss': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);if(S.view==='athlete') go('athletes');else render();break;
+    case 'askStop': S.ov={t:'stop',id:d.id};render();break;
+    case 'doStop': S.cons.splice(S.cons.indexOf(conOf(d.id)),1);go('athletes');toast('You’re no longer following '+A(d.id).first);break;
+    case 'choosePlan': S.plan=d.p;render();toast('Plan changed to '+PLANS[d.p].name);break;
+    case 'ovRole': S.ov={t:'role'};render();break;
+    case 'setRole': S.role=d.r;S.ov=null;render();break;
+    case 'goLang': S.ob=true;S.step='lang';S.trail=[];S.langReturn=true;render(true);break;
+    case 'signOut': S.ob=true;S.step='intro';S.trail=['lang'];S.cons=[];S.role=null;render(true);break;
+    case 'proto': S.ov={t:'proto'};render();break;
+    case 'scn': loadScenario(d.k);render(true);break;
+    case 'restart': S.ob=true;S.step='lang';S.trail=[];S.role=null;S.cons=[];S.plan='individual';S.emailMode=false;S.ov=null;render(true);break;
+    case 'protoNF': S.ob=true;S.step='find';S.trail=['lang','intro','role','how','account'];S.role=S.role||'parent';S.cons=[];S.req={q:'Luka Matić',sel:null,rel:'Parent',src:'ob'};S.ov=null;render(true);break;
+    case 'revoke': var cv=conOf(d.id);cv.st='ended';cv.p={};S.ov=null;render();toast(A(d.id).first+' ended access');break;
+  }
+}
+function loadScenarioFromOb(){S.ob=false;if(!S.scn) S.scn='custom'}
+function approve(id){var c=conOf(id);if(!c) return;c.st='connected';c.since=dkey(TODAY);c.p={}}
+function onInput(e){
+  var t=e.target,k=t.getAttribute('data-in');if(!k) return;
+  if(k==='find'){S.req.q=t.value;var r=document.getElementById('results');if(r) r.innerHTML=resultsHtml()}
+  else if(k==='athQ'){S.athQ=t.value;var o=document.getElementById('ath-out');if(o) o.innerHTML=athOut()}
+  else if(k==='calc'){var n=+t.value;S.calcN=n;var b=n>10?null:bestPlan(n);document.getElementById('calc-n').textContent=n>10?'10+':n;document.getElementById('calc-out').textContent=b?PLANS[b[0]].short+' · €'+b[1].toFixed(2):'RYSEON X';document.getElementById('calc-note').textContent=calcNote(n)}
+}
+function onSubmit(e){
+  var f=e.target.getAttribute('data-f');if(!f) return;e.preventDefault();
+  if(f==='email'){var n=document.getElementById('in-name').value.trim(),m=document.getElementById('in-mail').value.trim();
+    if(!n||m.indexOf('@')<1){toast('Enter your name and a valid email');return}
+    S.user=n;S.email=m;S.emailMode=false;S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find')}
+}
+/* language "Continue" returns to profile when opened from settings */
+var _obGo=obGo;obGo=function(to){if(S.langReturn&&S.step==='lang'){S.langReturn=false;S.ob=false;S.view='profile';render(true);toast('Language set to '+LANGS[S.lang][1]);return}_obGo(to)};
+
+var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){if(!S.ob&&(S.view==='schedule'||S.view==='athlete')) render()},200)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&S.ov){S.ov=null;render()}});
+
+/* ---------- boot ---------- */
+(function(){
+  root=document.getElementById('app');
+  document.addEventListener('click',onClick);document.addEventListener('input',onInput);document.addEventListener('submit',onSubmit);
+  var hsh=(location.hash||'').slice(1),map={parent:'parent1',family:'parent2',coach:'coach5',agent:'agent10',empty:'empty',waiting:'waiting'};
+  if(map[hsh]){loadScenario(map[hsh])}
+  else if(hsh==='onboarding'){S.ob=true}
+  else {try{var sv=JSON.parse(localStorage.getItem('vantage.v1')||'null');if(sv&&sv.lang!=null) S.lang=sv.lang}catch(e){}}
+  render(true);
+})();
+
+</script>
+</body>
+</html>
