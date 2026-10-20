@@ -914,3 +914,28 @@ button.rp-item:active{background:rgba(255,255,255,.04)}
 .steps3 i{width:28px;height:28px;flex:none;border-radius:50%;display:grid;place-items:center;font:600 12.5px/1 var(--font-body);font-style:normal;border:1px solid rgba(111,152,255,.5);color:var(--blue-3)}
 .steps3 b{display:block;font:600 14.5px/1.3 var(--font-body)}
 .steps3 small{display:block;margin-top:3px;font:500 12.5px/1.4 var(--font-body);color:var(--mut)}
+
+/* ================= VIDEO ================= */
+.vrail-wrap{display:flex;flex-direction:column;gap:12px}
+.vrail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -18px;padding:0 18px 2px;scroll-padding:0 18px}
+.vrail::-webkit-scrollbar{display:none}
+.vbox{position:relative;flex:0 0 190px;height:236px;scroll-snap-align:start;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#0E1016;color:#fff;text-align:left}
+.vbox .vimg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s var(--ease)}
+.vbox::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,14,.05) 30%,rgba(6,8,14,.55) 58%,rgba(6,8,14,.95));pointer-events:none}
+.vbox .vtx{position:absolute;z-index:2;left:14px;right:14px;bottom:14px;display:flex;flex-direction:column;gap:6px}
+.vbox .vk{display:flex;align-items:center;gap:6px;font:600 10px/1.2 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--blue-3)}
+.vbox .vk .ava{--s:18px;font-size:7px;letter-spacing:0;border-width:1px}
+.vbox b{font:700 17px/1.15 var(--font-body);letter-spacing:-.01em}
+.vbox small{font:500 12px/1.3 var(--font-body);color:rgba(232,236,244,.8)}
+.libcard{display:flex;align-items:center;gap:14px;width:100%;padding:12px 14px 12px 12px;border-radius:22px;border:1px solid rgba(111,152,255,.32);background:linear-gradient(155deg,rgba(31,107,255,.16),rgba(255,255,255,.02) 62%);color:var(--text);text-align:left;cursor:pointer}
+.libcard .pics{width:74px;height:74px;flex:none;display:grid;grid-template-columns:1fr 1fr;gap:3px;border-radius:14px;overflow:hidden}
+.libcard .pics i{background-size:cover;background-position:center top}
+.libcard .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.libcard b{font:700 17px/1.15 var(--font-display);text-transform:uppercase;letter-spacing:.01em}
+.libcard small{font:500 12.5px/1.4 var(--font-body);color:var(--mut)}
+.libcard svg.chev{width:16px;height:16px;color:var(--faint);flex:none}
+.vthumb{width:44px;height:52px;flex:none;border-radius:10px;background-size:cover;background-position:center top;border:1px solid var(--line)}
+.vthumb.lg{width:52px;height:64px;border-radius:12px}
+
+.vbox .vseen{position:absolute;z-index:2;top:12px;left:12px;display:flex;align-items:center;gap:5px;height:24px;padding:0 9px 0 7px;border-radius:12px;background:rgba(10,12,18,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font:600 10px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.vbox .vseen svg{width:12px;height:12px;color:var(--blue-3)}
