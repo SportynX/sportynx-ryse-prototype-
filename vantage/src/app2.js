@@ -335,7 +335,7 @@ function tabAccess(a,p){
       '<div class="r"><span class="t"><b>Relationship</b></span><span class="v">'+esc(c.rel)+'</span></div>'+
       '<div class="r"><span class="t"><b>Connected since</b></span><span class="v">'+fmt(new Date(c.since||a.since),'d mon y')+'</span></div>'+
       '<div class="r"><span class="t"><b>RYSEON ID</b></span><span class="v">'+a.ryid+'</span></div>'+
-      '<div class="r"><span class="t"><b>Your access</b></span><span class="v">Read-only</span></div></div></div>'+
+      '<div class="r"><span class="t"><b>Your access</b></span><span class="v">'+(canAdd()?'View + add training':'Read-only')+'</span></div></div></div>'+
     '<div class="card"><span class="mlabel">Stop following</span><p class="sub" style="margin-top:8px;font-size:14px">This ends your access to '+esc(a.first)+'’s shared information. To follow again, you’ll need to send a new request.</p><div style="margin-top:14px"><button class="btn btn-quiet btn-sm" type="button" data-a="askStop" data-id="'+a.id+'">Stop following '+esc(a.first)+'</button></div></div>'+
   '</div></div>';
 }

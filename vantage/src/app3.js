@@ -105,7 +105,7 @@ function viewProfile(){
     '<button type="button" data-a="goLang">'+I.globe.replace('<svg','<svg class="i"')+'<span class="t">Language</span><span class="v">'+esc(LANGS[S.lang][1])+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="nav" data-v="pricing">'+I.card.replace('<svg','<svg class="i"')+'<span class="t">Subscription & billing</span><span class="v">'+pl.short+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="signOut">'+I.out.replace('<svg','<svg class="i"')+'<span class="t">Sign out</span></button></div>';
-  h+='<div class="sec-h rise d3"><h2 class="h3">Privacy</h2></div><div class="shield rise d3">'+I.shield+'<span><b>The athlete stays in control</b><p>VANTAGE is read-only. Athletes approve every connection, choose what you see, and can end access at any time from RYSEON. Health and medical information is private unless an athlete shares it separately.</p></span></div>';
+  h+='<div class="sec-h rise d3"><h2 class="h3">Privacy</h2></div><div class="shield rise d3">'+I.shield+'<span><b>The athlete stays in control</b><p>Athletes approve every connection, choose what you see, and can end access at any time from RYSEON. Health and medical information is private unless an athlete shares it separately.</p></span></div>';
   h+='<div class="sec-h rise d3"><h2 class="h3">RYSEON product family</h2></div>'+familyHtml();
   return h+'</div>';
 }

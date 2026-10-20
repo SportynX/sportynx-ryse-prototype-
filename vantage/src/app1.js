@@ -155,7 +155,7 @@ function renderOb(){
         '<li style="--i:1"><span class="n">'+I.send+'</span><span><b>Request</b><p>Send a request. The athlete approves it in RYSEON.</p></span></li>'+
         '<li style="--i:2"><span class="n">'+I.eye+'</span><span><b>Follow</b><p>Follow the development information they choose to share.</p></span></li>'+
       '</ol>'+
-      '<div class="control rise d4">'+I.shield+'<span><b>The athlete stays in control.</b><p>They choose what you see and can end access at any time. VANTAGE is read-only.</p></span></div>'+
+      '<div class="control rise d4">'+I.shield+'<span><b>The athlete stays in control.</b><p>They choose what you see and can end access at any time. You can’t change their data.</p></span></div>'+
       '</div>'+
       '<div class="ob-act rise d4"><button class="btn btn-primary" type="button" data-a="obGo" data-to="account">Continue</button></div>'+
     '</div>';
