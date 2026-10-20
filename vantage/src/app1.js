@@ -301,7 +301,7 @@ function startGlobe(){
   frame();
 }
 function bindLangRail(){
-  var tr=document.getElementById('lang-track'); if(!tr) return;
+  var tr=document.getElementById('lang-track'); if(!tr||tr._b) return; tr._b=1;
   var it=tr.querySelectorAll('.lang-item');
   // centre the selected language without animation
   var el=it[S.lang]; tr.scrollLeft=el.offsetLeft-(tr.clientWidth-el.clientWidth)/2;

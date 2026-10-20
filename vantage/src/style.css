@@ -834,8 +834,8 @@ html,body{background:#000}
 .lt-save:disabled{opacity:.32;cursor:default}
 
 /* full-screen day report / add training (RYSEON .lt screens) */
-.fullscr{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:linear-gradient(180deg,#0B1124,#05070D 40%);animation:frIn .38s var(--ease) both}
-@keyframes frIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.fullscr{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:linear-gradient(180deg,#0B1124,#05070D 40%);animation:frIn .44s cubic-bezier(.32,.72,0,1) both;box-shadow:-18px 0 40px rgba(0,0,0,.45);will-change:transform}
+@keyframes frIn{from{transform:translate3d(100%,0,0)}to{transform:none}}
 .dr-top{display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 8px) 18px 12px}
 .dr-top h2{flex:1;margin:0;text-align:center;font:600 19px/1 var(--font-body)}
 .lt-back{width:46px;height:46px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--text);display:grid;place-items:center;cursor:pointer}
@@ -1325,3 +1325,21 @@ html:not([data-view]) .pg-pair small{color:#8FB0FF}
 .lg-bar{position:relative;display:block;height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
 .lg-bar i{position:absolute;top:0;bottom:0;border-radius:3px}
 .lg-a small{white-space:normal}
+/* ---------- motion system (RYSEON-matched) ---------- */
+.v-leave{opacity:0!important;transform:translate3d(0,-8px,0)!important;transition:opacity .17s ease,transform .2s cubic-bezier(.4,0,.2,1)!important;pointer-events:none}
+.scrim.closing{animation:fadeOut .3s ease forwards}
+.scrim.closing .sheet{animation:sheetOut .3s cubic-bezier(.4,0,.2,1) forwards}
+.scrim.closing .sheet.calsheet{animation:none;transform:translateY(100%)}
+.fullscr.closing{animation:frOutL .44s cubic-bezier(.32,.72,0,1) forwards;z-index:54}
+.fullscr.closing.ov-back{animation:frOutR .38s cubic-bezier(.32,.72,0,1) forwards;z-index:60}
+.fullscr.reveal{animation:frBack .38s cubic-bezier(.32,.72,0,1) both}
+@keyframes fadeOut{to{opacity:0}}
+@keyframes sheetOut{to{opacity:0;transform:translateY(24px) scale(.985)}}
+@keyframes frOutL{to{transform:translate3d(-26%,0,0);filter:brightness(.6)}}
+@keyframes frOutR{to{transform:translate3d(100%,0,0)}}
+@keyframes frBack{from{transform:translate3d(-26%,0,0);filter:brightness(.6)}to{transform:none;filter:none}}
+.bnav button,.bnav button svg,.snav button{transition:color .25s ease}
+.chip,.tag-a,.pbtn,.role,.rel,.seg button,.cal-d{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease}
+.tag-a i{transition:background-color .2s ease,border-color .2s ease,transform .2s cubic-bezier(.3,1.4,.5,1)}
+button:active{transition-duration:.08s}
+@media (prefers-reduced-motion: reduce){.v-leave,.scrim.closing,.scrim.closing .sheet,.fullscr.closing,.fullscr.reveal{animation:none!important;transition:none!important}}

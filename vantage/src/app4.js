@@ -49,7 +49,7 @@ function weekStrip(){
   return '<div class="wk-wrap rise d1"><div class="wk-head"><span class="mlabel" id="wk-lbl">This week</span><button class="link" type="button" data-a="calOpen" data-k="'+dkey(TODAY)+'">Calendar</button></div><div class="wk-strip" id="wk-strip">'+pages+'</div></div>';
 }
 function bindStrip(){
-  var s=document.getElementById('wk-strip'); if(!s) return;
+  var s=document.getElementById('wk-strip'); if(!s||s._b) return; s._b=1;
   var cur=s.querySelector('.wk-page.cur'); s.scrollLeft=cur.offsetLeft-s.offsetLeft;
   var lbl=document.getElementById('wk-lbl'),to;
   s.addEventListener('scroll',function(){clearTimeout(to);to=setTimeout(function(){var i=Math.round(s.scrollLeft/s.clientWidth)-2;lbl.textContent=i===0?'This week':(i===1?'Next week':(i===-1?'Last week':(i>0?'In '+i+' weeks':Math.abs(i)+' weeks ago')))},60)},{passive:true});
@@ -133,7 +133,7 @@ function addSheet(o){
 var _renderOv=renderOv;
 renderOv=function(){
   var o=S.ov; if(!o) return '';
-  if(o.t==='cal') return '<div class="scrim cal-scrim" data-a="scrim"><div class="sheet calsheet" role="dialog" aria-label="Calendar">'+calSheet(o)+'</div></div>';
+  if(o.t==='cal') return '<div class="scrim cal-scrim" data-a="scrim"><div class="sheet calsheet" data-keepcls="on" role="dialog" aria-label="Calendar">'+calSheet(o)+'</div></div>';
   if(o.t==='day') return '<div class="fullscr" role="dialog" aria-label="Day report">'+daySheet(o)+'</div>';
   if(o.t==='add') return '<div class="fullscr" role="dialog" aria-label="Add training">'+addSheet(o)+'</div>';
   return _renderOv();

@@ -219,7 +219,7 @@ function tabHealth(a,p){
       '<h3>'+esc(j.part)+'</h3><p class="inj-ty">'+esc(j.type)+' · '+esc(j.where)+'</p>'+
       '<div class="inj-st"><span class="pill '+(j.stage==='Back in training'?'blue':'warn')+'"><span class="dot"></span>'+esc(j.stage)+'</span><span class="pill">'+esc(j.avail)+'</span></div>'+
       '<div class="inj-prog"><div class="lbl"><span>Day '+day+' of about '+j.est+'</span><span>Expected return '+fmt(addDays(TODAY,j.start+j.est),'d mon')+'</span></div><div class="bar"><i style="width:'+pct+'%"></i></div></div></div>';
-    h+='<div class="b7"><canvas class="b7-cv" id="b7cv"></canvas><span class="b7-msg">Loading 3D body…</span><div class="b7-tag"><i></i>'+esc(j.part)+'</div><div class="b7-v">'+[['front','Front'],['side','Side'],['back','Back']].map(function(x){return '<button type="button" data-a="b7v" data-v="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div></div>';
+    h+='<div class="b7" data-keep="b7-'+a.id+'"><canvas class="b7-cv" id="b7cv"></canvas><span class="b7-msg">Loading 3D body…</span><div class="b7-tag"><i></i>'+esc(j.part)+'</div><div class="b7-v">'+[['front','Front'],['side','Side'],['back','Back']].map(function(x){return '<button type="button" data-a="b7v" data-v="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div></div>';
     h+='<div class="rp-foot" style="margin-top:12px">'+I.info+'<span>'+esc(j.note)+' RYSEON doesn’t diagnose; it shows what '+esc(a.first)+' recorded.</span></div>';
     h+=psec('Soreness','Self-reported each morning, 0–10',window.ryPBars?ryPBars('ch-sore',j.pain.map(function(_,i){return 'D'+(i+1)}),[{n:'Soreness',v:j.pain}],'score'):'');
     h+=psec('Updates',null,'<div class="tl" style="margin-top:6px">'+j.log.map(function(l,i){return '<div class="it '+(i===0?'r':'')+'"><span class="tm">'+l[1]+'<small>'+fmt(addDays(TODAY,l[0]),'rel')+'</small></span><span class="mk"></span><span><b>'+esc(l[2])+'</b><p>'+esc(a.first)+'</p></span></div>'}).join('')+'</div>');
@@ -273,7 +273,7 @@ viewHome=function(){var h=_viewHome7(),inj=liveIds().filter(function(id){return 
 var _viewAthlete7=viewAthlete;
 viewAthlete=function(){var h=_viewAthlete7(),j=INJ[S.aid];if(j&&P(S.aid).health) h=h.replace('<span class="pill solid">','<span class="pill warn"><span class="dot"></span>'+esc(j.avail)+'</span><span class="pill solid">');return h};
 var _render7=render;
-render=function(top){_render7(top);var cv=document.getElementById('b7cv');if(cv){var j=INJ[S.aid];mountBody(cv,j?[j.key]:[])}};
+render=function(top){_render7(top);var cv=document.getElementById('b7cv');if(cv&&!cv._m){cv._m=1;var j=INJ[S.aid];mountBody(cv,j?[j.key]:[])}};
 /* calendar: parents can add therapy; coaches training + therapy */
 var _daySheet7=daySheet;
 daySheet=function(o){var h=_daySheet7(o),d=parseK(o.k);if(d<TODAY||!canAddTher()) return h;

@@ -853,8 +853,8 @@ html,body{background:#000}
 .lt-save:disabled{opacity:.32;cursor:default}
 
 /* full-screen day report / add training (RYSEON .lt screens) */
-.fullscr{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:linear-gradient(180deg,#0B1124,#05070D 40%);animation:frIn .38s var(--ease) both}
-@keyframes frIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.fullscr{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:linear-gradient(180deg,#0B1124,#05070D 40%);animation:frIn .44s cubic-bezier(.32,.72,0,1) both;box-shadow:-18px 0 40px rgba(0,0,0,.45);will-change:transform}
+@keyframes frIn{from{transform:translate3d(100%,0,0)}to{transform:none}}
 .dr-top{display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 8px) 18px 12px}
 .dr-top h2{flex:1;margin:0;text-align:center;font:600 19px/1 var(--font-body)}
 .lt-back{width:46px;height:46px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--text);display:grid;place-items:center;cursor:pointer}
@@ -1344,6 +1344,24 @@ html:not([data-view]) .pg-pair small{color:#8FB0FF}
 .lg-bar{position:relative;display:block;height:8px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden}
 .lg-bar i{position:absolute;top:0;bottom:0;border-radius:3px}
 .lg-a small{white-space:normal}
+/* ---------- motion system (RYSEON-matched) ---------- */
+.v-leave{opacity:0!important;transform:translate3d(0,-8px,0)!important;transition:opacity .17s ease,transform .2s cubic-bezier(.4,0,.2,1)!important;pointer-events:none}
+.scrim.closing{animation:fadeOut .3s ease forwards}
+.scrim.closing .sheet{animation:sheetOut .3s cubic-bezier(.4,0,.2,1) forwards}
+.scrim.closing .sheet.calsheet{animation:none;transform:translateY(100%)}
+.fullscr.closing{animation:frOutL .44s cubic-bezier(.32,.72,0,1) forwards;z-index:54}
+.fullscr.closing.ov-back{animation:frOutR .38s cubic-bezier(.32,.72,0,1) forwards;z-index:60}
+.fullscr.reveal{animation:frBack .38s cubic-bezier(.32,.72,0,1) both}
+@keyframes fadeOut{to{opacity:0}}
+@keyframes sheetOut{to{opacity:0;transform:translateY(24px) scale(.985)}}
+@keyframes frOutL{to{transform:translate3d(-26%,0,0);filter:brightness(.6)}}
+@keyframes frOutR{to{transform:translate3d(100%,0,0)}}
+@keyframes frBack{from{transform:translate3d(-26%,0,0);filter:brightness(.6)}to{transform:none;filter:none}}
+.bnav button,.bnav button svg,.snav button{transition:color .25s ease}
+.chip,.tag-a,.pbtn,.role,.rel,.seg button,.cal-d{transition:background-color .22s ease,border-color .22s ease,color .22s ease,box-shadow .22s ease}
+.tag-a i{transition:background-color .2s ease,border-color .2s ease,transform .2s cubic-bezier(.3,1.4,.5,1)}
+button:active{transition-duration:.08s}
+@media (prefers-reduced-motion: reduce){.v-leave,.scrim.closing,.scrim.closing .sheet,.fullscr.closing,.fullscr.reveal{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -1906,7 +1924,7 @@ function startGlobe(){
   frame();
 }
 function bindLangRail(){
-  var tr=document.getElementById('lang-track'); if(!tr) return;
+  var tr=document.getElementById('lang-track'); if(!tr||tr._b) return; tr._b=1;
   var it=tr.querySelectorAll('.lang-item');
   // centre the selected language without animation
   var el=it[S.lang]; tr.scrollLeft=el.offsetLeft-(tr.clientWidth-el.clientWidth)/2;
@@ -2479,11 +2497,64 @@ function startRequest(){
 
 /* ---------- render ---------- */
 var root;
+/* Rendering: the DOM is patched in place (morph), so nothing that is already
+   on screen re-animates, scrolls back or flashes. Only new elements animate in.
+   Overlays (sheets / full screens) animate in and out; a new screen
+   (SCREEN_FRESH, set by the navigation layer) swaps the page content. */
+var SCREEN_FRESH=false,PREV_OV=null,PREV_OVK='';
+function ovKey(o){return o?[o.t,o.k||'',o.id||'',o.mode||'',o.l||''].join('|'):''}
+function isOv(n){return n.nodeType===1&&(n.classList.contains('scrim')||n.classList.contains('fullscr'))}
+function syncAttrs(a,b){
+  var keep=(b.getAttribute('data-keepcls')||'').split(' ').filter(Boolean),i,at;
+  for(i=b.attributes.length-1;i>=0;i--){at=b.attributes[i];var v=at.value;
+    if(at.name==='class'&&keep.length) v=v+' '+keep.filter(function(c){return a.classList.contains(c)}).join(' ');
+    if(a.getAttribute(at.name)!==v) a.setAttribute(at.name,v)}
+  for(i=a.attributes.length-1;i>=0;i--){at=a.attributes[i];if(!b.hasAttribute(at.name)&&!(at.name==='open'&&a.tagName==='DETAILS')) a.removeAttribute(at.name)}
+  if(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'){
+    if(a!==document.activeElement&&a.value!==b.value) a.value=b.value;
+    if(a.type==='checkbox'||a.type==='radio') a.checked=b.checked}
+}
+function morph(a,b){
+  if(a.nodeType!==b.nodeType||a.nodeName!==b.nodeName){a.replaceWith(b);return b}
+  if(a.nodeType!==1){if(a.nodeValue!==b.nodeValue) a.nodeValue=b.nodeValue;return a}
+  if((a.id||b.id)&&a.id!==b.id){a.replaceWith(b);return b}
+  var kp=b.getAttribute('data-keep');if(kp!==null&&a.getAttribute('data-keep')===kp) return a;
+  syncAttrs(a,b);
+  if(a.tagName==='CANVAS'||a.tagName==='svg'&&a.isEqualNode(b)) return a;
+  if(SCREEN_FRESH&&a.id==='main'){a.replaceChildren.apply(a,Array.prototype.slice.call(b.childNodes));return a}
+  kids(a,b);return a}
+function kids(a,b){var ac=Array.prototype.slice.call(a.childNodes),bc=Array.prototype.slice.call(b.childNodes),i;
+  for(i=0;i<bc.length;i++){if(i<ac.length) morph(ac[i],bc[i]);else a.appendChild(bc[i])}
+  for(i=bc.length;i<ac.length;i++) ac[i].remove()}
+function closeOv(el,back){if(el._closing) return;el._closing=1;el.classList.add('closing');if(back) el.classList.add('ov-back');el.style.pointerEvents='none';
+  setTimeout(function(){el.remove()},460)}
+function patchRoot(html){
+  var tp=document.createElement('template');tp.innerHTML=html;
+  var nb=Array.prototype.slice.call(tp.content.childNodes),old=Array.prototype.slice.call(root.childNodes).filter(function(n){return !n._closing});
+  var oOv=old.filter(isOv),oRest=old.filter(function(n){return !isOv(n)}),k=ovKey(S.ov),back=!!(PREV_OV&&(S.ov===PREV_OV.back||(S.ov&&PREV_OV.back&&ovKey(PREV_OV.back)===k)||!S.ov));
+  var ri=0,prev=null;
+  nb.forEach(function(n){var cur;
+    if(isOv(n)){var m=oOv.filter(function(x){return x._ovk===k})[0];
+      if(m){cur=morph(m,n);oOv.splice(oOv.indexOf(m),1)}else{cur=n;cur._ovk=k;if(back&&oOv.length) cur.classList.add('reveal')}}
+    else{var o=oRest[ri++];
+      if(o&&o.nodeType===1&&n.nodeType===1&&o.className.split(' ')[0]===n.className.split(' ')[0]&&!(SCREEN_FRESH&&!o.classList.contains('shell')&&!o.classList.contains('bnav'))) cur=morph(o,n);
+      else if(o&&o.nodeType!==1&&n.nodeType!==1) cur=morph(o,n);
+      else{cur=n;if(o) o.remove()}}
+    var want=prev?prev.nextSibling:root.firstChild;
+    while(want&&want._closing) want=want.nextSibling;
+    if(cur!==want) root.insertBefore(cur,want);
+    prev=cur});
+  oRest.slice(ri).forEach(function(o){o.remove()});
+  oOv.forEach(function(o){closeOv(o,back)});
+}
 function render(top){
   var main=document.getElementById('main'),sc=main?main.scrollTop:0;
   var aura=document.getElementById('aura');aura.className='aura'+(S.ob?'':' calm');
-  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+(S.ob?'<button class="proto ob-on" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>':'');
-  var m2=document.getElementById('main');if(m2) m2.scrollTop=top?0:sc;
+  var html=(S.ob?renderOb():renderShell())+renderOv()+(S.ob?'<button class="proto ob-on" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>':'');
+  if(!root.firstChild) root.innerHTML=html;else patchRoot(html);
+  root.querySelectorAll('.fullscr,.scrim').forEach(function(n){if(!n._closing&&n._ovk==null) n._ovk=ovKey(S.ov)});
+  PREV_OV=S.ov;
+  var m2=document.getElementById('main');if(m2&&top) m2.scrollTop=0;else if(m2&&m2!==main) m2.scrollTop=sc;
   if(S.ob&&S.step==='lang'){bindLangRail();startGlobe()}
   var col=document.querySelector('.ob-col');if(col&&top) col.scrollTop=0;
 }
@@ -2639,7 +2710,7 @@ function weekStrip(){
   return '<div class="wk-wrap rise d1"><div class="wk-head"><span class="mlabel" id="wk-lbl">This week</span><button class="link" type="button" data-a="calOpen" data-k="'+dkey(TODAY)+'">Calendar</button></div><div class="wk-strip" id="wk-strip">'+pages+'</div></div>';
 }
 function bindStrip(){
-  var s=document.getElementById('wk-strip'); if(!s) return;
+  var s=document.getElementById('wk-strip'); if(!s||s._b) return; s._b=1;
   var cur=s.querySelector('.wk-page.cur'); s.scrollLeft=cur.offsetLeft-s.offsetLeft;
   var lbl=document.getElementById('wk-lbl'),to;
   s.addEventListener('scroll',function(){clearTimeout(to);to=setTimeout(function(){var i=Math.round(s.scrollLeft/s.clientWidth)-2;lbl.textContent=i===0?'This week':(i===1?'Next week':(i===-1?'Last week':(i>0?'In '+i+' weeks':Math.abs(i)+' weeks ago')))},60)},{passive:true});
@@ -2723,7 +2794,7 @@ function addSheet(o){
 var _renderOv=renderOv;
 renderOv=function(){
   var o=S.ov; if(!o) return '';
-  if(o.t==='cal') return '<div class="scrim cal-scrim" data-a="scrim"><div class="sheet calsheet" role="dialog" aria-label="Calendar">'+calSheet(o)+'</div></div>';
+  if(o.t==='cal') return '<div class="scrim cal-scrim" data-a="scrim"><div class="sheet calsheet" data-keepcls="on" role="dialog" aria-label="Calendar">'+calSheet(o)+'</div></div>';
   if(o.t==='day') return '<div class="fullscr" role="dialog" aria-label="Day report">'+daySheet(o)+'</div>';
   if(o.t==='add') return '<div class="fullscr" role="dialog" aria-label="Add training">'+addSheet(o)+'</div>';
   return _renderOv();
@@ -3241,7 +3312,7 @@ function tabHealth(a,p){
       '<h3>'+esc(j.part)+'</h3><p class="inj-ty">'+esc(j.type)+' · '+esc(j.where)+'</p>'+
       '<div class="inj-st"><span class="pill '+(j.stage==='Back in training'?'blue':'warn')+'"><span class="dot"></span>'+esc(j.stage)+'</span><span class="pill">'+esc(j.avail)+'</span></div>'+
       '<div class="inj-prog"><div class="lbl"><span>Day '+day+' of about '+j.est+'</span><span>Expected return '+fmt(addDays(TODAY,j.start+j.est),'d mon')+'</span></div><div class="bar"><i style="width:'+pct+'%"></i></div></div></div>';
-    h+='<div class="b7"><canvas class="b7-cv" id="b7cv"></canvas><span class="b7-msg">Loading 3D body…</span><div class="b7-tag"><i></i>'+esc(j.part)+'</div><div class="b7-v">'+[['front','Front'],['side','Side'],['back','Back']].map(function(x){return '<button type="button" data-a="b7v" data-v="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div></div>';
+    h+='<div class="b7" data-keep="b7-'+a.id+'"><canvas class="b7-cv" id="b7cv"></canvas><span class="b7-msg">Loading 3D body…</span><div class="b7-tag"><i></i>'+esc(j.part)+'</div><div class="b7-v">'+[['front','Front'],['side','Side'],['back','Back']].map(function(x){return '<button type="button" data-a="b7v" data-v="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</div></div>';
     h+='<div class="rp-foot" style="margin-top:12px">'+I.info+'<span>'+esc(j.note)+' RYSEON doesn’t diagnose; it shows what '+esc(a.first)+' recorded.</span></div>';
     h+=psec('Soreness','Self-reported each morning, 0–10',window.ryPBars?ryPBars('ch-sore',j.pain.map(function(_,i){return 'D'+(i+1)}),[{n:'Soreness',v:j.pain}],'score'):'');
     h+=psec('Updates',null,'<div class="tl" style="margin-top:6px">'+j.log.map(function(l,i){return '<div class="it '+(i===0?'r':'')+'"><span class="tm">'+l[1]+'<small>'+fmt(addDays(TODAY,l[0]),'rel')+'</small></span><span class="mk"></span><span><b>'+esc(l[2])+'</b><p>'+esc(a.first)+'</p></span></div>'}).join('')+'</div>');
@@ -3295,7 +3366,7 @@ viewHome=function(){var h=_viewHome7(),inj=liveIds().filter(function(id){return 
 var _viewAthlete7=viewAthlete;
 viewAthlete=function(){var h=_viewAthlete7(),j=INJ[S.aid];if(j&&P(S.aid).health) h=h.replace('<span class="pill solid">','<span class="pill warn"><span class="dot"></span>'+esc(j.avail)+'</span><span class="pill solid">');return h};
 var _render7=render;
-render=function(top){_render7(top);var cv=document.getElementById('b7cv');if(cv){var j=INJ[S.aid];mountBody(cv,j?[j.key]:[])}};
+render=function(top){_render7(top);var cv=document.getElementById('b7cv');if(cv&&!cv._m){cv._m=1;var j=INJ[S.aid];mountBody(cv,j?[j.key]:[])}};
 /* calendar: parents can add therapy; coaches training + therapy */
 var _daySheet7=daySheet;
 daySheet=function(o){var h=_daySheet7(o),d=parseK(o.k);if(d<TODAY||!canAddTher()) return h;
@@ -3691,9 +3762,9 @@ function feedHTML(){
   var slides=summary()+it.map(function(x,i){var a=A(x.id);
     return '<div class="lv-s lvev'+(x.warn?' warn':'')+'" data-i="'+(i+1)+'" data-id="'+x.id+'" data-t="'+x.t+'"><span class="mlabel acc"><span class="live sm"><i></i>Live</span>'+x.lbl+' · '+x.at+'</span>'+
       '<span class="lv-row">'+ava(a)+'<span class="lv-t"><b>'+tw(x.title)+'</b><small>'+tw(x.sub)+'</small></span></span></div>'}).join('');
-  return '<div class="gl focus lv" role="region" aria-label="Today, live" aria-roledescription="carousel"><div class="lv-top"><span class="lv-bars">'+Array.apply(null,Array(N)).map(function(_,i){return '<i class="'+(i<IDX?'done':'')+'"><b></b></i>'}).join('')+'</span><span class="lv-n">'+(IDX+1)+'/'+N+'</span></div><div class="lv-stage">'+slides+'</div></div>';
+  return '<div class="gl focus lv" data-keep="'+esc(it.map(function(x){return x.title+x.sub}).join('|')+summary().length)+'" role="region" aria-label="Today, live" aria-roledescription="carousel"><div class="lv-top"><span class="lv-bars">'+Array.apply(null,Array(N)).map(function(_,i){return '<i class="'+(i<IDX?'done':'')+'"><b></b></i>'}).join('')+'</span><span class="lv-n">'+(IDX+1)+'/'+N+'</span></div><div class="lv-stage">'+slides+'</div></div>';
 }
-function root(){return document.querySelector('.lv')}
+function root(){return document.querySelector('.gl.lv')}
 /* lock the stage to the tallest slide so nothing below ever moves */
 function fit(r){var st=r.querySelector('.lv-stage'),h=0;r.querySelectorAll('.lv-s').forEach(function(s){h=Math.max(h,s.scrollHeight)});st.style.height=h+'px'}
 function typeSet(s,n){var tws=s.querySelectorAll('.tw'),left=n,done=true;
@@ -3717,7 +3788,7 @@ function tick(now){var r=root();if(!r){RAF=0;return}RAF=requestAnimationFrame(ti
   typeSet(s,RM?1e9:Math.floor(el*CPS/1000));
   var b=r.querySelector('.lv-bars i.on b');if(b) b.style.width=Math.min(100,el/span*100)+'%';
   if(N>1&&el>=span) show(IDX+1,1)}
-function start(){var r=root();if(!r) return;fit(r);show(IDX,1);if(!RAF) RAF=requestAnimationFrame(tick)}
+function start(){var r=root();if(!r||r._live) return;r._live=1;fit(r);show(IDX,1);if(!RAF) RAF=requestAnimationFrame(tick)}
 
 var _vh=viewHome;
 viewHome=function(){var h=_vh(),i=h.indexOf('<button class="gl focus"');if(i<0) return h;var j=h.indexOf('</button>',i)+9;
@@ -3734,7 +3805,7 @@ function end(e){if(!DRAG||e.pointerId!==DRAG.id) return;var d=DRAG;DRAG=null;if(
   if(Math.abs(d.dx)>40){if(d.s) d.s.style.opacity='';show(IDX+(d.dx<0?1:-1),d.dx<0?1:-1)}
   else if(d.s){d.s.style.transition='';d.s.style.transform='';d.s.style.opacity=''}}
 document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);
-document.addEventListener('click',function(e){var s=e.target.closest('.lv');if(!s) return;
+document.addEventListener('click',function(e){var s=e.target.closest('.gl.lv');if(!s) return;
   if(Date.now()-SWIPED<350){e.preventDefault();e.stopPropagation();return}
   var bar=e.target.closest('.lv-bars i');if(bar){var k=Array.prototype.indexOf.call(bar.parentNode.children,bar);show(k,k>=IDX?1:-1);return}
   var cur=s.querySelector('.lv-s.on');if(cur&&cur.dataset.id){go('athlete',{id:cur.dataset.id,t:cur.dataset.t});return}
@@ -3841,6 +3912,32 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-a="a
   S.ov={t:'day',k:f.k,back:o.back&&o.back.t==='day'?o.back.back:{t:'cal',m:new Date(parseK(f.k).getFullYear(),parseK(f.k).getMonth(),1)}};render();
   toast(f.type+' added · '+f.ath.map(function(z){return A(z).first}).join(', '))},true);
 render(true);
+})();
+
+/* ============================================================
+   VANTAGE — navigation transitions (RYSEON pattern).
+   Changing screen: the current page eases out (fade + 8px up),
+   then the next page is swapped in and its sections rise in.
+   Everything else re-renders in place without motion (see morph).
+   ============================================================ */
+(function(){
+function vkey(){return S.ob?'ob:'+S.step:'v:'+S.view+':'+(S.view==='athlete'?S.aid:'')}
+var LAST=vkey(),PEND=null,TOP=false,inner=render;
+function leaving(){var m=document.getElementById('main');
+  if(!S._wasOb&&m) return Array.prototype.slice.call(m.children);
+  return Array.prototype.slice.call(root.children).filter(function(n){return !isOv(n)&&!n.classList.contains('bnav')})}
+render=function(top){
+  var k=vkey();
+  if(PEND){TOP=TOP||!!top;return}
+  if(k===LAST||!root.firstChild){LAST=k;S._wasOb=S.ob;inner(top);return}
+  var els=leaving(),obSwitch=S._wasOb!==S.ob;
+  els.forEach(function(e){e.classList.add('v-leave')});
+  TOP=!!top;
+  PEND=setTimeout(function(){PEND=null;LAST=vkey();SCREEN_FRESH=true;try{inner(TOP)}finally{SCREEN_FRESH=false}S._wasOb=S.ob;
+    var m=document.getElementById('main');if(m) m.scrollTop=0;
+    var col=document.querySelector('.ob-col');if(col) col.scrollTop=0},obSwitch?260:170);
+};
+S._wasOb=S.ob;
 })();
 
 </script>

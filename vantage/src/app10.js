@@ -58,9 +58,9 @@ function feedHTML(){
   var slides=summary()+it.map(function(x,i){var a=A(x.id);
     return '<div class="lv-s lvev'+(x.warn?' warn':'')+'" data-i="'+(i+1)+'" data-id="'+x.id+'" data-t="'+x.t+'"><span class="mlabel acc"><span class="live sm"><i></i>Live</span>'+x.lbl+' · '+x.at+'</span>'+
       '<span class="lv-row">'+ava(a)+'<span class="lv-t"><b>'+tw(x.title)+'</b><small>'+tw(x.sub)+'</small></span></span></div>'}).join('');
-  return '<div class="gl focus lv" role="region" aria-label="Today, live" aria-roledescription="carousel"><div class="lv-top"><span class="lv-bars">'+Array.apply(null,Array(N)).map(function(_,i){return '<i class="'+(i<IDX?'done':'')+'"><b></b></i>'}).join('')+'</span><span class="lv-n">'+(IDX+1)+'/'+N+'</span></div><div class="lv-stage">'+slides+'</div></div>';
+  return '<div class="gl focus lv" data-keep="'+esc(it.map(function(x){return x.title+x.sub}).join('|')+summary().length)+'" role="region" aria-label="Today, live" aria-roledescription="carousel"><div class="lv-top"><span class="lv-bars">'+Array.apply(null,Array(N)).map(function(_,i){return '<i class="'+(i<IDX?'done':'')+'"><b></b></i>'}).join('')+'</span><span class="lv-n">'+(IDX+1)+'/'+N+'</span></div><div class="lv-stage">'+slides+'</div></div>';
 }
-function root(){return document.querySelector('.lv')}
+function root(){return document.querySelector('.gl.lv')}
 /* lock the stage to the tallest slide so nothing below ever moves */
 function fit(r){var st=r.querySelector('.lv-stage'),h=0;r.querySelectorAll('.lv-s').forEach(function(s){h=Math.max(h,s.scrollHeight)});st.style.height=h+'px'}
 function typeSet(s,n){var tws=s.querySelectorAll('.tw'),left=n,done=true;
@@ -84,7 +84,7 @@ function tick(now){var r=root();if(!r){RAF=0;return}RAF=requestAnimationFrame(ti
   typeSet(s,RM?1e9:Math.floor(el*CPS/1000));
   var b=r.querySelector('.lv-bars i.on b');if(b) b.style.width=Math.min(100,el/span*100)+'%';
   if(N>1&&el>=span) show(IDX+1,1)}
-function start(){var r=root();if(!r) return;fit(r);show(IDX,1);if(!RAF) RAF=requestAnimationFrame(tick)}
+function start(){var r=root();if(!r||r._live) return;r._live=1;fit(r);show(IDX,1);if(!RAF) RAF=requestAnimationFrame(tick)}
 
 var _vh=viewHome;
 viewHome=function(){var h=_vh(),i=h.indexOf('<button class="gl focus"');if(i<0) return h;var j=h.indexOf('</button>',i)+9;
@@ -101,7 +101,7 @@ function end(e){if(!DRAG||e.pointerId!==DRAG.id) return;var d=DRAG;DRAG=null;if(
   if(Math.abs(d.dx)>40){if(d.s) d.s.style.opacity='';show(IDX+(d.dx<0?1:-1),d.dx<0?1:-1)}
   else if(d.s){d.s.style.transition='';d.s.style.transform='';d.s.style.opacity=''}}
 document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);
-document.addEventListener('click',function(e){var s=e.target.closest('.lv');if(!s) return;
+document.addEventListener('click',function(e){var s=e.target.closest('.gl.lv');if(!s) return;
   if(Date.now()-SWIPED<350){e.preventDefault();e.stopPropagation();return}
   var bar=e.target.closest('.lv-bars i');if(bar){var k=Array.prototype.indexOf.call(bar.parentNode.children,bar);show(k,k>=IDX?1:-1);return}
   var cur=s.querySelector('.lv-s.on');if(cur&&cur.dataset.id){go('athlete',{id:cur.dataset.id,t:cur.dataset.t});return}
