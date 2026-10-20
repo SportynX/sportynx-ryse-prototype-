@@ -81,7 +81,7 @@ function weekMatches(ids){var n=0,end=7-((TODAY.getDay()+6)%7);ids.forEach(funct
 function viewHome(){
   var L=live(),ids=liveIds(),h='<div class="page">'+mtop();
   h+='<div class="home-hero rise d1"><div><p class="greet">'+greeting()+', '+esc(S.user.split(' ')[0])+'</p><p class="psub">'+(L.length?(L.length===1?'Your team at a glance.':'Your team at a glance.'):'Welcome to VANTAGE.')+'</p></div>'+
-    (L.length?'<div class="count"><b>'+L.length+'</b><span>'+(L.length===1?'Athlete':'Athletes')+'</span></div>':'')+'</div>';
+    (L.length?'<button type="button" class="count" data-a="nav" data-v="athletes" aria-label="Open your team"><b>'+L.length+'</b><span>'+(L.length===1?'Athlete':'Athletes')+'</span></button>':'')+'</div>';
   h+=statusNotices();
   if(!L.length){ return h+zeroHome()+'</div>' }
   var sch=ids.filter(function(id){return P(id).schedule}),c=todayCounts(sch),wm=weekMatches(ids.filter(function(id){return P(id).schedule&&P(id).matches})),nr=newReports();

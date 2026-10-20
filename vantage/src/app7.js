@@ -55,7 +55,7 @@ eventsFor=function(id,d){
     if(d>=s&&d<e){
       var full=j.stage==='Back in training';
       l=l.filter(function(x){return x.k!=='m'&&(full||!/Team Training|Match Preparation|Gym|Individual Training/.test(x.type))});
-      if(!full&&d.getDay()!==0&&j.avail!=='Unavailable') l.push({a:id,date:d,type:'Modified Training',time:'16:30',dur:45,note:'Rehab programme',k:'t'});
+      if(!full&&d.getDay()!==0&&j.avail!=='Unavailable') l.push({a:id,date:d,type:'Modified Training',time:'10:30',dur:45,note:'Rehab programme',k:'t'});
     }
   }
   THER.forEach(function(t){if(t.a===id&&t.k===k&&(hs||t.by==='you'||!/Physio|Osteopath/.test(t.type))) l.push({a:id,date:d,type:t.type,time:t.time,dur:t.dur,note:t.loc+(t.by==='you'?' · Added by you':''),k:'r',ther:t.id,tby:t.by})});
@@ -223,7 +223,6 @@ function tabHealth(a,p){
     h+='<div class="rp-foot" style="margin-top:12px">'+I.info+'<span>'+esc(j.note)+' RYSEON doesn’t diagnose; it shows what '+esc(a.first)+' recorded.</span></div>';
     h+=psec('Soreness','Self-reported each morning, 0–10',window.ryPBars?ryPBars('ch-sore',j.pain.map(function(_,i){return 'D'+(i+1)}),[{n:'Soreness',v:j.pain}],'score'):'');
     h+=psec('Updates',null,'<div class="tl" style="margin-top:6px">'+j.log.map(function(l,i){return '<div class="it '+(i===0?'r':'')+'"><span class="tm">'+l[1]+'<small>'+fmt(addDays(TODAY,l[0]),'rel')+'</small></span><span class="mk"></span><span><b>'+esc(l[2])+'</b><p>'+esc(a.first)+'</p></span></div>'}).join('')+'</div>');
-    h+=psec('Photos',j.photos.length+' shared by '+a.first,'<div class="ph7-grid">'+j.photos.map(function(x,i){return photoTile(i+a.h,x[1],x[0])}).join('')+'</div>');
     h+=psec('Medical documents',null,p.medical?'<div class="rows">'+j.docs.map(function(dc){return '<div class="r"><span class="ic">'+I.doc+'</span><span class="t"><b>'+esc(dc[0])+'</b><small>'+dc[1]+' · '+fmt(addDays(TODAY,dc[2]),'d mon')+'</small></span><span class="v muted" style="font-size:13px;font-weight:500">View</span></div>'}).join('')+'</div>':
       '<div class="lockbox">'+I.lock+'<span><b>Medical documents not shared</b><p>'+esc(a.first)+' keeps medical documents private. Only '+esc(a.first)+' can share them from RYSEON.</p></span></div>');
   } else {
