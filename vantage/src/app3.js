@@ -216,7 +216,7 @@ function onClick(e){
     case 'role': S.role=d.r;render();break;
     case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
     case 'authMail': S.emailMode=true;render();break;
-    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent1'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
+    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
     case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
     case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
       if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
@@ -230,7 +230,7 @@ function onClick(e){
     case 'simApprove': approve(d.id);if(S.ob) obGo('approved');break;
     case 'simApproveApp': approve(d.id);S.req.sel=d.id;S.ov=null;if(S.view==='request'){S.req.stage='approved';render(true)} else {go('athlete',{id:d.id,t:'overview'});toast(A(d.id).first+' approved your request')} break;
     case 'simDecline': var cd=conOf(d.id);cd.st='declined';S.ov=null;render();toast(A(d.id).first+' declined the request');break;
-    case 'openNew': S.ob=false;if(!S.scn||S.scn==='empty') S.scn='custom';go('athlete',{id:d.id,t:'overview'});break;
+    case 'openNew': if(S.ob&&(d.id==='luka'||d.id==='mateo')){var bro=d.id==='luka'?'mateo':'luka';if(!conOf(bro)) S.cons.push({a:bro,st:'connected',rel:'Parent',p:{},since:ATHLETES[bro].since})} S.ob=false;if(!S.scn||S.scn==='empty') S.scn='custom';go('athlete',{id:d.id,t:'overview'});break;
     case 'doneReq': go('athletes');break;
     case 'nav': if(d.v==='pricing') S.calcN=null; go(d.v);break;
     case 'openA': S.atab=d.t||(S.view==='athlete'?S.atab:'overview');go('athlete',{id:d.id,t:S.atab});break;

@@ -775,6 +775,27 @@ html,body{background:#000}
 .btn-sim{border:1px dashed rgba(157,184,255,.55);background:rgba(31,107,255,.08);color:var(--blue-3);letter-spacing:.12em;font-size:12.5px;gap:10px}
 .btn-sim:hover{border-color:var(--blue-3);background:rgba(31,107,255,.14)}
 .btn-sim .sim-k{font:600 9px/1 var(--font-body);letter-spacing:.18em;padding:4px 6px;border-radius:6px;background:rgba(157,184,255,.16);color:var(--blue-3)}
+
+/* onboarding: primary actions always visible — pinned to the bottom of the screen */
+.ob .ob-col{padding-bottom:0}
+.ob .ob-act{position:sticky;bottom:0;z-index:3;margin-top:24px;padding:22px 0 calc(var(--sab) + 22px);
+  background:linear-gradient(180deg,rgba(2,3,7,0),rgba(2,3,7,.9) 26px,rgba(2,3,7,.96))}
+.ob .ob-act .ob-foot{margin-top:0}
+@media (max-height:820px){
+  .ob-visual{min-height:96px;padding-top:4px}
+  .ob-visual svg{max-width:250px}
+  .ob-body{gap:16px}
+  .display{font-size:clamp(30px,9.4cqw,38px)}
+  .orbit{width:140px;height:140px}.orbit .ava{--s:76px}.orbit .lock,.orbit .ok{right:26px;bottom:26px}
+  .state{gap:14px}
+  .how li{padding:8px 0}.how b{font-size:20px}
+  .control{padding:14px}
+  .role{min-height:112px;padding:14px}
+  .lang-globe{min-height:80px}.lang-globe canvas{width:min(210px,56cqw)!important}
+  .lang-rail{margin-top:18px}
+  .locked-list div{padding:10px 16px}
+}
+@media (max-height:700px){.ob-visual{display:none}.ob .ob-act{padding-top:16px;gap:10px}.ob .btn{min-height:52px}.concepts{gap:9px}}
 </style>
 </head>
 <body>
@@ -796,8 +817,12 @@ var ATHLETES={
     m:{c:81,i:72,l:78,p:70,h:76,r:66},since:'2026-03-14',
     lvh:[['Bronze','Joined RYSEON','Sep 2025'],['Silver','Sustained for 8 weeks','Jan 2026'],['Gold','Sustained for 12 weeks','Jul 2026']],
     ins:'Training load increased this week while sleep remained consistent. Recovery remained balanced.'},
-  petra:{first:'Petra',last:'Marić',g:'f',age:14,club:'ŽNK Sava Zagreb',team:'U15 Girls',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523904',h:204,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:61,dt:+4,
+  petra:{first:'Petra',last:'Šimić',g:'f',age:15,club:'ŽNK Sava Zagreb',team:'U15 Girls',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523904',h:204,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:61,dt:+4,
     m:{c:66,i:62,l:71,p:55,h:58,r:63},since:'2026-05-02',
+    lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
+    ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
+  mateo:{first:'Mateo',last:'Marić',g:'m',age:13,club:'NK Sava Zagreb',team:'U14',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
+    m:{c:68,i:61,l:73,p:56,h:60,r:64},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
   marko:{first:'Marko',last:'Babić',g:'m',age:19,club:'HNK Jadran Split',team:'First Team',pos:'Striker',ps:'ST',play:'Professional',lvl:3,ryid:'RY-305617',h:230,city:'Split',tpl:'pro',off:0,mday:6,mtime:'17:00',drive:82,dt:+3,
@@ -852,8 +877,8 @@ var PERM_LABELS=[['schedule','Schedule'],['development','Development'],['trainin
 var SCENARIOS={
   parent1:{label:'Parent · 1 athlete',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}}]},
-  parent2:{label:'Parent · 2 children',role:'parent',plan:'individual',user:'Ivan',
-    con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'petra',rel:'Parent',p:{health:1}}]},
+  parent2:{label:'Parent · 2 sons',role:'parent',plan:'individual',user:'Ivan',
+    con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'mateo',rel:'Parent',p:{health:1}}]},
   coach5:{label:'Private coach · 5 athletes',role:'coach',plan:'v5',user:'Ivan',
     con:[{a:'luka',rel:'Private Coach'},{a:'josip',rel:'Private Coach'},{a:'toni',rel:'Private Coach',p:{sleep:0}},{a:'dario',rel:'Private Coach'},{a:'nika',rel:'Private Coach',p:{reports:0}},
       {a:'mia',st:'pending',rel:'Private Coach',ago:2},{a:'leon',st:'declined',rel:'Private Coach'}]},
@@ -1930,7 +1955,7 @@ function onClick(e){
     case 'role': S.role=d.r;render();break;
     case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('find');break;
     case 'authMail': S.emailMode=true;render();break;
-    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent1'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
+    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
     case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
     case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
       if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
@@ -1944,7 +1969,7 @@ function onClick(e){
     case 'simApprove': approve(d.id);if(S.ob) obGo('approved');break;
     case 'simApproveApp': approve(d.id);S.req.sel=d.id;S.ov=null;if(S.view==='request'){S.req.stage='approved';render(true)} else {go('athlete',{id:d.id,t:'overview'});toast(A(d.id).first+' approved your request')} break;
     case 'simDecline': var cd=conOf(d.id);cd.st='declined';S.ov=null;render();toast(A(d.id).first+' declined the request');break;
-    case 'openNew': S.ob=false;if(!S.scn||S.scn==='empty') S.scn='custom';go('athlete',{id:d.id,t:'overview'});break;
+    case 'openNew': if(S.ob&&(d.id==='luka'||d.id==='mateo')){var bro=d.id==='luka'?'mateo':'luka';if(!conOf(bro)) S.cons.push({a:bro,st:'connected',rel:'Parent',p:{},since:ATHLETES[bro].since})} S.ob=false;if(!S.scn||S.scn==='empty') S.scn='custom';go('athlete',{id:d.id,t:'overview'});break;
     case 'doneReq': go('athletes');break;
     case 'nav': if(d.v==='pricing') S.calcN=null; go(d.v);break;
     case 'openA': S.atab=d.t||(S.view==='athlete'?S.atab:'overview');go('athlete',{id:d.id,t:S.atab});break;
