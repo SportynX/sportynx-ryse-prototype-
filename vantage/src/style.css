@@ -1039,3 +1039,11 @@ button.rp-item:active{background:rgba(255,255,255,.04)}
 .pastT[open] summary::before{content:"⌄ "}
 .pchart .sb.sm{fill:#F5F7FB}
 .plg i.sm{background:#F5F7FB}
+/* photo avatars */
+.ava.ph{padding:0;background:#0E1016}
+.ava.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.me-ph{position:relative;cursor:pointer;flex:none;border-radius:50%}
+.me-cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:#F5F7FB;color:#0A1430;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.me-cam svg{width:15px;height:15px}
+.me-ph:focus-within{outline:1.5px solid var(--blue-3);outline-offset:3px}
+@container (max-width:760px){.ahead .lv{flex-wrap:wrap;row-gap:10px}.ahead .lv .lvl{font-size:20px}}

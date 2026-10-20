@@ -14,8 +14,8 @@ function hmin(m){return Math.floor(m/60)+'h '+pad(Math.round(m%60))+'m'}
 
 /* ---------- injuries (shared by the athlete in RYSEON) ---------- */
 var INJ={
-  luka:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
-    note:'Physio assessment recorded by Luka: grade 1 strain. Return to full training expected in about three weeks.',
+  mateo:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
+    note:'Physio assessment recorded by Oliver: grade 1 strain. Return to full training expected in about three weeks.',
     pain:[7,6,5,5,4,3,3],
     log:[[0,'09:40','Light jogging done without pain. Mobility routine completed.'],[-1,'18:10','Physio session: soft-tissue work and light strengthening.'],[-3,'20:05','Soreness down to 4/10. Walking normally.'],[-5,'12:30','Ultrasound scan done at the club.'],[-6,'18:45','Felt tightness during a sprint in team training. Stopped the session.']],
     photos:[[-6,'Back of left thigh'],[-3,'Swelling check']],docs:[['Physio report','PDF',-5],['Ultrasound scan','Image',-5]]},
@@ -37,9 +37,9 @@ var TT=['Physio','Massage','Cryotherapy','Hydrotherapy','Stretching','Osteopath'
 KIND['Massage']='r';KIND['Cryotherapy']='r';KIND['Hydrotherapy']='r';KIND['Stretching']='r';KIND['Osteopath']='r';KIND['Modified Training']='t';
 function seedTher(){
   THER=[];var n=0;function add(a,off,time,dur,type,loc,by){THER.push({id:'t'+(++n),a:a,k:dkey(addDays(TODAY,off)),time:time,dur:dur,type:type,loc:loc,by:by})}
-  add('luka',-5,'10:00',30,'Physio','NK Sava medical room','Club physio');add('luka',-3,'17:00',45,'Physio','Fizio Centar Jarun','Luka');add('luka',-1,'18:10',45,'Physio','Fizio Centar Jarun','Luka');
-  add('luka',1,'17:00',45,'Physio','Fizio Centar Jarun','Luka');add('luka',2,'19:00',40,'Massage','Sport Spa Maksimir','Luka');add('luka',4,'17:00',45,'Physio','Fizio Centar Jarun','Club physio');
-  add('mateo',3,'18:30',30,'Massage','Sport Spa Maksimir','Mateo');
+  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Oliver');
+  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
+  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Jenna');
   add('josip',-1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',2,'18:00',20,'Cryotherapy','Cryo Zagreb','Josip');
   add('matej',-2,'15:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',2,'14:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',3,'19:30',40,'Massage','Rijeka Sports Clinic','Matej');
   add('marko',2,'19:00',45,'Massage','Split Sports Recovery','Marko');add('filip',1,'13:00',45,'Hydrotherapy','Drava recovery pool','Filip');
@@ -193,12 +193,12 @@ function mountBody(cv,keys){
     // aim at the injured area
     var tgt=null;H.parts.forEach(function(p,k){if(!tgt&&keys.indexOf(p.id+'|'+(p.side||''))>=0){var sx=0,sy=0,sz=0;for(var v=0;v<p.nv;v++){sx+=dq(D.pos[(p.vo+v)*3],0);sy+=dq(D.pos[(p.vo+v)*3+1],1);sz+=dq(D.pos[(p.vo+v)*3+2],2)}tgt={x:sx/p.nv,y:sy/p.nv,z:sz/p.nv}}});
     var back=tgt&&tgt.z<ctr.z-0.01;
-    var st={yaw:back?Math.PI:0,pitch:.05,dist:hgt*2.2,ty:tgt?(tgt.y-ctr.y)*.55:0,auto:true};B7.st=st;
+    var st={yaw:back?Math.PI:0,pitch:.03,dist:hgt*2.75,ty:0,auto:true};B7.st=st;
     function size(){var w=cv.clientWidth,h2=cv.clientHeight;if(!w||!h2) return;R.setSize(w,h2,false);cam.aspect=w/h2;cam.updateProjectionMatrix()}size();
     var drag=null;cv.onpointerdown=function(e){drag={x:e.clientX,y:e.clientY};st.auto=false;cv.setPointerCapture(e.pointerId)};
     cv.onpointermove=function(e){if(!drag) return;st.yaw-=(e.clientX-drag.x)*.0105;st.pitch=Math.max(-1,Math.min(1,st.pitch+(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY}};
     cv.onpointerup=cv.onpointercancel=function(){drag=null;clearTimeout(B7.it);B7.it=setTimeout(function(){st.auto=true},6000)};
-    cv.onwheel=function(e){e.preventDefault();st.dist=Math.max(hgt*.6,Math.min(hgt*4,st.dist*(e.deltaY>0?1.1:.9)))};
+    cv.onwheel=function(e){e.preventDefault();st.dist=Math.max(hgt*.8,Math.min(hgt*4,st.dist*(e.deltaY>0?1.1:.9)))};
     B7.setView=function(v){st.auto=false;st.yaw=v==='back'?Math.PI:(v==='side'?Math.PI/2:0)};
     var t0=performance.now();
     (function loop(t){if(!document.body.contains(cv)) return;size();if(st.auto) st.yaw+=.0035*Math.sin((t-t0)/4000)*0;mat.uniforms.t.value=(t-t0)/1000;
@@ -287,7 +287,7 @@ calSheet=function(o){var h=_calSheet7(o);if(canAdd()||!canAddTher()) return h;
 /* scenario data: who shares health */
 var _loadScenario7=loadScenario;
 loadScenario=function(k){_loadScenario7(k);seedTher();
-  S.cons.forEach(function(c){if(k==='parent1'||k==='parent2'){if(c.a==='luka') c.p.medical=1}
+  S.cons.forEach(function(c){if(k==='parent2'){if(c.a==='mateo') c.p.medical=1}
     if(k==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;
     if(k==='agent10'&&c.a==='matej') c.p.health=1})};
 
@@ -316,7 +316,7 @@ document.addEventListener('input',function(e){var t=e.target,k=t.getAttribute('d
   else if(k==='tLoc'){o.f.loc=t.value;var b=document.querySelector('[data-a=therSave]');if(b){var ok=o.f.a&&t.value.trim();b.disabled=!ok;b.textContent=ok?'Add '+o.f.type.toLowerCase():(o.f.a?'Add a location':'Choose an athlete')}}
   else if(k==='tNote') o.f.note=t.value});
 /* re-apply scenario sharing for the scenario loaded at start */
-if(S.scn&&SCENARIOS[S.scn]) S.cons.forEach(function(c){if((S.scn==='parent1'||S.scn==='parent2')&&c.a==='luka') c.p.medical=1;if(S.scn==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;if(S.scn==='agent10'&&c.a==='matej') c.p.health=1});
+if(S.scn&&SCENARIOS[S.scn]) S.cons.forEach(function(c){if(S.scn==='parent2'&&c.a==='mateo') c.p.medical=1;if(S.scn==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;if(S.scn==='agent10'&&c.a==='matej') c.p.health=1});
 render(true);
 
 function nt7(m){var t=[1,2,2.5,5,10,20,25,50,100,200,250,500,1000,2000,2500,5000,10000];for(var i=0;i<t.length;i++) if(m/t[i]<=5) return t[i];return 20000}

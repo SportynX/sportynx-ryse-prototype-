@@ -168,7 +168,7 @@ document.addEventListener('click',function(e){
     case 'invJoin':
       var c=conOf(d.id),dd=DIRECTORY[d.id];
       // the athlete creates their RYSEON profile (prototype values)
-      dd.age=15;dd.club='NK Sava Zagreb';dd.team='U17';dd.pos='Central Midfielder';dd.ps='CM';dd.city='Zagreb';dd.ryid='RY-'+(600000+Math.floor(Math.random()*399999));
+      dd.age=15;dd.club='Kingsbridge FC Academy';dd.team='U16';dd.pos='Central Midfielder';dd.ps='CM';dd.city='London';dd.ryid='RY-'+(600000+Math.floor(Math.random()*399999));
       ensureFull(d.id);var A2=ATHLETES[d.id];A2.lvl=0;A2.drive=48;A2.dt=0;A2.m={c:50,i:46,l:52,p:44,h:47,r:49};A2.lvh=[['Bronze','Joined RYSEON',MON[TODAY.getMonth()]+' '+TODAY.getFullYear()]];A2.ins='First days in RYSEON. Training sessions and daily check-ins are starting to come in.';A2.since=dkey(TODAY);
       c.st='connected';c.since=dkey(TODAY);c.p={};S.req.sel=d.id;S.ov=null;
       if(S.ob) obGo('joined');

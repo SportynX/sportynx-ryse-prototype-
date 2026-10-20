@@ -86,7 +86,7 @@ function he(a){return a.g==='f'?'she':(a.g==='x'?'they':'he')}
 function his(a){return a.g==='f'?'her':(a.g==='x'?'their':'his')}
 function him(a){return a.g==='f'?'her':(a.g==='x'?'them':'him')}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-function ava(a,cls,st){return '<span class="ava '+(cls||'')+(st?' '+st:'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(st==='locked'?'':'')+a.first[0]+a.last[0]+'</span>'}
+function ava(a,cls,st){var ph=a.photo&&st!=='locked'&&st!=='ended'&&window.PHOTOS&&PHOTOS[a.photo];return '<span class="ava '+(cls||'')+(st?' '+st:'')+(ph?' ph':'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(ph?'<img src="'+ph+'" alt="">':a.first[0]+a.last[0])+'</span>'}
 function conOf(id){for(var i=0;i<S.cons.length;i++) if(S.cons[i].a===id) return S.cons[i];return null}
 function live(){return S.cons.filter(function(c){return c.st==='connected'})}
 function liveIds(){return live().map(function(c){return c.a})}

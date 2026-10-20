@@ -6,7 +6,7 @@
 var LEVELS=['Bronze','Silver','Gold','High Performance','Excellence'];
 
 var ATHLETES={
-  luka:{first:'Luka',last:'Marić',g:'m',age:16,club:'NK Sava Zagreb',team:'U17',pos:'Central Midfielder',ps:'CM',play:'Youth Academy',lvl:2,ryid:'RY-418273',h:222,city:'Zagreb',tpl:'youth',off:0,mday:6,mtime:'11:00',drive:74,dt:+5,
+  luka:{first:'James',last:'Smith',g:'m',age:17,club:'Kingsbridge FC Academy',team:'U18',pos:'Central Midfielder',ps:'CM',play:'Youth Academy',lvl:2,ryid:'RY-418273',h:222,city:'London',opp:['Hartley Rovers U18','Thornbury Town U18','Ashcombe United U18','Whitmore Athletic U18','Langford City U18','Redbridge Albion U18','Elmstead U18','Northgate Town U18'],tpl:'youth',off:0,mday:6,mtime:'11:00',drive:74,dt:+5,
     m:{c:81,i:72,l:78,p:70,h:76,r:66},since:'2026-03-14',
     lvh:[['Bronze','Joined RYSEON','Sep 2025'],['Silver','Sustained for 8 weeks','Jan 2026'],['Gold','Sustained for 12 weeks','Jul 2026']],
     ins:'Training load increased this week while sleep remained consistent. Recovery remained balanced.'},
@@ -14,7 +14,7 @@ var ATHLETES={
     m:{c:66,i:62,l:71,p:55,h:58,r:63},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
-  mateo:{first:'Mateo',last:'Marić',g:'m',age:13,club:'NK Sava Zagreb',team:'U14',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
+  mateo:{first:'Oliver',last:'Smith',g:'m',age:14,club:'Kingsbridge FC Academy',team:'U15',opp:['Hartley Rovers U15','Thornbury Town U15','Ashcombe United U15','Whitmore Athletic U15','Langford City U15','Redbridge Albion U15','Elmstead U15','Northgate Town U15'],pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'London',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
     m:{c:68,i:61,l:73,p:56,h:60,r:64},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
@@ -46,7 +46,7 @@ var ATHLETES={
     m:{c:82,i:76,l:70,p:83,h:81,r:74},since:'2025-12-05',
     lvh:[['Bronze','Joined RYSEON','Nov 2024'],['Silver','Sustained for 8 weeks','Feb 2025'],['Gold','Sustained for 12 weeks','Jul 2025'],['High Performance','Sustained for 16 weeks','Jan 2026']],
     ins:'Two travel days affected sleep timing this week. Training sessions were all completed.'},
-  nika:{first:'Nika',last:'Pavlović',g:'f',age:17,club:'ŽNK Drava Osijek',team:'Senior Women',pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Osijek',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
+  nika:{first:'Jenna',last:'Lennox',g:'f',age:19,club:'Harrow Athletic Women',team:'Senior Women',opp:['Hartley Rovers Women','Thornbury Town Women','Ashcombe United Women','Whitmore Athletic Women','Langford City Women','Redbridge Albion Women','Elmstead Women','Northgate Town Women'],pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Manchester',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
     m:{c:84,i:79,l:81,p:75,h:78,r:73},since:'2026-04-11',
     lvh:[['Bronze','Joined RYSEON','Apr 2025'],['Silver','Sustained for 8 weeks','Jul 2025'],['Gold','Sustained for 12 weeks','Dec 2025'],['High Performance','Sustained for 16 weeks','Sep 2026']],
     ins:'Mental training sessions were added before both matches. Learning time stayed above her monthly average.'}
@@ -70,7 +70,7 @@ var PERM_LABELS=[['schedule','Schedule'],['development','Development'],['trainin
 var SCENARIOS={
   parent1:{label:'Parent · 1 athlete',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}}]},
-  parent2:{label:'Parent · 2 sons',role:'parent',plan:'individual',user:'Ivan',
+  parent2:{label:'Parent · 2 sons (Smith)',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'mateo',rel:'Parent',p:{health:1}}]},
   coach5:{label:'Private coach · 5 athletes',role:'coach',plan:'v5',user:'Ivan',
     con:[{a:'luka',rel:'Private Coach'},{a:'josip',rel:'Private Coach'},{a:'toni',rel:'Private Coach',p:{sleep:0}},{a:'dario',rel:'Private Coach'},{a:'nika',rel:'Private Coach',p:{reports:0}},
@@ -146,7 +146,7 @@ function eventsFor(id,d){
   // match day: every week except one in four
   var wn=weekNo(d), hasMatch=((wn+a.h)%4)!==0;
   if(dow===a.mday&&hasMatch){
-    var opp=OPP[a.tpl][(wn+Math.round(a.h/7))%OPP[a.tpl].length];
+    var OL=a.opp||OPP[a.tpl],opp=OL[(wn+Math.round(a.h/7))%OL.length];
     var home=((wn+a.h)%2)===0;
     list.push(mk(a,d,'Match',a.mtime,90,COMP[a.tpl],opp,home?'Home':'Away'));
     if(a.mday===6&&!(TPL[a.tpl][0]||[]).length) {}

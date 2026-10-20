@@ -94,7 +94,7 @@ function reportSheet(rid){
 /* ---------- PROFILE (the VANTAGE user's own account) ---------- */
 function viewProfile(){
   var pl=PLANS[S.plan],L=live(),n=L.length;
-  var h='<div class="page narrow">'+mtop()+'<div class="me rise d1">'+meAva()+'<div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
+  var h='<div class="page narrow">'+mtop()+'<div class="me rise d1"><label class="me-ph" title="Change profile photo">'+meAva()+'<input type="file" accept="image/*" id="me-file" hidden><span class="me-cam" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5Z"/><circle cx="12" cy="12.5" r="3.3"/></svg></span><span class="sr">Change profile photo</span></label><div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
   h+='<div class="card focus rise d1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Your plan</span><p style="margin-top:10px;font:700 22px/1 var(--font-display);text-transform:uppercase">'+pl.name+'</p><p class="sub" style="margin-top:8px;font-size:14px">'+n+' of '+pl.max+' athletes · €'+price(S.plan,Math.max(n,1)).toFixed(2)+' / month</p></div>'+
     '<button class="btn btn-primary btn-sm" type="button" data-a="nav" data-v="pricing">Manage plan</button></div><div class="usage">'+usageBar()+'</div></div>';
   h+='<div class="sec-h rise d2"><h2 class="h3">Connections</h2><button class="link" type="button" data-a="reqNew">Request another athlete</button></div>';
@@ -104,6 +104,7 @@ function viewProfile(){
     '<button type="button" data-a="ovRole">'+I.role.replace('<svg','<svg class="i"')+'<span class="t">How you use VANTAGE<small>Personalises VANTAGE. It doesn’t change what athletes share.</small></span><span class="v">'+roleLabel(S.role)+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="goLang">'+I.globe.replace('<svg','<svg class="i"')+'<span class="t">Language</span><span class="v">'+esc(LANGS[S.lang][1])+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="nav" data-v="pricing">'+I.card.replace('<svg','<svg class="i"')+'<span class="t">Subscription & billing</span><span class="v">'+pl.short+'</span>'+I.chev+'</button>'+
+    '<button type="button" data-a="proto"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5" stroke-dasharray="2 3"/></svg><span class="t">Prototype controls<small>Switch demo: parent, coach, agent, states</small></span>'+I.chev+'</button>'+
     '<button type="button" data-a="signOut">'+I.out.replace('<svg','<svg class="i"')+'<span class="t">Sign out</span></button></div>';
   h+='<div class="sec-h rise d3"><h2 class="h3">Privacy</h2></div><div class="shield rise d3">'+I.shield+'<span><b>The athlete stays in control</b><p>Athletes approve every connection, choose what you see, and can end access at any time from RYSEON. Health and medical information is private unless an athlete shares it separately.</p></span></div>';
   h+='<div class="sec-h rise d3"><h2 class="h3">RYSEON product family</h2></div>'+familyHtml();
@@ -197,7 +198,7 @@ var root;
 function render(top){
   var main=document.getElementById('main'),sc=main?main.scrollTop:0;
   var aura=document.getElementById('aura');aura.className='aura'+(S.ob?'':' calm');
-  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+'<button class="proto'+(S.ob?' ob-on':'')+'" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>';
+  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+(S.ob?'<button class="proto ob-on" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>':'');
   var m2=document.getElementById('main');if(m2) m2.scrollTop=top?0:sc;
   if(S.ob&&S.step==='lang'){bindLangRail();startGlobe()}
   var col=document.querySelector('.ob-col');if(col&&top) col.scrollTop=0;

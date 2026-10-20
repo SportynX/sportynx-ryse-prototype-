@@ -36,7 +36,7 @@ viewHome=function(){
   var items=[];ids.forEach(function(id){var w=watched(id);if(w[0]) items.push(w[0]);if(w[1]&&ids.length<3) items.push(w[1])});
   items.sort(function(x,y){return y.d-x.d});
   var block='<div class="rise d2" style="display:flex;flex-direction:column;gap:14px">'+rail('Watched in RYSEON',items.slice(0,6).map(function(w){return vbox(w,{who:1})}))+'</div>';
-  var i=h.indexOf('<div class="sec-h rise d2"><h2 class="h3">Your athletes');
+  var i=h.indexOf('<div class="sec-h rise d2"><h2 class="h3">Your team');
   if(i<0) i=h.indexOf('<div class="grid2 rise d2">');
   return i<0?h+block:h.slice(0,i)+block+h.slice(i);
 };

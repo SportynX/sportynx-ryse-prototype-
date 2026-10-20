@@ -1058,6 +1058,14 @@ button.rp-item:active{background:rgba(255,255,255,.04)}
 .pastT[open] summary::before{content:"⌄ "}
 .pchart .sb.sm{fill:#F5F7FB}
 .plg i.sm{background:#F5F7FB}
+/* photo avatars */
+.ava.ph{padding:0;background:#0E1016}
+.ava.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.me-ph{position:relative;cursor:pointer;flex:none;border-radius:50%}
+.me-cam{position:absolute;right:-2px;bottom:-2px;width:28px;height:28px;border-radius:50%;background:#F5F7FB;color:#0A1430;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.me-cam svg{width:15px;height:15px}
+.me-ph:focus-within{outline:1.5px solid var(--blue-3);outline-offset:3px}
+@container (max-width:760px){.ahead .lv{flex-wrap:wrap;row-gap:10px}.ahead .lv .lvl{font-size:20px}}
 </style>
 </head>
 <body>
@@ -1075,7 +1083,7 @@ button.rp-item:active{background:rgba(255,255,255,.04)}
 var LEVELS=['Bronze','Silver','Gold','High Performance','Excellence'];
 
 var ATHLETES={
-  luka:{first:'Luka',last:'Marić',g:'m',age:16,club:'NK Sava Zagreb',team:'U17',pos:'Central Midfielder',ps:'CM',play:'Youth Academy',lvl:2,ryid:'RY-418273',h:222,city:'Zagreb',tpl:'youth',off:0,mday:6,mtime:'11:00',drive:74,dt:+5,
+  luka:{first:'James',last:'Smith',g:'m',age:17,club:'Kingsbridge FC Academy',team:'U18',pos:'Central Midfielder',ps:'CM',play:'Youth Academy',lvl:2,ryid:'RY-418273',h:222,city:'London',opp:['Hartley Rovers U18','Thornbury Town U18','Ashcombe United U18','Whitmore Athletic U18','Langford City U18','Redbridge Albion U18','Elmstead U18','Northgate Town U18'],tpl:'youth',off:0,mday:6,mtime:'11:00',drive:74,dt:+5,
     m:{c:81,i:72,l:78,p:70,h:76,r:66},since:'2026-03-14',
     lvh:[['Bronze','Joined RYSEON','Sep 2025'],['Silver','Sustained for 8 weeks','Jan 2026'],['Gold','Sustained for 12 weeks','Jul 2026']],
     ins:'Training load increased this week while sleep remained consistent. Recovery remained balanced.'},
@@ -1083,7 +1091,7 @@ var ATHLETES={
     m:{c:66,i:62,l:71,p:55,h:58,r:63},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
-  mateo:{first:'Mateo',last:'Marić',g:'m',age:13,club:'NK Sava Zagreb',team:'U14',pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'Zagreb',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
+  mateo:{first:'Oliver',last:'Smith',g:'m',age:14,club:'Kingsbridge FC Academy',team:'U15',opp:['Hartley Rovers U15','Thornbury Town U15','Ashcombe United U15','Whitmore Athletic U15','Langford City U15','Redbridge Albion U15','Elmstead U15','Northgate Town U15'],pos:'Left Winger',ps:'LW',play:'Youth Academy',lvl:1,ryid:'RY-523911',h:196,city:'London',tpl:'youth',off:-30,mday:0,mtime:'10:00',drive:63,dt:+4,
     m:{c:68,i:61,l:73,p:56,h:60,r:64},since:'2026-05-02',
     lvh:[['Bronze','Joined RYSEON','Feb 2026'],['Silver','Sustained for 8 weeks','Aug 2026']],
     ins:'Football learning time doubled compared with last week. Training attendance stayed steady.'},
@@ -1115,7 +1123,7 @@ var ATHLETES={
     m:{c:82,i:76,l:70,p:83,h:81,r:74},since:'2025-12-05',
     lvh:[['Bronze','Joined RYSEON','Nov 2024'],['Silver','Sustained for 8 weeks','Feb 2025'],['Gold','Sustained for 12 weeks','Jul 2025'],['High Performance','Sustained for 16 weeks','Jan 2026']],
     ins:'Two travel days affected sleep timing this week. Training sessions were all completed.'},
-  nika:{first:'Nika',last:'Pavlović',g:'f',age:17,club:'ŽNK Drava Osijek',team:'Senior Women',pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Osijek',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
+  nika:{first:'Jenna',last:'Lennox',g:'f',age:19,club:'Harrow Athletic Women',team:'Senior Women',opp:['Hartley Rovers Women','Thornbury Town Women','Ashcombe United Women','Whitmore Athletic Women','Langford City Women','Redbridge Albion Women','Elmstead Women','Northgate Town Women'],pos:'Centre-Forward',ps:'CF',play:'Semi-professional',lvl:3,ryid:'RY-556802',h:208,city:'Manchester',tpl:'youth',off:60,mday:0,mtime:'14:00',drive:79,dt:+4,
     m:{c:84,i:79,l:81,p:75,h:78,r:73},since:'2026-04-11',
     lvh:[['Bronze','Joined RYSEON','Apr 2025'],['Silver','Sustained for 8 weeks','Jul 2025'],['Gold','Sustained for 12 weeks','Dec 2025'],['High Performance','Sustained for 16 weeks','Sep 2026']],
     ins:'Mental training sessions were added before both matches. Learning time stayed above her monthly average.'}
@@ -1139,7 +1147,7 @@ var PERM_LABELS=[['schedule','Schedule'],['development','Development'],['trainin
 var SCENARIOS={
   parent1:{label:'Parent · 1 athlete',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}}]},
-  parent2:{label:'Parent · 2 sons',role:'parent',plan:'individual',user:'Ivan',
+  parent2:{label:'Parent · 2 sons (Smith)',role:'parent',plan:'individual',user:'Ivan',
     con:[{a:'luka',rel:'Parent',p:{health:1}},{a:'mateo',rel:'Parent',p:{health:1}}]},
   coach5:{label:'Private coach · 5 athletes',role:'coach',plan:'v5',user:'Ivan',
     con:[{a:'luka',rel:'Private Coach'},{a:'josip',rel:'Private Coach'},{a:'toni',rel:'Private Coach',p:{sleep:0}},{a:'dario',rel:'Private Coach'},{a:'nika',rel:'Private Coach',p:{reports:0}},
@@ -1215,7 +1223,7 @@ function eventsFor(id,d){
   // match day: every week except one in four
   var wn=weekNo(d), hasMatch=((wn+a.h)%4)!==0;
   if(dow===a.mday&&hasMatch){
-    var opp=OPP[a.tpl][(wn+Math.round(a.h/7))%OPP[a.tpl].length];
+    var OL=a.opp||OPP[a.tpl],opp=OL[(wn+Math.round(a.h/7))%OL.length];
     var home=((wn+a.h)%2)===0;
     list.push(mk(a,d,'Match',a.mtime,90,COMP[a.tpl],opp,home?'Home':'Away'));
     if(a.mday===6&&!(TPL[a.tpl][0]||[]).length) {}
@@ -1405,7 +1413,7 @@ function he(a){return a.g==='f'?'she':(a.g==='x'?'they':'he')}
 function his(a){return a.g==='f'?'her':(a.g==='x'?'their':'his')}
 function him(a){return a.g==='f'?'her':(a.g==='x'?'them':'him')}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-function ava(a,cls,st){return '<span class="ava '+(cls||'')+(st?' '+st:'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(st==='locked'?'':'')+a.first[0]+a.last[0]+'</span>'}
+function ava(a,cls,st){var ph=a.photo&&st!=='locked'&&st!=='ended'&&window.PHOTOS&&PHOTOS[a.photo];return '<span class="ava '+(cls||'')+(st?' '+st:'')+(ph?' ph':'')+'" style="--h:'+a.h+'" aria-hidden="true">'+(ph?'<img src="'+ph+'" alt="">':a.first[0]+a.last[0])+'</span>'}
 function conOf(id){for(var i=0;i<S.cons.length;i++) if(S.cons[i].a===id) return S.cons[i];return null}
 function live(){return S.cons.filter(function(c){return c.st==='connected'})}
 function liveIds(){return live().map(function(c){return c.a})}
@@ -1678,7 +1686,7 @@ function trendTxt(d,unit){if(d>0) return '+'+d+(unit||'')+' ';if(d<0) return '�
 
 /* ---------- shell ---------- */
 var NAV=[['home','Home',I.home],['athletes','Athletes',I.users],['schedule','Schedule',I.cal],['reports','Reports',I.doc],['profile','Profile',null]];
-function meAva(cls){return '<span class="ava '+(cls||'')+'" style="--h:226" aria-hidden="true">'+esc(S.user.split(' ').map(function(w){return w[0]}).join('').slice(0,2))+'</span>'}
+function meAva(cls){return '<span class="ava '+(cls||'')+(S.userPhoto?' ph':'')+'" style="--h:226" aria-hidden="true">'+(S.userPhoto?'<img src="'+S.userPhoto+'" alt="">':esc(S.user.split(' ').map(function(w){return w[0]}).join('').slice(0,2)))+'</span>'}
 function navCur(k){var v=S.view;if(v==='athlete'||v==='request') v='athletes';if(v==='pricing') v='profile';return v===k}
 function renderShell(){
   var L=live(),pl=PLANS[S.plan];
@@ -2097,7 +2105,7 @@ function reportSheet(rid){
 /* ---------- PROFILE (the VANTAGE user's own account) ---------- */
 function viewProfile(){
   var pl=PLANS[S.plan],L=live(),n=L.length;
-  var h='<div class="page narrow">'+mtop()+'<div class="me rise d1">'+meAva()+'<div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
+  var h='<div class="page narrow">'+mtop()+'<div class="me rise d1"><label class="me-ph" title="Change profile photo">'+meAva()+'<input type="file" accept="image/*" id="me-file" hidden><span class="me-cam" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5Z"/><circle cx="12" cy="12.5" r="3.3"/></svg></span><span class="sr">Change profile photo</span></label><div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
   h+='<div class="card focus rise d1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Your plan</span><p style="margin-top:10px;font:700 22px/1 var(--font-display);text-transform:uppercase">'+pl.name+'</p><p class="sub" style="margin-top:8px;font-size:14px">'+n+' of '+pl.max+' athletes · €'+price(S.plan,Math.max(n,1)).toFixed(2)+' / month</p></div>'+
     '<button class="btn btn-primary btn-sm" type="button" data-a="nav" data-v="pricing">Manage plan</button></div><div class="usage">'+usageBar()+'</div></div>';
   h+='<div class="sec-h rise d2"><h2 class="h3">Connections</h2><button class="link" type="button" data-a="reqNew">Request another athlete</button></div>';
@@ -2107,6 +2115,7 @@ function viewProfile(){
     '<button type="button" data-a="ovRole">'+I.role.replace('<svg','<svg class="i"')+'<span class="t">How you use VANTAGE<small>Personalises VANTAGE. It doesn’t change what athletes share.</small></span><span class="v">'+roleLabel(S.role)+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="goLang">'+I.globe.replace('<svg','<svg class="i"')+'<span class="t">Language</span><span class="v">'+esc(LANGS[S.lang][1])+'</span>'+I.chev+'</button>'+
     '<button type="button" data-a="nav" data-v="pricing">'+I.card.replace('<svg','<svg class="i"')+'<span class="t">Subscription & billing</span><span class="v">'+pl.short+'</span>'+I.chev+'</button>'+
+    '<button type="button" data-a="proto"><svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.5" stroke-dasharray="2 3"/></svg><span class="t">Prototype controls<small>Switch demo: parent, coach, agent, states</small></span>'+I.chev+'</button>'+
     '<button type="button" data-a="signOut">'+I.out.replace('<svg','<svg class="i"')+'<span class="t">Sign out</span></button></div>';
   h+='<div class="sec-h rise d3"><h2 class="h3">Privacy</h2></div><div class="shield rise d3">'+I.shield+'<span><b>The athlete stays in control</b><p>Athletes approve every connection, choose what you see, and can end access at any time from RYSEON. Health and medical information is private unless an athlete shares it separately.</p></span></div>';
   h+='<div class="sec-h rise d3"><h2 class="h3">RYSEON product family</h2></div>'+familyHtml();
@@ -2200,7 +2209,7 @@ var root;
 function render(top){
   var main=document.getElementById('main'),sc=main?main.scrollTop:0;
   var aura=document.getElementById('aura');aura.className='aura'+(S.ob?'':' calm');
-  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+'<button class="proto'+(S.ob?' ob-on':'')+'" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>';
+  root.innerHTML=(S.ob?renderOb():renderShell())+renderOv()+(S.ob?'<button class="proto ob-on" type="button" data-a="proto" aria-label="Prototype controls"><i></i>Prototype</button>':'');
   var m2=document.getElementById('main');if(m2) m2.scrollTop=top?0:sc;
   if(S.ob&&S.step==='lang'){bindLangRail();startGlobe()}
   var col=document.querySelector('.ob-col');if(col&&top) col.scrollTop=0;
@@ -2659,7 +2668,7 @@ document.addEventListener('click',function(e){
     case 'invJoin':
       var c=conOf(d.id),dd=DIRECTORY[d.id];
       // the athlete creates their RYSEON profile (prototype values)
-      dd.age=15;dd.club='NK Sava Zagreb';dd.team='U17';dd.pos='Central Midfielder';dd.ps='CM';dd.city='Zagreb';dd.ryid='RY-'+(600000+Math.floor(Math.random()*399999));
+      dd.age=15;dd.club='Kingsbridge FC Academy';dd.team='U16';dd.pos='Central Midfielder';dd.ps='CM';dd.city='London';dd.ryid='RY-'+(600000+Math.floor(Math.random()*399999));
       ensureFull(d.id);var A2=ATHLETES[d.id];A2.lvl=0;A2.drive=48;A2.dt=0;A2.m={c:50,i:46,l:52,p:44,h:47,r:49};A2.lvh=[['Bronze','Joined RYSEON',MON[TODAY.getMonth()]+' '+TODAY.getFullYear()]];A2.ins='First days in RYSEON. Training sessions and daily check-ins are starting to come in.';A2.since=dkey(TODAY);
       c.st='connected';c.since=dkey(TODAY);c.p={};S.req.sel=d.id;S.ov=null;
       if(S.ob) obGo('joined');
@@ -2679,6 +2688,7 @@ render(true);
 
 /* RYSEON video library — same catalogue and covers as the RYSEON app (generated from src/prototype.html) */
 var VLIB=[{"id": "med", "cat": "mindset", "c": "Mindset", "t": "Sport Meditation for Focus", "d": "A 10-minute guided meditation designed for athletes to build focus, reduce stress and stay present.", "m": 10, "cov": "media/cov0.webp"}, {"id": "focus", "cat": "performance", "c": "Performance", "t": "Focus & Reaction Drills", "d": "Interactive exercises to improve concentration, reaction time and decision making on the pitch.", "m": 8, "cov": "media/cov1.webp"}, {"id": "adv", "cat": "pro", "c": "Pro Insights", "t": "Advice from Top Athletes", "d": "Short interviews and tips from top players on mentality, habits and daily routines.", "m": 6, "cov": "media/cov2.webp", "pos": "top"}, {"id": "clip-kova", "cat": "clips", "c": "Video clips", "t": "Dribbling skills", "d": "Close control, turns and press resistance from Mateo Kovačić.", "n": 18, "pl": "Mateo Kovačić", "cov": "media/v0.jpg", "play": 1}, {"id": "clip-drib", "cat": "clips", "c": "Video clips", "t": "Dribbling", "d": "From top players in the athlete’s position.", "n": 78, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M60%20290%20C%20120%20250%2C%2070%20210%2C%20140%20185%20S%20170%20120%2C%20230%2095%22/%3E%3C/g%3E%3Cg%20fill%3D%22%239DB8FF%22%20opacity%3D%22.35%22%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%22236%22%20r%3D%229%22/%3E%3Ccircle%20cx%3D%22185%22%20cy%3D%22150%22%20r%3D%229%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22236%22%20cy%3D%2290%22%20r%3D%2216%22%20fill%3D%22%23F5F7FB%22/%3E%3Cpath%20d%3D%22M236%2078l8%206-3%2010h-10l-3-10z%22%20fill%3D%22%230B1736%22/%3E%3C/svg%3E", "play": 1}, {"id": "clip-pos", "cat": "clips", "c": "Video clips", "t": "Positioning", "d": "From top players in the athlete’s position.", "n": 52, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22%239DB8FF%22%3E%3Ccircle%20cx%3D%2290%22%20cy%3D%22110%22%20r%3D%227%22%20opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%2295%22%20r%3D%227%22%20opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%22210%22%20cy%3D%22110%22%20r%3D%227%22%20opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%22110%22%20cy%3D%22200%22%20r%3D%227%22%20opacity%3D%22.5%22/%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%22200%22%20r%3D%227%22%20opacity%3D%22.5%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M150%20270%20L%20150%20215%22/%3E%3Cpath%20d%3D%22M150%20215%20L%20110%20200%20M150%20215%20L%20190%20200%22%20stroke-dasharray%3D%222%209%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22275%22%20r%3D%2214%22%20fill%3D%22%23F5F7FB%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22275%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%236F98FF%22%20stroke-opacity%3D%22.6%22%20stroke-width%3D%222%22/%3E%3C/svg%3E", "play": 1}, {"id": "clip-def", "cat": "clips", "c": "Video clips", "t": "Defending", "d": "From top players in the athlete’s position.", "n": 61, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cpath%20d%3D%22M150%2070%20L215%2095%20V165%20C215%20215%20185%20250%20150%20268%20C115%20250%2085%20215%2085%20165%20V95%20Z%22%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22/%3E%3Cpath%20d%3D%22M150%20108%20V230%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.35%22%20stroke-width%3D%223%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23F5F7FB%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M40%20300%20L95%20255%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%22247%22%20r%3D%2211%22%20fill%3D%22%23F5F7FB%22/%3E%3C/svg%3E", "play": 1}, {"id": "clip-shot", "cat": "clips", "c": "Video clips", "t": "Shots on target", "d": "From top players in the athlete’s position.", "n": 45, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23F5F7FB%22%20stroke-opacity%3D%22.9%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M70%20120%20V70%20H230%20V120%22/%3E%3C/g%3E%3Cg%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.25%22%20stroke-width%3D%221.5%22%3E%3Cpath%20d%3D%22M90%2070v50M110%2070v50M130%2070v50M150%2070v50M170%2070v50M190%2070v50M210%2070v50M70%2085h160M70%20100h160%22/%3E%3C/g%3E%3Cpath%20d%3D%22M140%20300%20Q%20150%20190%20205%2092%22%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%221%2010%22/%3E%3Ccircle%20cx%3D%22207%22%20cy%3D%2290%22%20r%3D%2213%22%20fill%3D%22%23F5F7FB%22/%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22303%22%20r%3D%228%22%20fill%3D%22%239DB8FF%22%20opacity%3D%22.4%22/%3E%3C/svg%3E", "play": 1}, {"id": "m-rondo", "cat": "training", "c": "Drills", "t": "Rondo & first touch", "d": "Short passing drills to sharpen your first touch and scanning under pressure.", "n": 24, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22%239DB8FF%22%20opacity%3D%22.55%22%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%2290%22%20r%3D%229%22/%3E%3Ccircle%20cx%3D%22225%22%20cy%3D%22150%22%20r%3D%229%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22245%22%20r%3D%229%22/%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22245%22%20r%3D%229%22/%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22150%22%20r%3D%229%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%222%209%22%3E%3Cpath%20d%3D%22M150%2090%20L225%20150%20L100%20245%20L75%20150%20L200%20245%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2212%22%20fill%3D%22%23F5F7FB%22/%3E%3C/svg%3E", "play": 1}, {"id": "m-speed", "cat": "training", "c": "Drills", "t": "Speed & agility", "d": "Cone and ladder drills to build acceleration and quick changes of direction.", "n": 31, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23F5F7FB%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.85%22%3E%3Cpath%20d%3D%22M70%20280%20l14%20-22%20l14%2022%20z%20M130%20220%20l14%20-22%20l14%2022%20z%20M190%20160%20l14%20-22%20l14%2022%20z%22/%3E%3C/g%3E%3Cpath%20d%3D%22M60%20300%20C%20120%20300%2C%20110%20240%2C%20150%20235%20S%20200%20175%2C%20240%20110%22%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%22242%22%20cy%3D%22106%22%20r%3D%2211%22%20fill%3D%22%23F5F7FB%22/%3E%3C/svg%3E", "play": 1}, {"id": "m-finishing", "cat": "training", "c": "Drills", "t": "Finishing in the box", "d": "Repetition drills for first-time finishes, volleys and composure in front of goal.", "n": 27, "cov": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20300%20340%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22g%22%20cx%3D%22.62%22%20cy%3D%22.38%22%20r%3D%22.9%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%231B3A86%22/%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%230B1736%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23070B16%22/%3E%3C/radialGradient%3E%3ClinearGradient%20id%3D%22l%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236F98FF%22%20stop-opacity%3D%22.2%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%239DB8FF%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%22300%22%20height%3D%22340%22%20fill%3D%22url%28%23g%29%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%239DB8FF%22%20stroke-opacity%3D%22.12%22%20stroke-width%3D%221.5%22%3E%3Crect%20x%3D%2220%22%20y%3D%2220%22%20width%3D%22260%22%20height%3D%22300%22%20rx%3D%224%22/%3E%3Cpath%20d%3D%22M20%20170h260%22/%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22170%22%20r%3D%2246%22/%3E%3C/g%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23F5F7FB%22%20stroke-opacity%3D%22.9%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M80%20110%20V70%20H220%20V110%22/%3E%3C/g%3E%3Cg%20fill%3D%22%239DB8FF%22%20opacity%3D%22.5%22%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22200%22%20r%3D%229%22/%3E%3C/g%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%22265%22%20r%3D%2210%22%20fill%3D%22%23F5F7FB%22/%3E%3Cpath%20d%3D%22M120%20265%20Q%20130%20170%20200%2088%22%20fill%3D%22none%22%20stroke%3D%22url%28%23l%29%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E", "play": 1}, {"id": "m-erling", "cat": "pro", "c": "Interview", "t": "Erling Haaland on recovery", "d": "Sleep, recovery and what happens between matches.", "m": 12, "cov": "media/v8.jpg", "play": 0}, {"id": "m-zlatan", "cat": "pro", "c": "Interview", "t": "Zlatan Ibrahimović on mindset & meditation", "d": "Focus, confidence and the mental side of a long career.", "m": 14, "cov": "media/v9.jpg", "play": 0}];
+var PHOTOS={james:"media/ath-james.jpg",jenna:"media/ath-jenna.jpg"};
 
 /* ============================================================
    VANTAGE — video (view only)
@@ -2718,7 +2728,7 @@ viewHome=function(){
   var items=[];ids.forEach(function(id){var w=watched(id);if(w[0]) items.push(w[0]);if(w[1]&&ids.length<3) items.push(w[1])});
   items.sort(function(x,y){return y.d-x.d});
   var block='<div class="rise d2" style="display:flex;flex-direction:column;gap:14px">'+rail('Watched in RYSEON',items.slice(0,6).map(function(w){return vbox(w,{who:1})}))+'</div>';
-  var i=h.indexOf('<div class="sec-h rise d2"><h2 class="h3">Your athletes');
+  var i=h.indexOf('<div class="sec-h rise d2"><h2 class="h3">Your team');
   if(i<0) i=h.indexOf('<div class="grid2 rise d2">');
   return i<0?h+block:h.slice(0,i)+block+h.slice(i);
 };
@@ -2753,8 +2763,8 @@ function hmin(m){return Math.floor(m/60)+'h '+pad(Math.round(m%60))+'m'}
 
 /* ---------- injuries (shared by the athlete in RYSEON) ---------- */
 var INJ={
-  luka:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
-    note:'Physio assessment recorded by Luka: grade 1 strain. Return to full training expected in about three weeks.',
+  mateo:{key:'hamstring|left',part:'Left hamstring',type:'Muscle strain',start:-6,est:21,where:'Team training · sprint drill',stage:'Recovering',avail:'Modified training',
+    note:'Physio assessment recorded by Oliver: grade 1 strain. Return to full training expected in about three weeks.',
     pain:[7,6,5,5,4,3,3],
     log:[[0,'09:40','Light jogging done without pain. Mobility routine completed.'],[-1,'18:10','Physio session: soft-tissue work and light strengthening.'],[-3,'20:05','Soreness down to 4/10. Walking normally.'],[-5,'12:30','Ultrasound scan done at the club.'],[-6,'18:45','Felt tightness during a sprint in team training. Stopped the session.']],
     photos:[[-6,'Back of left thigh'],[-3,'Swelling check']],docs:[['Physio report','PDF',-5],['Ultrasound scan','Image',-5]]},
@@ -2776,9 +2786,9 @@ var TT=['Physio','Massage','Cryotherapy','Hydrotherapy','Stretching','Osteopath'
 KIND['Massage']='r';KIND['Cryotherapy']='r';KIND['Hydrotherapy']='r';KIND['Stretching']='r';KIND['Osteopath']='r';KIND['Modified Training']='t';
 function seedTher(){
   THER=[];var n=0;function add(a,off,time,dur,type,loc,by){THER.push({id:'t'+(++n),a:a,k:dkey(addDays(TODAY,off)),time:time,dur:dur,type:type,loc:loc,by:by})}
-  add('luka',-5,'10:00',30,'Physio','NK Sava medical room','Club physio');add('luka',-3,'17:00',45,'Physio','Fizio Centar Jarun','Luka');add('luka',-1,'18:10',45,'Physio','Fizio Centar Jarun','Luka');
-  add('luka',1,'17:00',45,'Physio','Fizio Centar Jarun','Luka');add('luka',2,'19:00',40,'Massage','Sport Spa Maksimir','Luka');add('luka',4,'17:00',45,'Physio','Fizio Centar Jarun','Club physio');
-  add('mateo',3,'18:30',30,'Massage','Sport Spa Maksimir','Mateo');
+  add('mateo',-5,'10:00',30,'Physio','Kingsbridge medical room','Club physio');add('mateo',-3,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',-1,'18:10',45,'Physio','Physio Plus Wimbledon','Oliver');
+  add('mateo',1,'17:00',45,'Physio','Physio Plus Wimbledon','Oliver');add('mateo',4,'17:00',45,'Physio','Physio Plus Wimbledon','Club physio');
+  add('luka',2,'19:00',40,'Massage','Elite Sports Massage Putney','James');add('nika',3,'18:30',40,'Massage','Northern Sports Recovery','Jenna');
   add('josip',-1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',1,'16:00',45,'Physio','NK Sava medical room','Club physio');add('josip',2,'18:00',20,'Cryotherapy','Cryo Zagreb','Josip');
   add('matej',-2,'15:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',2,'14:00',50,'Physio','HNK Adria medical centre','Club physio');add('matej',3,'19:30',40,'Massage','Rijeka Sports Clinic','Matej');
   add('marko',2,'19:00',45,'Massage','Split Sports Recovery','Marko');add('filip',1,'13:00',45,'Hydrotherapy','Drava recovery pool','Filip');
@@ -2932,12 +2942,12 @@ function mountBody(cv,keys){
     // aim at the injured area
     var tgt=null;H.parts.forEach(function(p,k){if(!tgt&&keys.indexOf(p.id+'|'+(p.side||''))>=0){var sx=0,sy=0,sz=0;for(var v=0;v<p.nv;v++){sx+=dq(D.pos[(p.vo+v)*3],0);sy+=dq(D.pos[(p.vo+v)*3+1],1);sz+=dq(D.pos[(p.vo+v)*3+2],2)}tgt={x:sx/p.nv,y:sy/p.nv,z:sz/p.nv}}});
     var back=tgt&&tgt.z<ctr.z-0.01;
-    var st={yaw:back?Math.PI:0,pitch:.05,dist:hgt*2.2,ty:tgt?(tgt.y-ctr.y)*.55:0,auto:true};B7.st=st;
+    var st={yaw:back?Math.PI:0,pitch:.03,dist:hgt*2.75,ty:0,auto:true};B7.st=st;
     function size(){var w=cv.clientWidth,h2=cv.clientHeight;if(!w||!h2) return;R.setSize(w,h2,false);cam.aspect=w/h2;cam.updateProjectionMatrix()}size();
     var drag=null;cv.onpointerdown=function(e){drag={x:e.clientX,y:e.clientY};st.auto=false;cv.setPointerCapture(e.pointerId)};
     cv.onpointermove=function(e){if(!drag) return;st.yaw-=(e.clientX-drag.x)*.0105;st.pitch=Math.max(-1,Math.min(1,st.pitch+(e.clientY-drag.y)*.006));drag={x:e.clientX,y:e.clientY}};
     cv.onpointerup=cv.onpointercancel=function(){drag=null;clearTimeout(B7.it);B7.it=setTimeout(function(){st.auto=true},6000)};
-    cv.onwheel=function(e){e.preventDefault();st.dist=Math.max(hgt*.6,Math.min(hgt*4,st.dist*(e.deltaY>0?1.1:.9)))};
+    cv.onwheel=function(e){e.preventDefault();st.dist=Math.max(hgt*.8,Math.min(hgt*4,st.dist*(e.deltaY>0?1.1:.9)))};
     B7.setView=function(v){st.auto=false;st.yaw=v==='back'?Math.PI:(v==='side'?Math.PI/2:0)};
     var t0=performance.now();
     (function loop(t){if(!document.body.contains(cv)) return;size();if(st.auto) st.yaw+=.0035*Math.sin((t-t0)/4000)*0;mat.uniforms.t.value=(t-t0)/1000;
@@ -3026,7 +3036,7 @@ calSheet=function(o){var h=_calSheet7(o);if(canAdd()||!canAddTher()) return h;
 /* scenario data: who shares health */
 var _loadScenario7=loadScenario;
 loadScenario=function(k){_loadScenario7(k);seedTher();
-  S.cons.forEach(function(c){if(k==='parent1'||k==='parent2'){if(c.a==='luka') c.p.medical=1}
+  S.cons.forEach(function(c){if(k==='parent2'){if(c.a==='mateo') c.p.medical=1}
     if(k==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;
     if(k==='agent10'&&c.a==='matej') c.p.health=1})};
 
@@ -3055,10 +3065,27 @@ document.addEventListener('input',function(e){var t=e.target,k=t.getAttribute('d
   else if(k==='tLoc'){o.f.loc=t.value;var b=document.querySelector('[data-a=therSave]');if(b){var ok=o.f.a&&t.value.trim();b.disabled=!ok;b.textContent=ok?'Add '+o.f.type.toLowerCase():(o.f.a?'Add a location':'Choose an athlete')}}
   else if(k==='tNote') o.f.note=t.value});
 /* re-apply scenario sharing for the scenario loaded at start */
-if(S.scn&&SCENARIOS[S.scn]) S.cons.forEach(function(c){if((S.scn==='parent1'||S.scn==='parent2')&&c.a==='luka') c.p.medical=1;if(S.scn==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;if(S.scn==='agent10'&&c.a==='matej') c.p.health=1});
+if(S.scn&&SCENARIOS[S.scn]) S.cons.forEach(function(c){if(S.scn==='parent2'&&c.a==='mateo') c.p.medical=1;if(S.scn==='coach5'&&(c.a==='josip'||c.a==='luka')) c.p.health=1;if(S.scn==='agent10'&&c.a==='matej') c.p.health=1});
 render(true);
 
 function nt7(m){var t=[1,2,2.5,5,10,20,25,50,100,200,250,500,1000,2000,2500,5000,10000];for(var i=0;i<t.length;i++) if(m/t[i]<=5) return t[i];return 20000}
+
+/* ============================================================
+   VANTAGE — prototype athlete photos + VANTAGE user's own photo
+   ============================================================ */
+ATHLETES.luka.photo='james';ATHLETES.nika.photo='jenna';
+try{var _ph=localStorage.getItem('vantage.photo');if(_ph) S.userPhoto=_ph}catch(e){}
+document.addEventListener('change',function(e){
+  var t=e.target;if(t.id!=='me-file'||!t.files||!t.files[0]) return;
+  var r=new FileReader();r.onload=function(){
+    var img=new Image();img.onload=function(){ // square-crop and shrink so it stays light
+      var s=Math.min(img.width,img.height),c=document.createElement('canvas');c.width=c.height=320;
+      c.getContext('2d').drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,320,320);
+      S.userPhoto=c.toDataURL('image/jpeg',.85);try{localStorage.setItem('vantage.photo',S.userPhoto)}catch(_){}
+      render();toast('Profile photo updated')};img.src=r.result};
+  r.readAsDataURL(t.files[0]);
+});
+render(true);
 
 </script>
 </body>

@@ -35,7 +35,7 @@ function trendTxt(d,unit){if(d>0) return '+'+d+(unit||'')+' ';if(d<0) return 'âˆ
 
 /* ---------- shell ---------- */
 var NAV=[['home','Home',I.home],['athletes','Athletes',I.users],['schedule','Schedule',I.cal],['reports','Reports',I.doc],['profile','Profile',null]];
-function meAva(cls){return '<span class="ava '+(cls||'')+'" style="--h:226" aria-hidden="true">'+esc(S.user.split(' ').map(function(w){return w[0]}).join('').slice(0,2))+'</span>'}
+function meAva(cls){return '<span class="ava '+(cls||'')+(S.userPhoto?' ph':'')+'" style="--h:226" aria-hidden="true">'+(S.userPhoto?'<img src="'+S.userPhoto+'" alt="">':esc(S.user.split(' ').map(function(w){return w[0]}).join('').slice(0,2)))+'</span>'}
 function navCur(k){var v=S.view;if(v==='athlete'||v==='request') v='athletes';if(v==='pricing') v='profile';return v===k}
 function renderShell(){
   var L=live(),pl=PLANS[S.plan];

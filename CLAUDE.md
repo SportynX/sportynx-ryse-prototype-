@@ -16,7 +16,7 @@ Open the link in Safari → Share → Add to Home Screen → launch "RYSE" (full
 
 ## VANTAGE (separate product, separate folder)
 Live: https://sportynx.github.io/sportynx-ryse-prototype-/vantage/
-- Source of truth: `vantage/src/` (style.css, data.js, app1–5.js; app4 = calendar, app5 = invite athlete to RYSEON, media.js + app6 = videos the athlete watched — view only; app7 = Progress charts + Health: injury on the 3D body from media/body3d.bin, therapy & massage schedule). Never touch the RYSEON files above when working on VANTAGE.
+- Source of truth: `vantage/src/` (style.css, data.js, app1–5.js; app4 = calendar, app5 = invite athlete to RYSEON, media.js + app6 = videos the athlete watched — view only; app7 = Progress charts + Health: injury on the 3D body from media/body3d.bin, therapy & massage schedule; app8 = athlete photos (media/ath-*.jpg) + VANTAGE user profile photo). Never touch the RYSEON files above when working on VANTAGE.
 - Build: `python3 vantage/build.py` → `vantage/index.html`, then commit and push to `main`.
 - Home-screen icon: `vantage/icon-*.png` (same black RY icon as RYSEON). The logo is used only as the app icon, not inside the screens.
 - Same Claude artifact: "VANTAGE" — republish it from the same source.
