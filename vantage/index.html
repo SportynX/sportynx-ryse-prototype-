@@ -2572,8 +2572,8 @@ function onClick(e){
     case 'role': S.role=d.r;render();break;
     case 'auth': S.req={q:'',sel:null,rel:roleLabel(S.role),src:'ob'};obGo('connect');break;
     case 'authMail': S.emailMode=true;render();break;
-    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast((S.cons[0]?A(S.cons[0].a).first:'Athlete')+' approved your request');break;
-    case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);toast('Signed in');break;
+    case 'demoIn': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);break;
+    case 'login': loadScenario(S.role==='agent'?'agent10':(S.role==='coach'?'coach5':'parent2'));render(true);break;
     case 'pick': var c0=conOf(d.id);if(c0&&c0.st==='connected'){ if(S.ob){loadScenarioFromOb();} go('athlete',{id:d.id,t:'overview'});break }
       if(c0&&c0.st==='pending'){ if(!S.ob){go('athlete',{id:d.id});} break }
       S.req.sel=d.id; if(!S.req.rel) S.req.rel=roleLabel(S.role); if(S.ob) obGo('request'); else {S.req.stage='request';render(true)} break;
