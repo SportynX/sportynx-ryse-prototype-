@@ -2777,7 +2777,7 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .kv-top{position:absolute;left:0;right:0;top:max(calc(env(safe-area-inset-top,0px) + 6px),48px);display:flex;align-items:center;gap:12px;padding:0 16px;z-index:3;transition:opacity .3s ease}
 .kv-ti{display:flex;flex-direction:column;gap:4px;min-width:0}.kv-ti b{font:600 16px/1.15 var(--font-display);color:#F5F7FB}.kv-ti small{font:500 12.5px/1.2 var(--font-body);color:rgba(200,207,221,.72)}
 .kv-stage{position:absolute;left:0;top:0;width:100%;height:200px;background:#000;transform-origin:50% 50%;z-index:2}
-.kv.anim .kv-stage{transition:left .55s cubic-bezier(.3,.7,.2,1),top .55s cubic-bezier(.3,.7,.2,1),width .55s cubic-bezier(.3,.7,.2,1),height .55s cubic-bezier(.3,.7,.2,1),transform .55s cubic-bezier(.3,.7,.2,1)}
+.kv.anim .kv-stage{transition:transform .55s cubic-bezier(.3,.7,.2,1),opacity .35s ease}
 .kv-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#000}
 .kv-tap{position:absolute;inset:0;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .kv-big{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:rgba(10,16,28,.5);border:1px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:grid;place-items:center;pointer-events:none;opacity:0;transform:scale(.9);transition:opacity .25s ease,transform .25s ease}
@@ -2794,9 +2794,9 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .kv-time{flex:none;min-width:74px;text-align:right;font:500 12px/1 var(--font-body);font-variant-numeric:tabular-nums;color:rgba(220,232,255,.72)}
 .kv-full{align-self:center;display:inline-flex;align-items:center;height:32px;padding:0 16px;border-radius:16px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#F5F7FB;font:600 12.5px/1 var(--font-body);letter-spacing:.01em;cursor:pointer}
 .kv-shade{position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.65));pointer-events:none;opacity:0;transition:opacity .3s ease}
-.kv-fx{position:absolute;top:14px;right:18px;z-index:3;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.kv-fx{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);right:calc(env(safe-area-inset-right,0px) + 16px);z-index:3;opacity:0;pointer-events:none;transition:opacity .3s ease}
 .kv-stage .kv-row{position:absolute;left:22px;right:22px;bottom:12px;z-index:3}
-.kv.rot .kv-fx{right:calc(env(safe-area-inset-bottom,0px) + 8px)}.kv.rot .kv-stage .kv-row{left:calc(env(safe-area-inset-top,0px) + 4px);right:calc(env(safe-area-inset-bottom,0px) + 8px)}
+.kv.rot .kv-fx{top:14px;right:calc(env(safe-area-inset-bottom,0px) + 8px)}.kv.rot .kv-stage .kv-row{left:calc(env(safe-area-inset-top,0px) + 4px);right:calc(env(safe-area-inset-bottom,0px) + 8px)}
 .kv.full .kv-stage{touch-action:none}.kv.full .kv-stage video{object-fit:cover}.kv.full.fit .kv-stage video{object-fit:contain}
 .kv.full .kv-top,.kv.full .kv-ctl{opacity:0;pointer-events:none}
 .kv.full .kv-fx,.kv.full .kv-shade{opacity:1;pointer-events:auto}.kv.full .kv-shade{pointer-events:none}
@@ -5856,14 +5856,19 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
   /* Mateo Kovačić · dribbling skills: plays in portrait (black above and below); Full video view turns it to landscape over the whole phone */
   var KV={full:false};
   function kvFmt(t){ t=Math.max(0,Math.floor(t||0)); return Math.floor(t/60)+':'+('0'+t%60).slice(-2) }
-  function kvLay(){ var o=$('kv'), W=o.clientWidth, H=o.clientHeight, st=$('kv-stage'), ar=568/1120, S=st.style; if(!W) return;
-    if(!KV.full){ var h=Math.round(W*ar), top=Math.round((H-h)/2-24); S.width=W+'px'; S.height=h+'px'; S.left='0px'; S.top=top+'px'; S.transform='none'; $('kv-ctl').style.top=(top+h+16)+'px' }
-    $('kv').classList.toggle('rot',!!KV.full&&H>W); if(!KV.full){} else if(H>W){ S.width=H+'px'; S.height=W+'px'; S.left=((W-H)/2)+'px'; S.top=((H-W)/2)+'px'; S.transform='rotate(90deg)' }
-    else { S.width=W+'px'; S.height=H+'px'; S.left='0px'; S.top='0px'; S.transform='none' } }
+  function kvLay(){ var o=$('kv'), W=o.clientWidth, H=o.clientHeight, st=$('kv-stage'), ar=568/1120, S=st.style; if(!W) return; o.classList.toggle('rot',!!KV.full&&H>W);
+    if(!KV.full){ var h=Math.round(W*ar), top=Math.round((H-h)/2-24); S.width=W+'px'; S.height=h+'px'; S.left='0px'; S.top=top+'px'; S.transform='none'; $('kv-ctl').style.top=(top+h+16)+'px'; KV.inl={cy:top+h/2,h:h} }
+    else if(H>W){ S.width=H+'px'; S.height=W+'px'; S.left=((W-H)/2)+'px'; S.top=((H-W)/2)+'px'; S.transform='rotate(90deg)' }
+    else { S.width=W+'px'; S.height=H+'px'; S.left='0px'; S.top='0px'; S.transform='none' } kvNudge() }
+  /* iOS keeps the old size of the picture after the player grows; a 1px nudge makes it repaint edge to edge */
+  function kvNudge(){ var v=$('kv-v'); [0,80,650].forEach(function(ms){ setTimeout(function(){ v.style.width='calc(100% + 1px)'; v.offsetWidth; requestAnimationFrame(function(){ v.style.width='' }) },ms) }) }
   function kvTick(){ var v=$('kv-v'), d=v.duration||0, f=d?v.currentTime/d:0; $('kv-fill').style.width=(f*100)+'%'; $('kv-knob').style.left=(f*100)+'%'; $('kv-time').textContent=kvFmt(v.currentTime)+' / '+kvFmt(d) }
   function kvIdle(){ clearTimeout(KV.it); $('kv').classList.remove('idle'); if(KV.full&&!$('kv-v').paused) KV.it=setTimeout(function(){ $('kv').classList.add('idle') },2800) }
   function kvPlay(){ var v=$('kv-v'); if(v.paused){ var p=v.play(); if(p&&p.catch) p.catch(function(){}) } else v.pause() }
-  function kvFull(on){ KV.full=on; var o=$('kv'); o.classList.remove('fit'); o.classList.add('anim'); o.classList.toggle('full',on); (on?$('kv-stage'):$('kv-ctl')).insertBefore($('kv-row'),on?$('kv-fx'):$('kv-full')); kvLay(); kvIdle(); clearTimeout(KV.at); KV.at=setTimeout(function(){ o.classList.remove('anim') },600) }
+  function kvFull(on){ var o=$('kv'), st=$('kv-stage'), W=o.clientWidth, H=o.clientHeight; KV.full=on; o.classList.remove('fit','anim'); o.classList.toggle('full',on); (on?st:$('kv-ctl')).insertBefore($('kv-row'),on?$('kv-fx'):$('kv-full')); kvLay();
+    if(on&&H>W&&KV.inl){ st.style.transform='translate(0,'+(KV.inl.cy-H/2).toFixed(1)+'px) scale('+(W/H).toFixed(4)+')'; st.offsetWidth; o.classList.add('anim'); st.style.transform='rotate(90deg)' }
+    else { st.style.opacity='0'; st.offsetWidth; o.classList.add('anim'); st.style.opacity='' }
+    kvIdle(); clearTimeout(KV.at); KV.at=setTimeout(function(){ o.classList.remove('anim'); kvNudge() },600) }
   window.ryseKova=function(){ var o=$('kv'), v=$('kv-v'), c=RY_CLIPS[0]; if(!v.getAttribute('src')) v.setAttribute('src','media/kova-dribbling.mp4');
     $('kv-t').textContent=rT(c.t); $('kv-p').textContent=c.pl; $('kv-full-t').textContent=rT('Full video'); o.querySelectorAll('[aria-label=Close]').forEach(function(b){ b.setAttribute('aria-label',rT('Close')) });
     KV.full=false; o.classList.remove('full','idle','anim'); $('kv-ctl').insertBefore($('kv-row'),$('kv-full')); o.hidden=false; kvLay(); kvTick(); try{ v.currentTime=0 }catch(_){} kvPlay() };
@@ -5873,8 +5878,8 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
     v.addEventListener('timeupdate',kvTick); v.addEventListener('loadedmetadata',kvTick); v.addEventListener('ended',function(){ o.classList.add('paused') });
     o.addEventListener('click',function(ev){
       if(ev.target.closest('#kv-x')){ kvClose(); return }
-      if(ev.target.closest('#kv-fx')){ kvFull(false); return }
-      if(ev.target.closest('#kv-full')){ kvFull(true); return }
+      if(ev.target.closest('#kv-fx')){ KV.auto=false; kvFull(false); return }
+      if(ev.target.closest('#kv-full')){ KV.auto=false; kvFull(true); return }
       if(ev.target.closest('#kv-pp')){ kvPlay(); kvIdle(); return }
       if(ev.target.closest('#kv-tap')){ if(KV.full&&o.classList.contains('idle')){ kvIdle(); return } kvPlay(); return } });
     var pg=$('kv-prog'), drag=false;
@@ -5886,7 +5891,8 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
     st.addEventListener('pointermove',function(ev){ if(!pts[ev.pointerId]) return; pts[ev.pointerId]={x:ev.clientX,y:ev.clientY}; if(d0){ var d=pd(); if(d>d0*1.15){ o.classList.remove('fit'); d0=0 } else if(d<d0*0.87){ o.classList.add('fit'); d0=0 } } });
     function pu(ev){ delete pts[ev.pointerId]; if(Object.keys(pts).length<2) d0=0 } st.addEventListener('pointerup',pu); st.addEventListener('pointercancel',pu);
     st.addEventListener('gesturestart',function(ev){ ev.preventDefault() }); st.addEventListener('gesturechange',function(ev){ ev.preventDefault(); if(!KV.full) return; if(ev.scale>1.15) o.classList.remove('fit'); else if(ev.scale<0.87) o.classList.add('fit') });
-    window.addEventListener('resize',function(){ if(!o.hidden) kvLay() }) })();
+    function onRes(){ if(o.hidden) return; var land=o.clientWidth>o.clientHeight; if(land&&!KV.full){ KV.auto=true; kvFull(true) } else if(!land&&KV.full&&KV.auto){ KV.auto=false; kvFull(false) } else kvLay() }
+    window.addEventListener('resize',function(){ onRes(); setTimeout(onRes,350) }); window.addEventListener('orientationchange',function(){ setTimeout(onRes,350) }) })();
 
   /* ---------- 18 Log training (team training data / individual training) ---------- */
   var LT={type:'Team training',kind:['Outdoor'],dur:90,int:'Moderate',rpe:7.5,feel:[],notes:'',photos:[]};
