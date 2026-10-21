@@ -2627,7 +2627,7 @@ function ensureFull(id){
   if(ATHLETES[id]) return; var d=DIRECTORY[id],pro=d.age>=19,tk=pro?'marko':(d.g==='f'?'petra':'luka'),t=ATHLETES[tk],o={},k;
   for(k in t) o[k]=t[k]; for(k in d) o[k]=d[k];
   o.play=pro?'Professional':'Youth Academy';o.tpl=pro?'pro':'youth';o.since=dkey(TODAY);
-  o.ins=t.ins;ATHLETES[id]=o;DIRECTORY[id]=o;
+  o.ins=t.ins;if(!d.photo) delete o.photo;ATHLETES[id]=o;DIRECTORY[id]=o;
 }
 function approve(id){var c=conOf(id);if(!c) return;ensureFull(id);c.st='connected';c.since=dkey(TODAY);c.p={}}
 function onInput(e){
