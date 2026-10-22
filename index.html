@@ -2859,7 +2859,8 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hrc-v b{font:600 46px/1 var(--font-display);letter-spacing:-.02em;color:#F5F7FB;font-variant-numeric:tabular-nums}
 .hrc-v em{font:600 14px/1 var(--font-body);font-style:normal;color:rgba(220,232,255,.75)}
 .hrc-c{display:block;margin-top:7px;text-align:center;font:500 12.5px/1.2 var(--font-body);color:rgba(200,207,221,.72)}
-.hrc-ecg{display:block;width:100%;height:52px;margin:10px 0 12px;overflow:visible}
+.hrc-ecg{display:block;width:100%;height:52px;margin:12px 0 26px;overflow:visible}
+.hrc{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}.hrc:active{transform:scale(.985)}
 .hrc-ecg path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .hrc-ecg .base{stroke:rgba(143,176,255,.3);stroke-width:1.4}
 .hrc-ecg .run{stroke:#6F98FF;stroke-width:2.4;stroke-dasharray:.16 .84;stroke-dashoffset:1;filter:drop-shadow(0 0 4px rgba(79,139,255,.85));animation:hrRun 2.6s linear infinite}
@@ -5134,6 +5135,9 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       $('hl-t').textContent=rT('Log health'); $('hl-i-t').textContent=rT(inj?'Log recovery':'Injury'); $('hl-i-s').textContent=rT(inj?'Update how your recovery is going':'Where it hurts, type and dates');
       $('hl-h-t').textContent=rT('Daily health'); $('hl-h-s').textContent=rT('Heart rate and daily average'); $('hl-hr-t').textContent=rT('Heart rate'); $('hl-save').textContent=rT('Save'); $('hl-again').textContent=rT('Measure again'); $('hl-close').textContent=rT('Done');
       cancelAnimationFrame(HL.raf); HL.st=0; mode('pick'); openSheet('sh-hl') };
+    /* tap on a heart rate card: straight to the finger measurement */
+    window.ryseLogHeartRate=function(){ window.ryseLogHealth(); idle() };
+    document.addEventListener('click',function(ev){ if(ev.target.closest('.hrc')&&!ev.target.closest('[data-hrt]')) window.ryseLogHeartRate() });
     var pad=$('hl-pad');
     pad.addEventListener('pointerdown',function(ev){ ev.preventDefault(); try{ pad.setPointerCapture(ev.pointerId) }catch(_){} start() });
     ['pointerup','pointercancel','lostpointercapture'].forEach(function(n){ pad.addEventListener(n,stop) });
