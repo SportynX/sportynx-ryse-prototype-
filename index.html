@@ -2618,7 +2618,7 @@ html[data-theme=light][data-view=prof] .st-per{background:rgba(31,95,224,.1);col
 .rc-ready b{display:block;font:600 15px/1.25 var(--font-body)}.rc-ready small{display:block;margin-top:3px;font:500 12.5px/1.3 var(--font-body);color:var(--s-mut,rgba(200,207,221,.8))}
 html[data-theme=light][data-view=prof] .rc-ready{border-color:rgba(14,21,36,.1);background:#fff}
 html[data-theme=light][data-view=prof] .rc-ready .ck{border-color:rgba(14,21,36,.25)}
-.qa-tile.rec svg{color:#F0A050!important}
+.qa-tile.rec svg,.qa-tile.rec b{color:#F0A050!important}
 /* Compact two-column row (Date | Location) + scroll hint fade (Ivan, 16 Oct) */
 .lt-2c{display:grid;grid-template-columns:1fr 1fr;padding:0}
 .lt-2c .lt-row{padding:12px 14px;gap:10px;min-width:0}
@@ -2829,6 +2829,7 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hl-opts button{display:flex;align-items:center;gap:14px;width:100%;padding:16px 14px 16px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);color:#F5F7FB;text-align:left;cursor:pointer}
 .hl-opts .ic{width:42px;height:42px;flex:none;border-radius:13px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.hl-opts .ic svg{width:23px;height:23px}
 .hl-opts .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}.hl-opts .tx b{font:600 16px/1.2 var(--font-body)}.hl-opts .tx small{font:500 13px/1.3 var(--font-body);color:rgba(200,207,221,.72)}
+.hl-opts .rec .ic{background:rgba(240,160,80,.14);color:#F0A050}.hl-opts .rec .tx b{color:#F0A050}
 .hl-opts .ch{width:18px;height:18px;flex:none;color:rgba(200,207,221,.5)}
 .hl-hr{flex-direction:column;align-items:center}
 .hl-hint{min-height:20px;margin:10px 0 0;text-align:center;font:500 14px/1.4 var(--font-body);color:rgba(200,207,221,.8)}
@@ -5098,6 +5099,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     function start(){ if(HL.st||$('sh-hl').classList.contains('res')) return; var A=avgToday(); HL.tgt=A.n?Math.round(A.avg+(Math.random()*6-3)):Math.round(58+Math.random()*14); HL.lu=0; HL.st=performance.now(); mode('hr meas'); $('hl-bpm').textContent=''; $('hl-hint').textContent=rT('Keep your finger still…'); $('sh-hl').style.setProperty('--beat','.95s'); HL.raf=requestAnimationFrame(tick) }
     function stop(){ if(!HL.st) return; idle(rT('Hold your finger for {n} seconds',{n:DUR/1000})) }
     window.ryseLogHealth=function(){ var inj=window.ryseActiveInjury&&window.ryseActiveInjury();
+      var ib=document.querySelector('#sh-hl [data-hl=injury]'), ic=ib.querySelector('.ic'); if(!ib._ico) ib._ico=ic.innerHTML; ic.innerHTML=inj?QA_REC_ICO:ib._ico; ib.classList.toggle('rec',!!inj);
       $('hl-t').textContent=rT('Log health'); $('hl-i-t').textContent=rT(inj?'Log recovery':'Injury'); $('hl-i-s').textContent=rT(inj?'Update how your recovery is going':'Where it hurts, type and dates');
       $('hl-h-t').textContent=rT('Daily health'); $('hl-h-s').textContent=rT('Heart rate and daily average'); $('hl-hr-t').textContent=rT('Heart rate'); $('hl-save').textContent=rT('Save'); $('hl-again').textContent=rT('Measure again'); $('hl-close').textContent=rT('Done');
       cancelAnimationFrame(HL.raf); HL.st=0; mode('pick'); openSheet('sh-hl') };
@@ -5224,9 +5226,10 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
 
   /* + menu: the injury tile becomes Log recovery while injured */
   var QA_INJ_ICO=null;
-  function qaInjTile(){ var h=document.querySelector('#qa [data-qa=health] b'); if(h) h.textContent=rT('Log health'); var t=document.querySelector('#qa [data-qa=injury]'); if(!t) return; if(!QA_INJ_ICO) QA_INJ_ICO=t.querySelector('svg').outerHTML; var on=!!activeInjury();
-    t.querySelector('svg').outerHTML=on?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/><path d="M9 12.5l2 2 4-4.5"/></svg>':QA_INJ_ICO;
-    t.querySelector('b').textContent=rT(on?'Log recovery':'Log injury'); t.classList.toggle('rec',on) }
+  var QA_REC_ICO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/><path d="M9 12.5l2 2 4-4.5"/></svg>';
+  /* while injured the Log health tile shows the recovery mark in orange; back to the heart once the player is ready */
+  function qaInjTile(){ var t=document.querySelector('#qa [data-qa=health]'); if(!t) return; if(!QA_INJ_ICO) QA_INJ_ICO=t.querySelector('svg').outerHTML; var on=!!activeInjury();
+    t.querySelector('svg').outerHTML=on?QA_REC_ICO:QA_INJ_ICO; t.querySelector('b').textContent=rT('Log health'); t.classList.toggle('rec',on) }
   window.ryseQaInjTile=qaInjTile;
 
   /* Sheets: tap anywhere outside closes; drag the top handle down to dismiss (Ivan, 16 Oct) */
