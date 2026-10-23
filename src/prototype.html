@@ -2976,7 +2976,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .lv-note .ic{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:rgba(79,139,255,.16);color:#8FB0FF}.lv-note .ic svg{width:19px;height:19px}
 .lv-note b{display:block;font:600 15px/1.25 var(--font-body);color:var(--s-text,#F5F7FB)}.lv-note small{display:block;margin-top:5px;font:500 13px/1.45 var(--font-body);color:var(--s-mut,rgba(200,207,221,.8))}
 /* Public opinion · design 5 (Ivan, 23 Oct): stock-style line, drag to scrub; red → orange → blue */
-.po-lv{cursor:default}
+.po-lv{cursor:default;overflow:hidden}
 .po-now{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin-top:12px}
 .po-now .po-sc b{font-size:40px;transition:color .25s ease}
 .po-now .dt{font:500 12.5px/1.2 var(--font-body);color:rgba(200,207,221,.75);font-variant-numeric:tabular-nums}
@@ -5482,17 +5482,17 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     var k=p==='6m'?6:12, now=new Date(), dl=poDF({month:'short',year:'numeric'}), ds=poDF({month:'short'});
     return PO_M.slice(-k).map(function(v,i){ var d=new Date(now.getFullYear(),now.getMonth()-(k-1-i),1); return {l:dl.format(d).replace('.',''),s:ds.format(d).replace('.',''),v:v,n:PO_N[12-k+i]} }) }
   var PO_LO=5.5, PO_HI=8.6;
-  function poX(i,n){ return n<2?50:3+i*94/(n-1) } function poY(v){ return 6+(PO_HI-v)/(PO_HI-PO_LO)*88 }
+  function poX(i,n){ return n<2?50:i*100/(n-1) } function poY(v){ return 6+(PO_HI-v)/(PO_HI-PO_LO)*88 }
   function poNews(){ var me=((P.first||'')+' '+(P.last||'')).trim(); return ((typeof RY_NEWS!=='undefined'&&RY_NEWS[me])||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }) }
   var PO_CHEV='<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function poLive(p,k){ var e=SE(), S=poSer(p), n=S.length, id='pog'+(k||'h');
-    var d=S.map(function(q,i){ return (i?'L':'M')+poX(i,n).toFixed(2)+' '+poY(q.v).toFixed(2) }).join(' ');
+    var d=S.map(function(q,i){ return 'L'+poX(i,n).toFixed(2)+' '+poY(q.v).toFixed(2) }).join(' '), dx='M-30 '+poY(S[0].v).toFixed(2)+' '+d+' L130 '+poY(S[n-1].v).toFixed(2);
     var st=[8.3,7.3,7.0,6.6,6.3,5.5].map(function(v){ return '<stop offset="'+((PO_HI-v)/(PO_HI-PO_LO)).toFixed(3)+'" stop-color="'+poCol(v)+'"/>' }).join('');
     var every=n>12?7:1, ax=S.map(function(q,i){ return (i%every===0||i===n-1)&&!(n>12&&i!==n-1&&n-1-i<4)?'<span style="left:'+poX(i,n).toFixed(2)+'%">'+e(q.s)+'</span>':'' }).join('');
     return '<div class="po-hd"><span class="k">'+e(rT('Public opinion'))+'</span><span class="po-pm">'+PO_CK+'Premium</span></div>'+
       '<div class="po-now"><div class="po-sc"><b data-s></b><em>/10</em></div><span class="dt" data-dt></span><button type="button" class="po-art" data-po-news></button></div>'+
       '<div class="po-pl" data-pl><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="'+id+'l" x1="0" y1="'+poY(PO_HI)+'" x2="0" y2="'+poY(PO_LO)+'" gradientUnits="userSpaceOnUse">'+st+'</linearGradient><linearGradient id="'+id+'a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FA2FF" stop-opacity=".2"/><stop offset="1" stop-color="#7FA2FF" stop-opacity="0"/></linearGradient></defs>'+
-        '<path d="'+d+' L'+poX(n-1,n)+' 100 L'+poX(0,n)+' 100 Z" fill="url(#'+id+'a)"/><path d="'+d+'" fill="none" stroke="url(#'+id+'l)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><i class="cur" data-cur></i><i class="dot" data-dot></i></div>'+
+        '<path d="'+dx+' L130 100 L-30 100 Z" fill="url(#'+id+'a)"/><path d="'+dx+'" fill="none" stroke="url(#'+id+'l)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><i class="cur" data-cur></i><i class="dot" data-dot></i></div>'+
       '<div class="po-ax">'+ax+'</div><div class="po-split" data-sp></div><div class="po-sl" data-sl></div><span class="po-hl" data-hl></span>'+
       '<div class="hr-seg" role="tablist">'+[['1m','Last month'],['6m','6 months'],['1y','Year']].map(function(x){ return '<button type="button" role="tab" data-pop="'+x[0]+'" aria-selected="'+(p===x[0])+'">'+e(rT(x[1]))+'</button>' }).join('')+'</div>' }
   /* Smooth scrub (Ivan, 23 Oct): the finger moves day by day along the line; the dot glides on the line, the score counts 0.1 at a time
@@ -5529,13 +5529,17 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(L.length) h+=pH('Latest coverage')+'<div class="po-list">'+L.map(function(a,i){ var sc=PO_SENT[i]||'n', col=sc==='p'?'#6F98FF':(sc==='x'?'#EE7D7D':'rgba(200,207,221,.45)'); return '<a href="'+e(a.u)+'" target="_blank" rel="noopener noreferrer"><span class="d" style="background:'+col+'"></span><span><b>'+e(a.t)+'</b><small>'+e(a.src)+' · '+e(rT(sc==='p'?'Positive':(sc==='x'?'Negative':'Neutral')))+'</small></span></a>' }).join('')+'</div>';
     return h+'<p class="pg-note" style="margin-top:12px">'+e(rT('Example data · scoring not final'))+'</p>' };
   (function(){ var drag=null;
-    function at(w,ev){ var pl=w.querySelector('[data-pl]'), r=pl.getBoundingClientRect(), n=poSer(w.dataset.p).length, f=((ev.clientX-r.left)/r.width*100-3)/94; poShow(w,f*(n-1)) }
-    function end(){ drag=null }
-    document.addEventListener('pointerdown',function(ev){ var pl=ev.target.closest('.po-lv [data-pl]'); if(!pl) return; drag=pl.closest('.po-lv'); at(drag,ev) });
+    function at(w,ev){ var pl=w.querySelector('[data-pl]'), r=pl.getBoundingClientRect(), n=poSer(w.dataset.p).length, f=(ev.clientX-r.left)/r.width; poShow(w,f*(n-1)) }
+    function stop(w){ clearTimeout(w._back); if(w._glide) cancelAnimationFrame(w._glide); w._glide=0 }
+    function glide(w){ var n=poSer(w.dataset.p).length, a=w._f, t0=0, dur=Math.min(1400,500+(n-1-a)/(n-1)*1100); if(a>=n-1.001) return;
+      function fr(ts){ if(!w.isConnected) return; if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/dur), ez=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2; poShow(w,a+(n-1-a)*ez); w._glide=k<1?requestAnimationFrame(fr):0 }
+      w._glide=requestAnimationFrame(fr) }
+    function end(){ if(!drag) return; var w=drag; drag=null; stop(w); w._back=setTimeout(function(){ glide(w) },3000) }
+    document.addEventListener('pointerdown',function(ev){ var pl=ev.target.closest('.po-lv [data-pl]'); if(!pl) return; drag=pl.closest('.po-lv'); stop(drag); at(drag,ev) });
     document.addEventListener('pointermove',function(ev){ if(drag) at(drag,ev) });
     document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
     document.addEventListener('click',function(ev){ var t;
-      if((t=ev.target.closest('.po-lv [data-pop]'))){ var w=t.closest('.po-lv'); w.dataset.p=t.dataset.pop; w.innerHTML=poLive(w.dataset.p,w.dataset.k); poShow(w,poSer(w.dataset.p).length-1,true); return }
+      if((t=ev.target.closest('.po-lv [data-pop]'))){ var w=t.closest('.po-lv'); clearTimeout(w._back); if(w._glide) cancelAnimationFrame(w._glide); w._glide=0; w.dataset.p=t.dataset.pop; w.innerHTML=poLive(w.dataset.p,w.dataset.k); poShow(w,poSer(w.dataset.p).length-1,true); return }
       if(ev.target.closest('.po-lv [data-po-news]')){ if(window.ryseOpenNews) window.ryseOpenNews() } }) })();
   /* ---------- Club verification · Scan team QR → confirm → request sent; status stays unverified until the team confirms ---------- */
   (function(){ var stream=null, timer=null, det=null;
