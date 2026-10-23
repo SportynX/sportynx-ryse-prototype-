@@ -4625,7 +4625,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     s16:function(){ var t=rT((P.access&&P.access.type==='trial')?'Your 7-day free trial has started.':'Included with your club’s RYSEON X plan.'); $('act-copy').textContent=(P.access&&P.access.type==='trial')?trialTxt(t):t },
     s05f:function(){ window.ryseFmRender&&window.ryseFmRender() },
     s15:function(){ var sc=$('s15'); if(!sc._o){ sc._o=['',sc.querySelector('.price b').textContent,$('trial-go').textContent,sc.querySelector('.fine').textContent] }
-      window.ryseSetH1(sc.querySelector('h1'),P.ambition==='already-pro'?trialTxt(rT('Start your|7-day free trial')):null); sc.querySelector('.price b').textContent=trialTxt(sc._o[1]); $('trial-go').textContent=trialTxt(sc._o[2]); sc.querySelector('.fine').textContent=trialTxt(sc._o[3]) },
+      window.ryseSetH1(sc.querySelector('h1'),trialTxt(rT('Start your|7-day free trial'))); sc.querySelector('.price b').textContent=trialTxt(sc._o[1]); $('trial-go').textContent=trialTxt(sc._o[2]); sc.querySelector('.fine').textContent=trialTxt(sc._o[3]) },
     s17:function(){ window.ryseQA&&window.ryseQA(false); renderHome(); setTimeout(function(){ if(!localBio) openSheet('sh-bio') },1100) }};
 
   /* ---------- 15 Trial / RYSEON X ---------- */
@@ -4673,7 +4673,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       case 'club-no': P.club=null; go('s10'); break;
       case 'club-manual': P.club={name:clubDraft.name,location:clubDraft.country,country:clubDraft.country,source:'manual'}; go('s10'); break;
       case 'consent': go('s15'); break;
-      case 'trial': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading'); P.access={type:'trial',days:P.ambition==='already-pro'?15:7,price:'£11.99/month'}; go('s16') },1400); break;
+      case 'trial': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading'); P.access={type:'trial',days:15,price:'£11.99/month'}; go('s16') },1400); break;
       case 'restore': toast('No previous purchase found'); break;
       case 'daytona': $('d-copy').textContent=rT('Clubs, organisations and federations on RYSEON X can include RYSEON for their players. We’ll check whether your club gives you access.'); $('d-go').textContent=rT('Check access'); $('d-go').dataset.act='daytona-check'; openSheet('sh-daytona'); break;
       case 'daytona-check': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading');
@@ -5068,12 +5068,12 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   function healthOn(){ return P.consents&&P.consents.healthData!==false&&P.consents.healthData!==null?true:!!(P.settings&&P.settings.healthOn) }
   function guardianV(){ var s=P.guardian&&P.guardian.status; return s==='approved'?['Approved','ok']:(s==='requested'?['Pending','warn']:['Not requested','warn']) }
   /* professional players get 15 days free instead of 7 (same price after the trial) */
-  function trialTxt(t){ return P.ambition==='already-pro'?String(t).replace(/7(?![0-9])/g,'15').replace(/(^|[^0-9])٧(?![٠-٩])/g,'$1١٥'):t }
+  function trialTxt(t){ /* 15-day free trial for everyone (Ivan, 24 Oct) */ return true?String(t).replace(/7(?![0-9])/g,'15').replace(/(^|[^0-9])٧(?![٠-٩])/g,'$1١٥'):t }
   window.ryseTrialTxt=trialTxt;
   function planInfo(){ var A=P.access||{type:'trial'}; if(!P.trialStart){ P.trialStart=Date.now() }
     if(A.type==='daytona') return {type:'daytona',name:'Included with your club',short:'Included with your club'};
     if(A.type==='monthly') return {type:'monthly',name:'RYSEON Monthly',short:'RYSEON Monthly'};
-    var end=new Date(P.trialStart+(P.ambition==='already-pro'?15:7)*864e5), left=Math.max(0,Math.ceil((end-Date.now())/864e5)); return {type:'trial',name:'7-day free trial',short:rTp('{n} days left',left),end:end,left:left} }
+    var end=new Date(P.trialStart+(15)*864e5), left=Math.max(0,Math.ceil((end-Date.now())/864e5)); return {type:'trial',name:'7-day free trial',short:rTp('{n} days left',left),end:end,left:left} }
 
   function clubBadge(short){ if(P.club&&P.club.verified) return '<span class="vbadge vok">'+SE()(rT('Verified'))+' ✓</span>'; return (P.club&&!P.club.verified)?'<span role="button" tabindex="0" class="vbadge" data-info="clubverify">'+SE()(rT(P.club.pending==='article'?(short?'Pending':'Verification pending'):(short?'Unverified':'Needs verification')))+'</span>':'' }
   function phoneNudge(){ if(P.phone) return ''; var e=SE(); return '<button type="button" class="ph-nudge" data-pg="phone"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+SI.phone+'</svg></span><span class="t"><b>'+e(rT('Add your phone number'))+'</b><small>'+e(rT('Secure your account and help your club verify you.'))+'</small></span>'+CHV+'</button>' }
@@ -7249,7 +7249,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
       if(!saved||!saved.first) saved={first:'Joško',last:'Gvardiol',photo:window.RYSE_TEST_PHOTO||'',dob:'2009-05-12',sex:'Male',country:'Croatia',club:MC,clubCountry:'England',level:'Academy',shirt:23,
         positions:{primary:'CB',secondary:['LB']},foot:'Left',height:185,weight:80,strengths:['Vision','Technique'],improve:['Speed'],roleModels:{CB:['Virgil van Dijk','Rúben Dias','William Saliba']}};
       Object.keys(saved).forEach(function(k){ if(k!=='locale') P[k]=saved[k] });
-      if(!P.access) P.access={type:'trial',days:7};
+      if(!P.access) P.access={type:'trial',days:15};
       window.ryseGo('s16') },2000) });
   ['pointerup','pointerleave','pointercancel'].forEach(function(n){ lg.addEventListener(n,endHold) });
 
@@ -7387,7 +7387,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792792576',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+(function(){var B='1792792832',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
   fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
   addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
 </script>
