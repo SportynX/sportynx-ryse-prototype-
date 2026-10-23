@@ -6200,7 +6200,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     $('tp-v').textContent=v.toLocaleString(locN(),{minimumFractionDigits:1,maximumFractionDigits:1}); $('tp-v').style.color=col;
     $('tp-s').textContent=rT(v<37.3?'Normal':(v<38?'Slightly raised':(v<39.5?'Fever':'High fever'))); $('tp-s').style.color=col; $('tp-l').textContent=rT('Set your temperature'); b3Tint(); d.setAttribute('aria-valuenow',v); $('b3d-temp').hidden=false }
   (function(){ var d=$('tp-dial'), drag=false;
-    function at(ev){ var r=d.getBoundingClientRect(), x=ev.clientX-r.left-r.width/2, y=ev.clientY-r.top-r.height/2, deg=Math.atan2(y,x)*180/Math.PI; if(deg<0) deg+=360; var rel=deg-135; if(rel<0) rel+=360; if(rel>270) rel=rel>315?0:270; var nt=Math.round((35+7*rel/270)*10)/10; if(nt!==B3.temp&&window.ryseTick) window.ryseTick(); B3.temp=nt; b3TempShow() }
+    function at(ev){ var r=d.getBoundingClientRect(), x=ev.clientX-r.left-r.width/2, y=ev.clientY-r.top-r.height/2, deg=Math.atan2(y,x)*180/Math.PI; if(deg<0) deg+=360; var rel=deg-135; if(rel<0) rel+=360; if(rel>270) rel=rel>315?0:270; var nt=Math.round((35+7*rel/270)*10)/10; if(nt!==B3.temp&&window.ryseTick) window.ryseTick(true); B3.temp=nt; b3TempShow() }
     d.addEventListener('pointerdown',function(ev){ drag=true; d.setPointerCapture(ev.pointerId); at(ev); b3Ill(); ev.stopPropagation() });
     d.addEventListener('pointermove',function(ev){ if(drag){ at(ev); ev.stopPropagation() } });
     d.addEventListener('pointerup',function(){ drag=false });
@@ -6606,7 +6606,7 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
     tk.innerHTML=h; el.setAttribute('aria-valuemin',0); el.setAttribute('aria-valuemax',o.max);
     function draw(){ var f=cur/o.max, a=f*Math.PI*2; v.style.strokeDasharray=(f*1000)+' 1000'; k.setAttribute('cx',(120+Math.sin(a)*R).toFixed(2)); k.setAttribute('cy',(120-Math.cos(a)*R).toFixed(2));
       num.textContent=cur; lab.textContent=rT(o.label); el.setAttribute('aria-valuenow',cur); el.setAttribute('aria-valuetext',rT('{n} min',{n:cur})) }
-    function set(n){ n=Math.max(0,Math.min(o.max,n)); if(n===cur) return; cur=n; draw(); if(drag&&window.ryseTick) window.ryseTick(); o.onChange&&o.onChange(cur) }
+    function set(n){ n=Math.max(0,Math.min(o.max,n)); if(n===cur) return; cur=n; draw(); if(drag&&window.ryseTick) window.ryseTick(true); o.onChange&&o.onChange(cur) }
     function at(ev){ var b=svg.getBoundingClientRect(), x=ev.clientX-b.left-b.width/2, y=ev.clientY-b.top-b.height/2, a=Math.atan2(x,-y); if(a<0) a+=Math.PI*2;
       var n=Math.round(a/(Math.PI*2)*o.max/o.step)*o.step;
       /* no wrap-around: crossing the top from either side stops at 0 or the maximum */
@@ -6858,17 +6858,19 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
 /* ================= Feel: haptic tick + soft gear click (Ivan, 23 Oct) =================
    ryseHaptic(): a light tap. Android uses vibrate(); iPhone Safari has no vibrate, so a hidden iOS switch control is toggled — iOS plays its own light haptic for it.
    ryseTick(): one gear "click" for wheels, rails and dials — a very short, quiet synthesized click plus the haptic, at most every 38 ms. Muted by the iPhone silent switch. */
-(function(){ var lab=null, ctx=null, buf=null, last=0;
-  function hEl(){ if(lab) return lab; lab=document.createElement('label'); lab.setAttribute('aria-hidden','true'); lab.style.cssText='position:fixed;left:-200px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
-    var i=document.createElement('input'); i.type='checkbox'; i.setAttribute('switch',''); i.tabIndex=-1; lab.appendChild(i); [lab,i].forEach(function(x){ x.addEventListener('click',function(e){ e.stopPropagation() }) }); document.body.appendChild(lab); return lab }
-  window.ryseHaptic=function(){ try{ if(navigator.vibrate&&!/iP(hone|ad|od)/.test(navigator.userAgent)){ navigator.vibrate(8); return } hEl().click() }catch(e){} };
+(function(){ var ctx=null, buf=null, last=0;
+  /* iPhone: a fresh hidden iOS switch is clicked and removed each time (the same trick the ios-haptics library uses) — iOS plays its light haptic for it */
+  window.ryseHaptic=function(){ try{ if(navigator.vibrate&&!/iP(hone|ad|od)/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1&&/Mac/.test(navigator.userAgent))){ navigator.vibrate(8); return }
+      var l=document.createElement('label'); l.ariaHidden='true'; l.style.display='none'; var i=document.createElement('input'); i.type='checkbox'; i.setAttribute('switch',''); l.appendChild(i);
+      l.addEventListener('click',function(e){ e.stopPropagation() }); i.addEventListener('click',function(e){ e.stopPropagation() });
+      document.head.appendChild(l); l.click(); document.head.removeChild(l) }catch(e){} };
   function ac(){ try{ if(!ctx){ var A=window.AudioContext||window.webkitAudioContext; if(!A) return null; ctx=new A(); try{ if(navigator.audioSession) navigator.audioSession.type='ambient' }catch(_){}
       var n=Math.floor(ctx.sampleRate*.014); buf=ctx.createBuffer(1,n,ctx.sampleRate); var d=buf.getChannelData(0);
       for(var j=0;j<n;j++){ var t=j/n; d[j]=(Math.random()*2-1)*Math.pow(1-t,7)*.7+Math.sin(j/ctx.sampleRate*2*Math.PI*2600)*Math.pow(1-t,9)*.55 } }
     if(ctx.state==='suspended') ctx.resume(); return ctx }catch(e){ return null } }
   ['touchstart','touchend','pointerdown'].forEach(function(t){ document.addEventListener(t,function(){ ac() },{passive:true,capture:true}) });
-  window.ryseTick=function(){ var now=performance.now(); if(now-last<38) return; last=now;
-    try{ var c=ac(); if(c&&buf&&c.state==='running'){ var src=c.createBufferSource(), hp=c.createBiquadFilter(), g=c.createGain(); src.buffer=buf; hp.type='highpass'; hp.frequency.value=1400; g.gain.value=.16; src.connect(hp); hp.connect(g); g.connect(c.destination); src.start() } }catch(e){}
+  window.ryseTick=function(quiet){ var now=performance.now(); if(now-last<38) return; last=now;
+    try{ var c=quiet?null:ac(); if(c&&buf&&c.state==='running'){ var src=c.createBufferSource(), hp=c.createBiquadFilter(), g=c.createGain(); src.buffer=buf; hp.type='highpass'; hp.frequency.value=1400; g.gain.value=.16; src.connect(hp); hp.connect(g); g.connect(c.destination); src.start() } }catch(e){}
     window.ryseHaptic() };
 })();
 /* ================= Body, strengths, competition country ================= */
