@@ -3073,6 +3073,14 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .hnav-pill{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:26px;background:rgba(255,255,255,.075);pointer-events:none;z-index:0;opacity:0}
 .hnav-pill.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.hnav-pill{transition:none}}
+/* Bottom bar (Ivan, 23 Oct): ~0.5 cm from the screen edge; no black band above it — the tab panes scroll right behind the bar;
+   tab bar and + are lightly see-through glass so the page shows softly underneath */
+.hnav{bottom:max(12px,calc(env(safe-area-inset-bottom,0px) - 14px))}
+.qa{bottom:calc(max(12px,calc(env(safe-area-inset-bottom,0px) - 14px)) + 62px + 14px)}
+.screen.home{padding-bottom:0}
+.screen.home .pane{padding-bottom:calc(max(12px,calc(env(safe-area-inset-bottom,0px) - 14px)) + 62px + 28px)!important}
+.hnav-tabs{background:rgba(22,23,27,.58);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
+.hfab,.hfab[aria-expanded=true]{background:rgba(245,247,251,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
