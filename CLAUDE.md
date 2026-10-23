@@ -20,3 +20,6 @@ Live: https://sportynx.github.io/sportynx-ryse-prototype-/vantage/
 - Build: `python3 vantage/build.py` → `vantage/index.html`, then commit and push to `main`.
 - Home-screen icon: `vantage/icon-*.png` (textured gold-to-blue RY icon, Oct 2026). The logo is used only as the app icon, not inside the screens.
 - Same Claude artifact: "VANTAGE" — republish it from the same source.
+
+## Sport (RYSEON, 23 Oct 2026)
+After the language comes the sport picker (`sSport`). Only Football and Tennis continue; the rest show Coming soon. `P.sport` drives everything: tennis wording comes from `RYSE_TEN_MAP` inside `rT()` (English football string → English tennis string, then translated), the tennis module is the last `<script>` in src/prototype.html (orb colour per sport, ATP ranking of 19 Oct 2026 for Find yourself, court surface screen `s11t`, tennis strengths, role models under `RYSE_PLAYERS.TEN`).
