@@ -3035,6 +3035,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 #sh-por .por-go:hover{background:#fff}#sh-por .por-go:active{transform:scale(.98)}
 #sh-por .por-pr{margin-top:10px;font:500 12.5px/1.3 var(--font-body);color:rgba(200,207,221,.75)}#sh-por .por-pr b{color:#F5F7FB;font-weight:600}
 #sh-por .later{align-self:center;height:40px;margin-top:4px;border:0;background:none;color:rgba(200,207,221,.8);font:600 14px/1 var(--font-body);cursor:pointer}
+#fm-act.fm-in{animation:paneIn .45s cubic-bezier(.2,.7,.2,1) both}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
@@ -3300,7 +3301,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       </div>
       <div class="fm rise d2" id="fm"></div>
       <div class="grow"></div>
-      <div class="actions rise d3" style="margin-top:22px">
+      <div class="actions rise d3" id="fm-act" style="margin-top:22px" hidden>
         <button class="btn btn-primary" type="button" id="fm-go" data-fm="me" disabled>That’s me</button>
         <div class="center-link"><button class="link muted" type="button" data-fm="manual">I can’t find myself — I’ll enter my details</button></div>
       </div>
@@ -4438,7 +4439,9 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       h+='<div class="cap" data-fms="sq">'+esc(rT('Squad · {club}',{club:FM.club}))+'</div>';
       if(!sq) h+='<p class="fm-empty">'+esc(rT('We’re still adding this squad. Enter your details yourself for now.'))+'</p>';
       else h+='<div class="club-list">'+sq.map(function(x,i){ return '<button type="button" data-fmp="'+i+'" aria-pressed="'+(FM.pi===i)+'"><span class="crest">'+initials(x[0])+'</span><span>'+esc(x[0])+'<span class="sub">'+(x[1]?esc(fmDob(x[1]))+' · ':'')+esc(countryName(x[2]))+'</span></span>'+natFlag(x[2])+FM_CK+'</button>' }).join('')+'</div>' }
-    $('fm').innerHTML=h; $('fm-go').disabled=FM.pi<0; fmRail() }
+    $('fm').innerHTML=h; $('fm-go').disabled=FM.pi<0; fmRail();
+    /* "That's me" and the manual link appear only once the squad list is open (Ivan, 23 Oct) */
+    var ac=$('fm-act'), show=!!FM.club; if(ac.hidden===show){ ac.hidden=!show; if(show){ ac.classList.remove('fm-in'); void ac.offsetWidth; ac.classList.add('fm-in') } } }
   /* Smooth (Ivan, 23 Oct): every flag's size, colour and ring follow its distance from the frame continuously while the finger moves.
      Nothing below shows until a country is really chosen — by swiping it into the frame or tapping it. */
   function fmRail(){ var tk=$('fm-track'); if(!tk) return; var it=[].slice.call(tk.children), cur=tk.querySelector('[data-fmc="'+FM.c+'"]')||it[0], tm=0, raf=0;
