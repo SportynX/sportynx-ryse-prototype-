@@ -2720,11 +2720,11 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hm-tip b{font:700 19px/1.2 var(--font-display);letter-spacing:-.01em}
 .hm-tip span{font:500 13px/1.45 var(--font-body);color:rgba(220,226,238,.85)}
 /* "I’m already a pro": muted champagne gold, premium but quiet */
-#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;color:#E8EEFB;border:1px solid rgba(170,192,240,.3)!important;background:linear-gradient(180deg,rgba(150,175,230,.09),rgba(120,150,220,.04))!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;color:#F2F6FF;border:1px solid rgba(140,172,255,.45)!important;background:radial-gradient(120% 160% at 50% -10%,rgba(92,138,255,.5),rgba(52,96,220,.32) 50%,rgba(28,56,150,.28) 100%)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(200,218,255,.18),0 10px 30px rgba(40,80,200,.25)}
 #s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:18px;height:18px;flex:none;opacity:.9}
-#s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(210,224,255,.13) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
+#s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(220,232,255,.22) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
 @keyframes proSheen{0%,62%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-#s01 .btn[data-choice=already-pro].is-selected{background:linear-gradient(180deg,rgba(150,175,230,.18),rgba(120,150,220,.1))!important;border-color:rgba(190,208,245,.55)!important}
+#s01 .btn[data-choice=already-pro].is-selected{background:radial-gradient(120% 160% at 50% -10%,rgba(110,152,255,.68),rgba(60,105,230,.45) 50%,rgba(32,64,170,.4) 100%)!important;border-color:rgba(180,202,255,.7)!important}
 #s01 .btn:has(.b2){flex-direction:column;gap:0}#s01 .btn small.b2{display:block;margin-top:5px;font:500 11px/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.82}
 /* Plan ahead (Ivan, 20 Oct): planned training hides effort/feelings/photos/muscle load; free recovery planning has no injury card */
 #s18.lt-plan .pl-hide{display:none}
@@ -5411,7 +5411,9 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   /* ---------- Onboarding: shirt number (ring draws round the number on Confirm) ---------- */
   (function(){ var inp=$('sn-in'), ok=$('sn-ok'), wrap=inp.closest('.sn-wrap');
     renderers.s12n=function(){ var v=window.ryseShirtNo?window.ryseShirtNo():null; inp.value=v!=null?String(v):''; ok.disabled=!inp.value; wrap.classList.remove('done'); setTimeout(function(){ try{ inp.focus({preventScroll:true}) }catch(_){} },420) };
-    inp.addEventListener('input',function(){ this.value=this.value.replace(/\D/g,'').slice(0,2); ok.disabled=!this.value; wrap.classList.toggle('has',!!this.value) });
+    var bt=0; inp.addEventListener('input',function(){ this.value=this.value.replace(/\D/g,'').slice(0,2); ok.disabled=!this.value; wrap.classList.toggle('has',!!this.value);
+      /* keyboard goes away by itself so Confirm is visible: at once after two digits, after a short pause after one */
+      clearTimeout(bt); var el=this; if(el.value.length===2) setTimeout(function(){ try{ el.blur() }catch(_){} },150); else if(el.value.length===1) bt=setTimeout(function(){ try{ el.blur() }catch(_){} },1400) });
     inp.addEventListener('keydown',function(ev){ if(ev.key==='Enter'&&!ok.disabled) ok.click() });
     ok.addEventListener('click',function(){ if(ok.disabled) return; P.shirt=+inp.value; try{ inp.blur() }catch(_){} ok.disabled=true; wrap.classList.remove('done'); void wrap.offsetWidth; wrap.classList.add('done'); if(navigator.vibrate) try{ navigator.vibrate(12) }catch(_){}
       setTimeout(function(){ go('s11') },1150) });
