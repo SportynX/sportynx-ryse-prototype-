@@ -4185,16 +4185,19 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   /* One continuous environment: only the content layer changes; the light canvas keeps running. */
   var stack=['sLang'], busy=false;
   function $(id){return document.getElementById(id)}
+  /* Never get stuck (Ivan, 23 Oct): if anything during a screen change fails, the change still finishes, and a lock older than 1.5 s is released */
+  var busyAt=0;
   function go(toId,isBack){
-    if(busy)return;
+    if(busy&&Date.now()-busyAt<1500)return;
     /* "I’m already a pro": never ask the playing level — it is Professional */
     var PR=window.ryseProfile; if(toId==='s10'&&PR&&PR.ambition==='already-pro'){ PR.level='Professional'; toId=isBack?'s07b':'s12' }
     /* Editing from Profile reuses the approved onboarding screens; when the flow would continue onboarding, return to Settings instead */
     var EM=window.ryseEdit;
     if(EM&&!isBack&&EM.exit.indexOf(toId)>-1){ var cur=stack[stack.length-1], R=EM.ret||'s21', k=stack.lastIndexOf(R); if(k>-1){ stack=stack.slice(0,k+1).concat([cur]); toId=R; isBack=true } window.ryseEdit=null; document.documentElement.removeAttribute('data-edit'); if(window.ryseEditDone) window.ryseEditDone(EM) }
     var from=$(stack[stack.length-1]), to=$(toId); if(!to||from===to)return;
-    busy=true;
+    busy=true; busyAt=Date.now();
     if(isBack)stack.pop(); else stack.push(toId);
+    try{
     if(toId==='s17')stack=['s17'];
     if(toId==='sLang'&&!window.ryseEdit)stack=['sLang'];
     if(window.ryseOnEnter)window.ryseOnEnter(to);
@@ -4207,13 +4210,15 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(window.ryseOrbAnchor){ if(to.id==='s16') window.ryseOrbAnchor(to.querySelector('.mark'),2600,Infinity);   // lands on the circle's centre as the circle closes
       else if(to.id==='s06') window.ryseOrbAnchor(to.querySelector('#avatar'),1600,2600);                          // starts in the photo circle, then drifts away
       else window.ryseOrbAnchor(null) }
+    }catch(err){ try{ console.error('screen change',err) }catch(_){} }
     from.classList.add('is-leaving'); from.setAttribute('aria-hidden','true');
-    setTimeout(function(){
+    setTimeout(function(){ try{
       from.classList.add('is-hidden'); from.classList.remove('is-leaving');
       // replay this screen's entrance each time it appears
       to.querySelectorAll('.line-in,.rise,.concepts,.concepts li,.anim,.flow,.core-ring').forEach(function(el){el.style.animation='none';void el.getBoundingClientRect();el.style.animation=''});
       to.querySelectorAll('.concepts').forEach(function(c){c.classList.remove('play');void c.offsetWidth;c.classList.add('play')});
       to.querySelectorAll('.is-selected').forEach(function(el){el.classList.remove('is-selected')});
+      }catch(err){ try{ console.error('screen change',err) }catch(_){} }
       to.classList.remove('is-hidden'); to.removeAttribute('aria-hidden');
       busy=false;
     },450);
@@ -4222,7 +4227,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   function back(){ if(stack.length>1) go(stack[stack.length-2],true); }
   window.ryseGo=function(id){go(id)};
   document.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b||busy)return;
+    var b=e.target.closest('button'); if(!b||(busy&&Date.now()-busyAt<1500))return;
     if(b.hasAttribute('data-back')) return back();
     if(b.dataset.choice){ var PP=window.ryseProfile||{}; PP.ambition=b.dataset.choice; document.documentElement.toggleAttribute('data-pro',PP.ambition==='already-pro'); b.classList.add('is-selected'); setTimeout(function(){go('s02')},240); return; }
     if(b.dataset.placeholder){ $('ph-title').textContent=rT(b.dataset.placeholder); b.classList.add('is-selected'); setTimeout(function(){go('screen-next')},200); return; }
@@ -6998,6 +7003,8 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   window.ryseMapTaps=taps;
   Object.defineProperty(window,'__cam',{get:function(){return cam}});
   $('lang-go').addEventListener('click',function(ev){ if(holdFired){ holdFired=false; ev.stopImmediatePropagation(); return } window.ryseGo('screen-intro') });
+  /* iOS fallback: if the tap's click never arrives, the touch itself continues (only while the language screen is still showing) */
+  $('lang-go').addEventListener('touchend',function(){ setTimeout(function(){ var L=$('sLang'); if(!holdFired&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')) window.ryseGo('screen-intro') },380) },{passive:true});
   /* Prototype shortcut: hold Continue for 2 s → straight to the last onboarding screen ("Start your journey") with the last profile you created */
   var holdT=0, holdFired=false, lg=$('lang-go');
   function endHold(){ clearTimeout(holdT); lg.classList.remove('holding') }
