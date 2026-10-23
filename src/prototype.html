@@ -3042,7 +3042,6 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .hnav-tab{z-index:1}
 .hnav-pill{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:26px;background:rgba(255,255,255,.075);pointer-events:none;z-index:0;opacity:0}
 .hnav-pill.on{opacity:1}
-.hnav-hap{position:absolute;top:0;bottom:0;height:100%;margin:0;padding:0;z-index:2;opacity:.001;cursor:pointer;-webkit-tap-highlight-color:transparent}
 @media (prefers-reduced-motion:reduce){.hnav-pill{transition:none}}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
@@ -6805,10 +6804,7 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
       bar.animate([{transform:'scale(1)'},{transform:'scale(1.035)',offset:.35},{transform:'scale(1)'}],{duration:560,easing:'cubic-bezier(.3,.7,.25,1)'});
       pill.style.left=b.x+'px'; pill.style.width=b.w+'px'; anim.onfinish=function(){ anim=null } };
     setTimeout(place,0);
-    /* Real-tap haptics: an invisible native iOS switch sits over every tab, so the finger itself toggles it and iOS plays its own tap; the tap is then passed on to the tab */
-    [].forEach.call(bar.querySelectorAll('.hnav-tab'),function(tab){ var sw=document.createElement('input'); sw.type='checkbox'; sw.setAttribute('switch',''); sw.className='hnav-hap'; sw.tabIndex=-1; sw.setAttribute('aria-hidden','true');
-      bar.appendChild(sw); function pos(){ sw.style.left=tab.offsetLeft+'px'; sw.style.width=tab.offsetWidth+'px' } pos(); try{ new ResizeObserver(pos).observe(tab) }catch(_){}
-      sw.addEventListener('click',function(e){ e.stopPropagation(); setTimeout(function(){ tab.click() },0) }) }) })();
+  })();
   document.addEventListener('click',function(ev){ var t=ev.target.closest('[data-hstate],[data-home],[data-tab]'); if(!t)return;
     if(t.dataset.hstate){ HOME.state=t.dataset.hstate; renderHome(); return }
     if(t.dataset.tab){ var tb=t.dataset.tab;
@@ -6865,10 +6861,8 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
    ryseTick(): one gear "click" for wheels, rails and dials — a very short, quiet synthesized click plus the haptic, at most every 38 ms. Muted by the iPhone silent switch. */
 (function(){ var ctx=null, buf=null, last=0;
   /* iPhone: a fresh hidden iOS switch is clicked and removed each time (the same trick the ios-haptics library uses) — iOS plays its light haptic for it */
-  window.ryseHaptic=function(){ try{ if(navigator.vibrate&&!/iP(hone|ad|od)/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1&&/Mac/.test(navigator.userAgent))){ navigator.vibrate(8); return }
-      var l=document.createElement('label'); l.ariaHidden='true'; l.style.display='none'; var i=document.createElement('input'); i.type='checkbox'; i.setAttribute('switch',''); l.appendChild(i);
-      l.addEventListener('click',function(e){ e.stopPropagation() }); i.addEventListener('click',function(e){ e.stopPropagation() });
-      document.head.appendChild(l); l.click(); document.head.removeChild(l) }catch(e){} };
+  /* Haptics are left for the native App Store app (Ivan, 23 Oct): iOS 26.5+ no longer lets web apps vibrate. Android still gets a light vibrate(). */
+  window.ryseHaptic=function(){ try{ if(navigator.vibrate&&!/iP(hone|ad|od)/.test(navigator.userAgent)) navigator.vibrate(8) }catch(e){} };
   function ac(){ try{ if(!ctx){ var A=window.AudioContext||window.webkitAudioContext; if(!A) return null; ctx=new A(); try{ if(navigator.audioSession) navigator.audioSession.type='ambient' }catch(_){}
       var n=Math.floor(ctx.sampleRate*.014); buf=ctx.createBuffer(1,n,ctx.sampleRate); var d=buf.getChannelData(0);
       for(var j=0;j<n;j++){ var t=j/n; d[j]=(Math.random()*2-1)*Math.pow(1-t,7)*.7+Math.sin(j/ctx.sampleRate*2*Math.PI*2600)*Math.pow(1-t,9)*.55 } }
