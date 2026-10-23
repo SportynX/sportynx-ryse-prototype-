@@ -35,7 +35,7 @@ img{max-width:100%}[hidden]{display:none!important}
 </script>
 """
 import re
-body = re.sub(r"<title>.*?</title>", "<title>RYSE</title>", body, count=1)
+body = re.sub(r"<title>.*?</title>", "<title>RYSEON</title>", body, count=1)
 i = body.index('<div class="stage">')
 doc = head + body[:i] + "</head>\n<body>\n" + body[i:] + "\n</body>\n</html>\n"
 (root / "index.html").write_text(doc)
