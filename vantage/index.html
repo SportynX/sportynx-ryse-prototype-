@@ -1403,7 +1403,7 @@ button:active{transition-duration:.08s}
 .lang-track.kr .lang-item{--k:0;opacity:calc(.45 + var(--k) * .55);transform:scale(calc(.86 + var(--k) * .14));transition:none;will-change:transform,opacity}
 @media (prefers-reduced-motion:reduce){.hnav-pill{transition:none}.aura canvas{transition:none}}
 /* Tab bar (Ivan, 23 Oct): the blur is inside the tab bar itself, and the bar sits about 0.5 cm from the bottom edge */
-.bnav{bottom:max(12px,calc(var(--sab) - 10px));background:rgba(22,23,27,.42);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
+.bnav{bottom:max(12px,calc(var(--sab) - 10px));left:max(18px,env(safe-area-inset-left,0px));right:max(18px,env(safe-area-inset-right,0px));background:rgba(22,23,27,.42);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
 </style>
 </head>
 <body>
