@@ -2900,12 +2900,16 @@ html[data-pro] .h-greet:not(.rank) .g2::after{content:"";display:inline-block;wi
 .fm-chips button{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:20px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#F5F7FB;font:500 14px/1 var(--font-body);cursor:pointer}
 .fm-chips button img{width:18px;height:18px;border-radius:50%;object-fit:cover}
 .fm-chips button[aria-pressed=true]{background:#F5F7FB;color:#0A0B0D;border-color:#F5F7FB}
-.fm .club-list{flex:none;overflow:visible;margin-top:0}
-.fm .club-list button .nat-flag{margin-left:auto}
-.fm .club-list button[aria-pressed=true]{background:rgba(61,123,255,.08)}
+.fm .club-list{flex:none;overflow:visible;margin-top:0;display:flex;flex-direction:column;gap:8px}
+.fm .club-list button{min-height:66px;padding:10px 14px 10px 10px;border:1px solid rgba(255,255,255,.07)!important;border-radius:20px;background:rgba(255,255,255,.025);transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .15s ease}
+.fm .club-list button:active{transform:scale(.985)}
+.fm .club-list button[aria-pressed=true]{border-color:rgba(111,152,255,.55)!important;background:linear-gradient(180deg,rgba(61,123,255,.16),rgba(61,123,255,.07))!important;box-shadow:0 0 0 1px rgba(111,152,255,.12) inset,0 8px 28px rgba(31,80,200,.22)}
+.fm .club-list button[aria-pressed=true] .crest{border-color:#9DB8FF;color:#DCE6FF;background:rgba(61,123,255,.18)}
+.fm .club-list button{gap:12px}.fm .club-list button>span:nth-child(2){min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fm .club-list .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fm .club-list button .nat-flag{margin-left:auto;flex:none;width:22px!important;height:22px!important}.fm .club-list button .nat-flag img{width:100%;height:100%}
 .fm .club-list .ck{margin-left:10px;width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:grid;place-items:center;box-sizing:border-box}
 .fm .club-list .ck svg{width:12px;height:12px;opacity:0}.fm .club-list button[aria-pressed=true] .ck{background:#4F82FF;border-color:#4F82FF}.fm .club-list button[aria-pressed=true] .ck svg{opacity:1}
-.fm-chg{margin-left:auto;font:600 13px/1 var(--font-body);color:#8FB0FF}
+.fm-chg{margin-left:auto;display:inline-flex;align-items:center;height:30px;padding:0 13px;border-radius:15px;background:rgba(255,255,255,.08);font:600 12.5px/1 var(--font-body);color:#CFE0FF}
 .fm-empty{padding:14px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);font:500 14px/1.45 var(--font-body);color:rgba(206,213,226,.85)}
 .fm-q{width:100%;margin-bottom:6px}
 #s05f .actions{position:sticky;bottom:calc((env(safe-area-inset-bottom,0px) + 34px)*-1);z-index:2;margin:22px calc(var(--gutter)*-1) calc((env(safe-area-inset-bottom,0px) + 34px)*-1)!important;padding:26px var(--gutter) calc(env(safe-area-inset-bottom,0px) + 30px);background:linear-gradient(180deg,rgba(10,11,13,0),#0A0B0D 22%)}
