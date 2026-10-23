@@ -22,4 +22,4 @@ Live: https://sportynx.github.io/sportynx-ryse-prototype-/vantage/
 - Same Claude artifact: "VANTAGE" — republish it from the same source.
 
 ## Sport (RYSEON, 23 Oct 2026)
-After the language comes the sport picker (`sSport`). Only Football and Tennis continue; the rest show Coming soon. `P.sport` drives everything: tennis wording comes from `RYSE_TEN_MAP` inside `rT()` (English football string → English tennis string, then translated), the tennis module is the last `<script>` in src/prototype.html (orb colour per sport, ATP ranking of 19 Oct 2026 for Find yourself, court surface screen `s11t`, tennis strengths, role models under `RYSE_PLAYERS.TEN`).
+After the language comes the sport picker (`sSport`). Only Football and Tennis continue; the rest show Coming soon. `P.sport` drives everything: tennis wording comes from `RYSE_TEN_MAP` inside `rT()` (English football string → English tennis string, then translated), the tennis module is the last `<script>` in src/prototype.html (ATP ranking of 19 Oct 2026 for Find yourself, court surface screen `s11t`, tennis strengths, role models under `RYSE_PLAYERS.TEN`).

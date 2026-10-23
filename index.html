@@ -7285,7 +7285,8 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
     var m=function(f){ return c.map(function(v){ return v*f }) }, w=c.map(function(v){ return v+(255-v)*.45 });
     return [m(.55),m(.42),m(.36),w,c,m(.66),m(.56)] }
   var cur=palOf('football'), tgt=cur;
-  window.ryseOrbSport=function(k){ tgt=palOf(k||'football') };
+  /* every sport keeps the RYSEON blue (Ivan, 23 Oct) — the orb no longer changes colour */
+  window.ryseOrbSport=function(k){ tgt=palOf('football') };
   window.ryseOrbPal=function(){ cur=cur.map(function(c,i){ return c.map(function(v,j){ return v+(tgt[i][j]-v)*.07 }) }); return cur };
   /* ---------- sport rail ---------- */
   var tk=$('sp-track'), dial=$('sp-dial'), items=[], sel=0, raf=0, tm=0;
@@ -7337,11 +7338,11 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 
   /* ---------- Tennis content (Ivan, 23 Oct): videos, drills, interviews and My news are tennis; Marin Čilić is the example player ---------- */
   window.ryseTenCover=function(i){ var bx=[260,120,300,170,220,90][i%6], by=[90,120,70,150,110,80][i%6], a=[18,-22,35,-8,52,-40][i%6];
-    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#151a10"/><stop offset="1" stop-color="#07090a"/></linearGradient>'+
-      '<radialGradient id="g" cx="'+(bx/400)+'" cy="'+(by/300)+'" r=".55"><stop offset="0" stop-color="#C4EC28" stop-opacity=".45"/><stop offset="1" stop-color="#C4EC28" stop-opacity="0"/></radialGradient></defs>'+
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10141f"/><stop offset="1" stop-color="#07090e"/></linearGradient>'+
+      '<radialGradient id="g" cx="'+(bx/400)+'" cy="'+(by/300)+'" r=".55"><stop offset="0" stop-color="#4F82FF" stop-opacity=".5"/><stop offset="1" stop-color="#4F82FF" stop-opacity="0"/></radialGradient></defs>'+
       '<rect width="400" height="300" fill="url(#b)"/><rect width="400" height="300" fill="url(#g)"/>'+
-      '<g fill="none" stroke="rgba(214,240,120,.32)" stroke-width="2"><path d="M120 120 L280 120 L360 300 L40 300 Z"/><path d="M140 120 L90 300 M260 120 L310 300 M128 168 L272 168 M200 168 L200 300"/><path d="M95 210 L305 210" stroke-dasharray="4 4" stroke="rgba(240,250,200,.5)"/></g>'+
-      '<g transform="translate('+bx+' '+by+') rotate('+a+')"><circle r="30" fill="#C4EC28"/><circle r="30" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="3"/><path d="M-26 -14 C-6 -6 -6 6 -26 14 M26 -14 C6 -6 6 6 26 14" fill="none" stroke="#f4fbe0" stroke-width="3.2" stroke-linecap="round"/></g></svg>';
+      '<g fill="none" stroke="rgba(143,176,255,.34)" stroke-width="2"><path d="M120 120 L280 120 L360 300 L40 300 Z"/><path d="M140 120 L90 300 M260 120 L310 300 M128 168 L272 168 M200 168 L200 300"/><path d="M95 210 L305 210" stroke-dasharray="4 4" stroke="rgba(220,230,255,.55)"/></g>'+
+      '<g transform="translate('+bx+' '+by+') rotate('+a+')"><circle r="30" fill="#E9EEF8"/><circle r="30" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="3"/><path d="M-26 -14 C-6 -6 -6 6 -26 14 M26 -14 C6 -6 6 6 26 14" fill="none" stroke="#8FB0FF" stroke-width="3.2" stroke-linecap="round"/></g></svg>';
     return 'data:image/svg+xml,'+encodeURIComponent(svg) };
   var C=window.ryseTenCover;
   window.RYSE_TEN_RY={
@@ -7372,7 +7373,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   /* ---------- tennis words on the shared onboarding screens ---------- */
   var TCH=["Serve", "Return", "Forehand", "Backhand", "Volley", "Net play", "Slice", "Drop shot", "Lob", "Smash", "Footwork", "Speed", "Endurance", "Power", "Consistency", "Match tactics", "Mental strength", "Focus under pressure"];
   function chipHTML(k){ return TCH.map(function(v){ var on=(P[k]||[]).indexOf(v)>-1; return '<button class="chip" type="button" aria-pressed="'+on+'" data-chip="'+esc(v)+'"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.5 8.5 3 3 6-6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>'+esc(rT(v))+'</span></button>' }).join('') }
-  function applySport(to){ var ten=P.sport==='tennis', id=to.id; document.documentElement.setAttribute('data-sport',P.sport||'football'); window.ryseTennisTheme(ten&&id!=='sSport'&&id!=='sLang');
+  function applySport(to){ var ten=P.sport==='tennis', id=to.id; document.documentElement.setAttribute('data-sport',P.sport||'football'); window.ryseTennisTheme(false);   /* tennis uses the same blue design as football (Ivan, 23 Oct) */
     if(id==='s12'){ var bo=to.querySelector('[data-val=Both]'); if(bo) bo.hidden=ten }
     if(id==='s12s'||id==='s12w'){ var g=to.querySelector('[data-chips]'), k=g.dataset.chips; if(g._fb===undefined) g._fb=g.innerHTML;
       if(ten){ P[k]=(P[k]||[]).filter(function(v){ return TCH.indexOf(v)>-1 }); g.innerHTML=chipHTML(k); g.classList.remove('with-gk') } else if(g.querySelector('[data-chip="Serve"]')){ g.innerHTML=g._fb }
@@ -7386,7 +7387,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792791521',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+(function(){var B='1792792576',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
   fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
   addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
 </script>
