@@ -5569,7 +5569,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     return PO_M.slice(-k).map(function(v,i){ var d=new Date(now.getFullYear(),now.getMonth()-(k-1-i),1); return {l:dl.format(d).replace('.',''),s:ds.format(d).replace('.',''),v:v,n:PO_N[12-k+i]} }) }
   var PO_LO=4.8, PO_HI=9.3;
   function poX(i,n){ return n<2?50:i*100/(n-1) } function poY(v){ return 6+(PO_HI-v)/(PO_HI-PO_LO)*88 }
-  function poNews(){ var me=((P.first||'')+' '+(P.last||'')).trim(); return ((typeof RY_NEWS!=='undefined'&&RY_NEWS[me])||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }) }
+  function poNews(){ var me=((P.first||'')+' '+(P.last||'')).trim(); return ((typeof RY_NEWS!=='undefined'&&(RY_NEWS[me]||RY_NEWS['Mateo Kovačić']))||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }) }
   var PO_CHEV='<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function poLive(p,k){ var e=SE(), S=poSer(p), n=S.length, id='pog'+(k||'h');
     var d=S.map(function(q,i){ return 'L'+poX(i,n).toFixed(2)+' '+poY(q.v).toFixed(2) }).join(' '), dx='M-30 '+poY(S[0].v).toFixed(2)+' '+d+' L130 '+poY(S[n-1].v).toFixed(2);
@@ -6476,7 +6476,7 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
     var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><defs><radialGradient id="g" cx="'+r[0]+'" cy="'+r[1]+'" r=".95"><stop offset="0" stop-color="'+c[0]+'"/><stop offset=".6" stop-color="'+c[1]+'"/><stop offset="1" stop-color="#05070D"/></radialGradient></defs><rect width="320" height="180" fill="url(#g)"/><g fill="none" stroke="'+c[2]+'" stroke-opacity=".22" stroke-width="1.4"><rect x="16" y="14" width="288" height="152" rx="3"/><path d="M160 14v152"/><circle cx="160" cy="90" r="30"/><rect x="16" y="54" width="40" height="72"/><rect x="264" y="54" width="40" height="72"/></g><circle cx="'+(60+i*37%200)+'" cy="'+(50+i*29%90)+'" r="5" fill="'+c[2]+'" fill-opacity=".55"/></svg>';
     return 'data:image/svg+xml,'+encodeURIComponent(svg) }
   window.ryseNewsFb=function(img){ if(img.dataset.done) return; img.dataset.done='1'; var i=+img.dataset.fb||0; img.src=(i===0&&RY_CLIPS[0]&&RY_CLIPS[0].cov)?RY_CLIPS[0].cov:nfbArt(i) };
-  function ryNews(){ var e=window.ryseUI&&window.ryseUI.esc||esc, me=((P.first||'')+' '+(P.last||'')).trim(), L=(RY_NEWS[me]||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }).slice(0,20), df;
+  function ryNews(){ var e=window.ryseUI&&window.ryseUI.esc||esc, me=((P.first||'')+' '+(P.last||'')).trim(), L=(RY_NEWS[me]||RY_NEWS['Mateo Kovačić']||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }).slice(0,20), df;
     try{ df=new Intl.DateTimeFormat(RYSE_I18N.code==='sr-Latn'?'sr-Latn':RYSE_I18N.code,{day:'numeric',month:'short',year:'numeric'}) }catch(_){ df=new Intl.DateTimeFormat('en',{day:'numeric',month:'short',year:'numeric'}) }
     var h='<div class="ry-nh"><b>'+e(rT('My news'))+window.ryseVB()+'</b><span>'+e(rT('The latest articles about you, newest first.'))+'</span></div>';
     if(!L.length) return h+'<p class="ry-empty">'+e(rT('We’re collecting the latest articles about you.'))+'</p>';
@@ -6486,7 +6486,7 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
   function ryNewsCard(a,i,df,gated){ var e=window.ryseUI&&window.ryseUI.esc||esc, p=a.d.split('-'), inner='<span class="cv"><img src="'+e(a.i)+'" alt="" loading="lazy" referrerpolicy="no-referrer" data-fb="'+i+'" onerror="window.ryseNewsFb(this)">'+(gated?'<span class="lock">Premium</span>':'<span class="lock on"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.8 8.3 2.7 2.7 5.7-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Premium</span>')+'</span><span class="tx"><span class="mt">'+e(a.src)+' <em>· '+e(df.format(new Date(+p[0],+p[1]-1,+p[2])))+'</em></span><h3>'+e(a.t)+'</h3>'+(gated?'':'<span class="go">'+e(rT('Read article'))+' ↗</span>')+'</span>';
     return gated?'<button type="button" class="ry-news" data-newsgate="1">'+inner+'</button>':'<a class="ry-news" href="'+e(a.u)+'" target="_blank" rel="noopener noreferrer">'+inner+'</a>' }
   /* Under All (professional players): one Latest news card under My latest videos — opens the Premium offer */
-  function ryLatestNews(){ var me=((P.first||'')+' '+(P.last||'')).trim(), L=(RY_NEWS[me]||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }); if(P.ambition!=='already-pro'||!L.length) return ''; var e=window.ryseUI&&window.ryseUI.esc||esc;
+  function ryLatestNews(){ var me=((P.first||'')+' '+(P.last||'')).trim(), L=(RY_NEWS[me]||RY_NEWS['Mateo Kovačić']||[]).slice().sort(function(a,b){ return a.d<b.d?1:-1 }); if(P.ambition!=='already-pro'||!L.length) return ''; var e=window.ryseUI&&window.ryseUI.esc||esc;
     return '<div class="ry-nh" style="padding-top:6px"><b>'+e(rT('Latest news'))+'</b></div>'+ryNewsCard(L[0],0,ryNewsDf(),true) }
   $('ry-list').addEventListener('click',function(ev){ var b=ev.target.closest('[data-newsgate]'); if(!b) return; ev.stopPropagation(); window.rysePremium() });
   /* My latest videos (professional players): always the first card under All */
