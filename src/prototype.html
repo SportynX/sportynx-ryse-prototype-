@@ -363,7 +363,7 @@ h1 .l3{animation-delay:.71s,2.7s}
 .opt[aria-pressed=true] .dot{border-color:#9DB8FF;background:#9DB8FF;box-shadow:0 0 0 4px rgba(157,184,255,.16)}
 
 /* Sheets — bottom panels over the dimmed screen */
-.scrim{position:absolute;inset:0;z-index:30;background:rgba(1,2,6,.55);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.scrim{position:absolute;inset:0;z-index:30;cursor:pointer;-webkit-tap-highlight-color:transparent;background:rgba(1,2,6,.55);opacity:0;pointer-events:none;transition:opacity .35s ease}
 .scrim.on{opacity:1;pointer-events:auto}
 .sheet{position:absolute;left:0;right:0;bottom:0;z-index:31;box-sizing:border-box;
   padding:10px var(--gutter) calc(env(safe-area-inset-bottom,0px) + 28px);border-radius:26px 26px 0 0;
@@ -502,7 +502,7 @@ h1 .l3{animation-delay:.71s,2.7s}
   transition:transform .3s cubic-bezier(.2,.8,.2,1),background-color .2s ease}
 .fab svg{width:24px;height:24px;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .fab[aria-expanded=true] svg{transform:rotate(45deg)}
-.home-dim{position:absolute;inset:0;z-index:7;background:rgba(1,2,6,.6);opacity:0;pointer-events:none;transition:opacity .3s ease;
+.home-dim{position:absolute;inset:0;z-index:7;cursor:pointer;background:rgba(1,2,6,.6);opacity:0;pointer-events:none;transition:opacity .3s ease;
   display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 112px)}
 .home-dim.on{opacity:1;pointer-events:auto}
 .home-dim span{font:600 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--ryse-grey)}
@@ -4132,7 +4132,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     {id:'ST',name:'Striker',x:50,y:7},
     {id:'LW',name:'Left Winger',x:15,y:15},{id:'RW',name:'Right Winger',x:85,y:15},
     {id:'AM',name:'Attacking Midfielder',x:50,y:23.5},
-    {id:'LM',name:'Left Midfielder',x:13,y:40},{id:'CM',name:'Central Midfielder',x:50,y:40},{id:'RM',name:'Right Midfielder',x:87,y:40},
+    {id:'LM',name:'Left Midfielder',x:22,y:40},{id:'CM',name:'Central Midfielder',x:50,y:40},{id:'RM',name:'Right Midfielder',x:78,y:40},
     {id:'DM',name:'Defensive Midfielder',x:50,y:56.5},
     {id:'LB',name:'Left Back',x:13,y:63.5},{id:'LCB',name:'Left Centre Back',x:31,y:72.5},{id:'CB',name:'Centre Back',x:50,y:76},
     {id:'RCB',name:'Right Centre Back',x:69,y:72.5},{id:'RB',name:'Right Back',x:87,y:63.5},
@@ -4158,6 +4158,8 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   function openSheet(id){closeSheet(true);openSheetEl=$(id);openSheetEl._at=Date.now();$('scrim').classList.add('on');openSheetEl.classList.add('on');openSheetEl.removeAttribute('aria-hidden')}
   function closeSheet(instant){if(!openSheetEl)return;if(openSheetEl.id==='sh-voice'&&window.ryseVoiceStop)try{window.ryseVoiceStop()}catch(_){};openSheetEl.classList.remove('on');openSheetEl.setAttribute('aria-hidden','true');$('scrim').classList.remove('on');openSheetEl=null}
   $('scrim').addEventListener('click',function(){ if(openSheetEl&&openSheetEl.id==='sh-bio'){bioDone(false)} else closeSheet() });
+  /* iPhone: a tap on the dimmed area above any pop-up always closes it */
+  $('scrim').addEventListener('touchend',function(ev){ if(ev.changedTouches.length!==1) return; ev.preventDefault(); this.click() },{passive:false});
   var tt;function toast(msg){var t=$('toast');t.textContent=rT(msg);t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2400)}
   var TOTAL=13;
   window.ryseOnEnter=function(to){
