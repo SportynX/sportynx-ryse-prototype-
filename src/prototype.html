@@ -4292,7 +4292,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(FM.club){ var sq=FM_SQ[FM.club];
       h+='<div class="cap" data-fms="sq">'+esc(rT('Squad · {club}',{club:FM.club}))+'</div>';
       if(!sq) h+='<p class="fm-empty">'+esc(rT('We’re still adding this squad. Enter your details yourself for now.'))+'</p>';
-      else h+='<div class="club-list">'+sq.map(function(x,i){ return '<button type="button" data-fmp="'+i+'" aria-pressed="'+(FM.pi===i)+'"><span class="crest">'+initials(x[0])+'</span><span>'+esc(x[0])+'<span class="sub">'+esc(fmDob(x[1]))+' · '+esc(countryName(x[2]))+'</span></span>'+natFlag(x[2])+FM_CK+'</button>' }).join('')+'</div>' }
+      else h+='<div class="club-list">'+sq.map(function(x,i){ return '<button type="button" data-fmp="'+i+'" aria-pressed="'+(FM.pi===i)+'"><span class="crest">'+initials(x[0])+'</span><span>'+esc(x[0])+'<span class="sub">'+(x[1]?esc(fmDob(x[1]))+' · ':'')+esc(countryName(x[2]))+'</span></span>'+natFlag(x[2])+FM_CK+'</button>' }).join('')+'</div>' }
     $('fm').innerHTML=h; $('fm-go').disabled=FM.pi<0; if(sl!==null) $('fm-track').scrollLeft=sl }
   function fmTo(k){ setTimeout(function(){ var el=$('fm').querySelector('[data-fms="'+k+'"]'); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'}) },60) }
   window.ryseFmRender=fmRender;
