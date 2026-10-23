@@ -44,5 +44,13 @@ body='''</style>
 </div></div>
 <script>
 '''
-open(os.path.join(D,'index.html'),'w',encoding='utf-8').write(head+css+body+js+'\n</script>\n</body>\n</html>\n')
+import time
+BUILD=str(int(time.time()))
+# Auto-update on the phone: when the home-screen app opens or comes back, it checks for a newer build and reloads itself
+upd="""
+(function(){var B='"""+BUILD+"""',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+  fetch(location.pathname+'?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){busy=0;var m=t.match(/data-build="(\\d+)"/);if(m&&m[1]!==B) location.reload()}).catch(function(){busy=0})}
+  addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
+"""
+open(os.path.join(D,'index.html'),'w',encoding='utf-8').write(head.replace('<html lang="en">','<html lang="en" data-build="'+BUILD+'">')+css+body+js+'\n'+upd+'</script>\n</body>\n</html>\n')
 print('built vantage/index.html')
