@@ -3052,6 +3052,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .hnav-tabs{background:rgba(22,23,27,.58);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .hfab,.hfab[aria-expanded=true]{background:rgba(245,247,251,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .ry-chips button{border:1px solid rgba(255,255,255,.2)}.ry-chips button.on{border-color:#F5F7FB}   /* RYSEON filter chips keep a visible outline (Ivan, 24 Oct) */
+.avatar{clip-path:circle(50% at 50% 50%);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transform:translateZ(0)}.avatar:focus{outline:none}   /* no black square flash when tapped on iPhone (Ivan, 24 Oct) */
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
@@ -4549,7 +4550,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(t.dataset.jump){ window.ryseGo(t.dataset.jump); return }
     if(t.id==='fab'){ window.ryseQA(t.getAttribute('aria-expanded')!=='true'); return }
     switch(a){
-      case 'photo': $('photo-lib').click(); break;  /* iOS/Android show their own Photo Library / Take Photo menu — no second sheet */
+      case 'photo': try{ if(document.activeElement&&document.activeElement.blur) document.activeElement.blur() }catch(_){} $('photo-lib').click(); break;  /* iOS/Android show their own Photo Library / Take Photo menu — no second sheet */
       case 'photo-lib': $('photo-lib').click(); break;
       case 'photo-cam': $('photo-cam').click(); break;
       case 'photo-continue': go(P.found?'s07v':'s07'); break;
