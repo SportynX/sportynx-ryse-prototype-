@@ -7198,5 +7198,10 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 
 </script>
 
+<script>
+(function(){var B='1792787999',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+  fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
+  addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
+</script>
 </body>
 </html>

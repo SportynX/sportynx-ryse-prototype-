@@ -38,5 +38,17 @@ import re
 body = re.sub(r"<title>.*?</title>", "<title>RYSEON</title>", body, count=1)
 i = body.index('<div class="stage">')
 doc = head + body[:i] + "</head>\n<body>\n" + body[i:] + "\n</body>\n</html>\n"
+# Auto-update on the phone (Ivan, 23 Oct): the home-screen app keeps an old copy, so when it opens or comes back to the front
+# it reads the tiny version.json and reloads itself if a newer build is live
+import time, json
+BUILD = str(int(time.time()))
+upd = """<script>
+(function(){var B='""" + BUILD + """',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+  fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
+  addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
+</script>
+"""
+doc = doc.replace("\n</body>\n</html>\n", "\n" + upd + "</body>\n</html>\n")
+(root / "version.json").write_text(json.dumps({"b": BUILD}))
 (root / "index.html").write_text(doc)
 print("index.html built,", len(doc), "bytes")
