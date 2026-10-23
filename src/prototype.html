@@ -2720,11 +2720,11 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hm-tip b{font:700 19px/1.2 var(--font-display);letter-spacing:-.01em}
 .hm-tip span{font:500 13px/1.45 var(--font-body);color:rgba(220,226,238,.85)}
 /* "I’m already a pro": muted champagne gold, premium but quiet */
-#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;color:#EAD7AE;border:1px solid rgba(214,180,118,.55)!important;background:linear-gradient(180deg,rgba(176,140,82,.26),rgba(98,74,38,.22))!important;box-shadow:inset 0 1px 0 rgba(255,236,196,.18),0 8px 26px rgba(120,88,36,.22)}
-#s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:18px;height:18px;flex:none;filter:drop-shadow(0 0 6px rgba(240,206,140,.35))}
-#s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,232,186,.16) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
+#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;color:#E8EEFB;border:1px solid rgba(170,192,240,.3)!important;background:linear-gradient(180deg,rgba(150,175,230,.09),rgba(120,150,220,.04))!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+#s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:18px;height:18px;flex:none;opacity:.9}
+#s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(210,224,255,.13) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
 @keyframes proSheen{0%,62%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-#s01 .btn[data-choice=already-pro].is-selected{background:linear-gradient(180deg,rgba(196,160,96,.4),rgba(120,90,45,.32))!important;border-color:rgba(230,198,140,.8)!important}
+#s01 .btn[data-choice=already-pro].is-selected{background:linear-gradient(180deg,rgba(150,175,230,.18),rgba(120,150,220,.1))!important;border-color:rgba(190,208,245,.55)!important}
 #s01 .btn:has(.b2){flex-direction:column;gap:0}#s01 .btn small.b2{display:block;margin-top:5px;font:500 11px/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.82}
 /* Plan ahead (Ivan, 20 Oct): planned training hides effort/feelings/photos/muscle load; free recovery planning has no injury card */
 #s18.lt-plan .pl-hide{display:none}
@@ -3024,7 +3024,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       </div>
       <div class="actions choices rise d3" role="group" aria-label="Your goal">
         <button class="btn btn-primary" type="button" data-choice="pro">Yes, that’s my goal</button>
-        <button class="btn btn-quiet" type="button" data-choice="already-pro"><span class="pro-l"><svg class="pro-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="pro-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E2B4"/><stop offset="1" stop-color="#B98E4E"/></linearGradient></defs><circle cx="12" cy="12" r="10.2" stroke="url(#pro-g)" stroke-width="1.2" opacity=".85"/><path d="M12 5.6 13.6 10.4 18.4 12 13.6 13.6 12 18.4 10.4 13.6 5.6 12 10.4 10.4Z" fill="url(#pro-g)"/></svg><span>I’m already a pro</span></span><small class="b2">keep improving</small></button>
+        <button class="btn btn-quiet" type="button" data-choice="already-pro"><span class="pro-l"><svg class="pro-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="pro-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2F6FF"/><stop offset="1" stop-color="#9DB4E8"/></linearGradient></defs><circle cx="12" cy="12" r="10.2" stroke="url(#pro-g)" stroke-width="1.2" opacity=".85"/><path d="M12 5.6 13.6 10.4 18.4 12 13.6 13.6 12 18.4 10.4 13.6 5.6 12 10.4 10.4Z" fill="url(#pro-g)"/></svg><span>I’m already a pro</span></span><small class="b2">keep improving</small></button>
       </div>
     </section>
 
@@ -3033,7 +3033,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       <button class="nav-back" type="button" data-back aria-label="Back">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="nav-skip" type="button" data-go="s05">Skip</button>
+      
       <div class="visual"><svg viewBox="0 0 340 180" class="sig" aria-hidden="true">
   <line x1="0" y1="40" x2="340" y2="40" class="hair"/><line x1="0" y1="90" x2="340" y2="90" class="hair"/><line x1="0" y1="140" x2="340" y2="140" class="hair"/>
   <g class="flow f-a"><path d="M0,107.4 L6,106.6 L12,104.9 L18,102.5 L24,99.4 L30,95.9 L36,92.4 L42,89.2 L48,86.7 L54,85.0 L60,84.2 L66,84.0 L72,84.4 L78,85.0 L84,85.4 L90,85.4 L96,84.9 L102,83.7 L108,82.2 L114,80.4 L120,78.7 L126,77.5 L132,77.1 L138,77.5 L144,78.9 L150,81.2 L156,84.0 L162,87.0 L168,90.0 L174,92.5 L180,94.4 L186,95.6 L192,96.2 L198,96.3 L204,96.3 L210,96.5 L216,97.2 L222,98.5 L228,100.5 L234,103.1 L240,106.1 L246,109.1 L252,111.7 L258,113.7 L264,114.9 L270,115.1 L276,114.4 L282,113.0 L288,111.2 L294,109.4 L300,107.8 L306,106.7 L312,106.3 L318,106.3 L324,106.8 L330,107.3 L336,107.5 L342,107.2 L348,106.1 L354,104.2 L360,101.5 L366,98.2 L372,94.7 L378,91.3 L384,88.3 L390,86.1 L396,84.6 L402,84.0 L408,84.1 L414,84.6 L420,85.1 L426,85.4 L432,85.3 L438,84.6 L444,83.3 L450,81.6 L456,79.8 L462,78.3 L468,77.3 L474,77.1 L480,77.9 L486,79.6 L492,82.1 L498,85.0 L504,88.0 L510,90.9 L516,93.2 L522,94.9 L528,95.8 L534,96.2 L540,96.3 L546,96.3 L552,96.7 L558,97.6 L564,99.1 L570,101.3 L576,104.1 L582,107.1 L588,110.0 L594,112.5 L600,114.2 L606,115.1 L612,114.9 L618,114.0 L624,112.4 L630,110.6 L636,108.8 L642,107.4 L648,106.5 L654,106.2 L660,106.5 L666,106.9 L672,107.4 L678,107.5" pathLength="1" class="ln ln-3 draw anim" style="--d:.2s"/></g>
@@ -3053,7 +3053,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       <button class="nav-back" type="button" data-back aria-label="Back">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <button class="nav-skip" type="button" data-go="s05">Skip</button>
+      
       <div class="visual"><svg viewBox="0 0 340 200" class="net" aria-hidden="true">
   <line x1="170" y1="96" x2="116" y2="40" pathLength="1" class="edge draw anim" style="--d:0.25s"/>
   <line x1="170" y1="96" x2="216" y2="26" pathLength="1" class="edge draw anim" style="--d:0.30s"/>
