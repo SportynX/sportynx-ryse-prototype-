@@ -21,9 +21,18 @@ head = """<!doctype html>
 html{background:#03050A;-webkit-text-size-adjust:100%}
 html,body{height:100%;margin:0;overscroll-behavior:none}
 body{position:fixed;inset:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+/* Home-screen app on newer iPhones (Pro Max): iOS can report a viewport a little shorter than the screen, leaving a black strip at the bottom.
+   Size the app to the full screen height instead (Ivan, 23 Oct). */
+html.ryse-fs,html.ryse-fs body{height:var(--app-h)}html.ryse-fs body{bottom:auto}
 input,textarea{-webkit-user-select:text;user-select:text}
 img{max-width:100%}[hidden]{display:none!important}
 </style>
+<script>
+(function(){ function fit(){ try{ var sa=window.navigator.standalone||matchMedia('(display-mode: standalone)').matches; if(!sa) return;
+  var port=innerHeight>=innerWidth, sh=port?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width), h=Math.max(innerHeight,sh);
+  var r=document.documentElement; r.style.setProperty('--app-h',h+'px'); r.classList.add('ryse-fs') }catch(e){} }
+  fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
+</script>
 """
 import re
 body = re.sub(r"<title>.*?</title>", "<title>RYSE</title>", body, count=1)

@@ -2906,12 +2906,12 @@ html[data-pro] .h-greet:not(.rank) .g2::after{content:"";display:inline-block;wi
 .fm-track::-webkit-scrollbar{display:none}
 .fm-rail::before,.fm-rail::after{content:"";position:absolute;top:4px;bottom:6px;width:1px;left:37.5%;background:linear-gradient(180deg,transparent,rgba(157,184,255,.5),transparent);pointer-events:none}
 .fm-rail::after{left:62.5%}
-.fm-c{flex:none;width:100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 2px 8px;border:0;background:transparent;color:#F5F7FB;cursor:pointer;opacity:.45;transform:scale(.9);transition:opacity .3s ease,transform .35s cubic-bezier(.2,.8,.2,1);-webkit-tap-highlight-color:transparent}
-.fm-c .fl{width:44px;height:44px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14);display:block;filter:grayscale(1) brightness(.75);transition:filter .35s ease,box-shadow .35s ease}.fm-c .fl img{width:100%;height:100%;object-fit:cover;display:block}
+.fm-c{--k:0;flex:none;width:100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 2px 8px;border:0;background:transparent;color:#F5F7FB;cursor:pointer;opacity:calc(.5 + var(--k) * .5);transform:scale(calc(.9 + var(--k) * .22));will-change:transform,opacity;-webkit-tap-highlight-color:transparent}
+.fm-c .fl{width:44px;height:44px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.14);display:block;position:relative}
+.fm-c .fl::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(157,184,255,.9);opacity:var(--k)}.fm-c .fl img{width:100%;height:100%;object-fit:cover;display:block}
 .fm-c b{font:600 15px/1.15 var(--font-display);letter-spacing:-.005em;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .fm-c small{font:600 9px/1.2 var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:rgba(157,184,255,.85);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.fm-c.in{opacity:1;transform:scale(1.12)}
-.fm-c.in .fl{filter:none;box-shadow:0 0 0 2px rgba(157,184,255,.9),0 0 18px rgba(111,152,255,.4)}
+.fm-c.in .fl{box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 18px rgba(111,152,255,.35)}
 .fm{display:flex;flex-direction:column;margin-top:22px}
 .fm .cap{font:600 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(200,207,221,.86);padding:18px 0 10px}
 .fm .cap:first-child{padding-top:0}
@@ -4429,7 +4429,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   function fmLg(c){ var r=fmCL().filter(function(x){ return x[0]===c })[0]; return r?r[1]:'' }
   function fmSquad(){ return FM.g==='w'?((FM_W[FM.c]||{clubs:{}}).clubs[FM.club]):FM_SQ[FM.club] }
   var FM_CK='<i class="ck"><svg viewBox="0 0 16 16" fill="none"><path d="m3.5 8.5 3 3 6-6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>';
-  function fmRender(){ if(!FM.c||!fmLg(FM.c)){ FM.c=fmCL()[0][0]; FM.l=fmLg(FM.c) }
+  function fmRender(){ if(FM.c&&!fmLg(FM.c)){ FM.c=null; FM.l=null }
     var h='<div class="cap">'+esc(rT('Country you play in'))+'</div><div class="fm-rail"><div class="fm-track" id="fm-track">'+fmCL().map(function(c){ return '<button type="button" class="fm-c'+(FM.c===c[0]?' in':'')+'" data-fmc="'+c[0]+'" aria-pressed="'+(FM.c===c[0])+'"><span class="fl">'+fmFlag(c[0])+'</span><b>'+esc(countryName(c[0]))+'</b><small>'+esc(c[1])+'</small></button>' }).join('')+'</div></div>';
     if(FM.c){ var lg=fmLg(FM.c); h+='<div class="cap" data-fms="l">'+esc(rT('Top league'))+'</div><div class="fm-lrow"><div class="fm-chips"><button type="button" data-fml="'+lg+'" aria-pressed="'+(FM.l===lg)+'">'+fmFlag(FM.c)+esc(lg)+'</button></div><div class="fm-g" role="group" aria-label="'+esc(rT('Team'))+'"><button type="button" data-fmg="m" aria-pressed="'+(FM.g!=='w')+'">'+esc(rT('Men'))+'</button><button type="button" data-fmg="w" aria-pressed="'+(FM.g==='w')+'">'+esc(rT('Women'))+'</button></div></div>' }
     if(FM.l){ var top=FM_TOP[FM.c]||[], clubs=(FM.g==='w'?Object.keys((FM_W[FM.c]||{clubs:{}}).clubs).map(function(n){ return [n,(((window.RYSE_CLUBS||{})[FM.c]||[]).filter(function(c){ return c[0]===n })[0]||['',''])[1]] }):((window.RYSE_CLUBS||{})[FM.c]||[]).filter(function(c){ return !c[2] })).sort(function(a,b){ var ia=top.indexOf(a[0]), ib=top.indexOf(b[0]); ia=ia<0?99:ia; ib=ib<0?99:ib; return ia-ib||a[0].localeCompare(b[0]) });
@@ -4439,16 +4439,22 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       if(!sq) h+='<p class="fm-empty">'+esc(rT('We’re still adding this squad. Enter your details yourself for now.'))+'</p>';
       else h+='<div class="club-list">'+sq.map(function(x,i){ return '<button type="button" data-fmp="'+i+'" aria-pressed="'+(FM.pi===i)+'"><span class="crest">'+initials(x[0])+'</span><span>'+esc(x[0])+'<span class="sub">'+(x[1]?esc(fmDob(x[1]))+' · ':'')+esc(countryName(x[2]))+'</span></span>'+natFlag(x[2])+FM_CK+'</button>' }).join('')+'</div>' }
     $('fm').innerHTML=h; $('fm-go').disabled=FM.pi<0; fmRail() }
-  function fmRail(){ var tk=$('fm-track'); if(!tk) return; var it=[].slice.call(tk.children), cur=tk.querySelector('[data-fmc="'+FM.c+'"]'), tm=0;
+  /* Smooth (Ivan, 23 Oct): every flag's size, colour and ring follow its distance from the frame continuously while the finger moves.
+     Nothing below shows until a country is really chosen — by swiping it into the frame or tapping it. */
+  function fmRail(){ var tk=$('fm-track'); if(!tk) return; var it=[].slice.call(tk.children), cur=tk.querySelector('[data-fmc="'+FM.c+'"]')||it[0], tm=0, raf=0;
     if(cur) tk.scrollLeft=cur.offsetLeft-(tk.clientWidth-cur.offsetWidth)/2;
+    function paint(){ raf=0; var mid=tk.scrollLeft+tk.clientWidth/2; it.forEach(function(b){ var w=b.offsetWidth||1, d=Math.abs(b.offsetLeft+w/2-mid)/w, k=Math.max(0,1-d); k=k*k*(3-2*k); b.style.setProperty('--k',k.toFixed(3)); b.classList.toggle('in',d<.5) }) }
     function near(){ var mid=tk.scrollLeft+tk.clientWidth/2, best=null, bd=1e9; it.forEach(function(b){ var d=Math.abs(b.offsetLeft+b.offsetWidth/2-mid); if(d<bd){ bd=d; best=b } }); return best }
-    tk.addEventListener('scroll',function(){ var n=near(); it.forEach(function(b){ b.classList.toggle('in',b===n) }); clearTimeout(tm);
-      tm=setTimeout(function(){ var m=near(); if(m&&m.dataset.fmc!==FM.c){ FM={c:m.dataset.fmc,l:fmLg(m.dataset.fmc),club:null,pi:-1,g:FM.g}; var st=$('s05f').scrollTop; fmRender(); $('s05f').scrollTop=st } },220) },{passive:true}) }
+    paint(); tk._paint=paint; if(!tk.clientWidth) setTimeout(function(){ if(cur) tk.scrollLeft=cur.offsetLeft-(tk.clientWidth-cur.offsetWidth)/2; paint() },480);
+    tk.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(paint); clearTimeout(tm);
+      tm=setTimeout(function(){ var m=near(); if(m&&(m.dataset.fmc!==FM.c)&&(tk._user||FM.c)){ fmPick(m.dataset.fmc) } },260) },{passive:true});
+    ['touchstart','pointerdown','wheel'].forEach(function(t){ tk.addEventListener(t,function(){ tk._user=true },{passive:true}) }) }
+  function fmPick(c){ FM={c:c,l:fmLg(c),club:null,pi:-1,g:FM.g}; var st=$('s05f').scrollTop; fmRender(); $('s05f').scrollTop=st }
   function fmTo(k){ setTimeout(function(){ var el=$('fm').querySelector('[data-fms="'+k+'"]'); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'}) },60) }
   window.ryseFmRender=fmRender;
   $('s05f').addEventListener('click',function(ev){ var b;
     if((b=ev.target.closest('[data-fmg]'))){ FM.g=b.dataset.fmg; if(!fmLg(FM.c)){ FM.c=null; FM.l=null } else FM.l=fmLg(FM.c); FM.club=null; FM.pi=-1; fmRender(); return }
-    if((b=ev.target.closest('[data-fmc]'))){ var tk=$('fm-track'); tk.scrollTo({left:b.offsetLeft-(tk.clientWidth-b.offsetWidth)/2,behavior:'smooth'}); return }
+    if((b=ev.target.closest('[data-fmc]'))){ var tk=$('fm-track'), x=b.offsetLeft-(tk.clientWidth-b.offsetWidth)/2; if(Math.abs(tk.scrollLeft-x)<4){ if(FM.c!==b.dataset.fmc) fmPick(b.dataset.fmc) } else { tk._user=true; tk.scrollTo({left:x,behavior:'smooth'}) } return }
     if((b=ev.target.closest('[data-fml]'))){ FM.l=b.dataset.fml; fmRender(); fmTo('club'); return }
     if((b=ev.target.closest('[data-fmclub]'))){ FM.club=b.dataset.fmclub||null; FM.pi=-1; fmRender(); if(FM.club) fmTo('sq'); else fmTo('club'); return }
     if((b=ev.target.closest('[data-fmp]'))){ FM.pi=FM.pi===+b.dataset.fmp?-1:+b.dataset.fmp; var st=$('s05f').scrollTop; fmRender(); $('s05f').scrollTop=st; return }
