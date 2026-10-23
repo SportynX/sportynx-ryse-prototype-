@@ -1356,8 +1356,8 @@ button:active{transition-duration:.08s}
 .aura{background:linear-gradient(180deg,#121418 0%,#0C0D10 45%,#08090B 100%)}
 .aura i,.aura::after{display:none}
 .aura canvas{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .6s ease}
-.aura.calm{background:#0C0D10}
-.aura.calm canvas{opacity:0}
+/* VANTAGE (Ivan, 23 Oct): the black background with the moving blue orb stays inside the app too */
+.aura.calm{background:linear-gradient(180deg,#121418 0%,#0C0D10 45%,#08090B 100%)}
 .fullscr{background:#0C0D10}
 .dr-foot{background:linear-gradient(180deg,rgba(12,13,16,0),#0C0D10 30%)}
 .ryp .pg-sticky{background:linear-gradient(180deg,var(--bg) 70%,rgba(12,13,16,0))}

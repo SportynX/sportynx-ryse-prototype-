@@ -52,10 +52,7 @@ function orb(t){
   function blob(r,stops){var rg=ctx.createRadialGradient(x,y,0,x,y,r);stops.forEach(function(s){rg.addColorStop(s[0],s[1])});ctx.fillStyle=rg;ctx.fillRect(0,0,W,H)}
   blob(R*2.6,[[0,'rgba(30,70,190,'+(.16+.04*br)+')'],[.5,'rgba(22,52,150,.06)'],[1,'rgba(20,40,120,0)']]);
   blob(R,[[0,'rgba(120,160,255,'+(.62+.1*br)+')'],[.35,'rgba(56,108,255,.42)'],[.7,'rgba(36,80,220,.14)'],[1,'rgba(30,70,200,0)']])}
-var hideAt=0;
 function frame(now){requestAnimationFrame(frame);
-  var calm=aura.classList.contains('calm');
-  if(calm){if(!hideAt) hideAt=now;if(now-hideAt>700) return}else hideAt=0;   /* inside the app: no orb, nothing to draw */
   if(now-last<33) return;last=now;orb(RM()?0:(now-t0)/1000)}
 requestAnimationFrame(frame);
 
