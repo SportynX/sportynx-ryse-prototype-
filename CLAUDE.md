@@ -21,5 +21,5 @@ Live: https://sportynx.github.io/sportynx-ryse-prototype-/vantage/
 - Home-screen icon: `vantage/icon-*.png` (textured gold-to-blue RY icon, Oct 2026). The logo is used only as the app icon, not inside the screens.
 - Same Claude artifact: "VANTAGE" — republish it from the same source.
 
-## Sport (RYSEON, 23 Oct 2026)
-After the language comes the sport picker (`sSport`). Only Football and Tennis continue; the rest show Coming soon. `P.sport` drives everything: tennis wording comes from `RYSE_TEN_MAP` inside `rT()` (English football string → English tennis string, then translated), the tennis module is the last `<script>` in src/prototype.html (ATP ranking of 19 Oct 2026 for Find yourself, court surface screen `s11t`, tennis strengths, role models under `RYSE_PLAYERS.TEN`).
+## RYSEON is football only
+The tennis / multi-sport presentation version lives ONLY on the git branch `ryseon-tennis` (and the Claude artifact "RYSEON TENNIS"). Never merge it into `main` and never add sport-picker or tennis code here — Ivan's developer builds the real football app from `main`.
