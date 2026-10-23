@@ -2997,7 +2997,9 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .po-hl{box-sizing:border-box;height:84px;overflow:hidden}
 .po-hl .t{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;height:2.7em;transition:opacity .18s ease}
 .po-hl .t.fade{opacity:0}
-.po-now .dt{min-width:5.6em}.po-art{min-width:92px;justify-content:center}
+.po-hl{width:100%;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s ease,border-color .2s ease,transform .15s ease}
+.po-hl:hover{border-color:rgba(111,152,255,.3)}.po-hl:active{transform:scale(.99);background:rgba(61,123,255,.08)}
+.po-hl small{display:flex;align-items:center;justify-content:space-between;gap:10px}.po-hl small svg{flex:none;width:14px;height:14px;color:#8FB0FF}
 .po-lv .hr-seg{margin:12px 0 0}
 .po-dr{height:28px;padding:0 13px;border-radius:14px;border:1px solid rgba(111,152,255,.55);background:transparent;color:#DCE6FF;font:600 11.5px/1 var(--font-body);letter-spacing:.01em;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s ease,border-color .2s ease,transform .15s ease}
 .po-dr:hover{background:rgba(61,123,255,.1);border-color:rgba(143,176,255,.8)}.po-dr:active{transform:scale(.96);background:rgba(61,123,255,.16)}
@@ -5518,10 +5520,10 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     var st=[8.3,7.3,7.0,6.6,6.3,5.5].map(function(v){ return '<stop offset="'+((PO_HI-v)/(PO_HI-PO_LO)).toFixed(3)+'" stop-color="'+poCol(v)+'"/>' }).join('');
     var every=n>12?7:1, ax=S.map(function(q,i){ return (i%every===0||i===n-1)&&!(n>12&&i!==n-1&&n-1-i<4)?'<span style="left:'+poX(i,n).toFixed(2)+'%">'+e(q.s)+'</span>':'' }).join('');
     return '<div class="po-hd"><span class="k">'+e(rT('Public opinion'))+'</span><button type="button" class="po-dr" data-po-dr>'+e(rT('Detail report'))+'</button></div>'+
-      '<div class="po-now"><div class="po-sc"><b data-s></b><em>/10</em></div><span class="dt" data-dt></span><button type="button" class="po-art" data-po-news></button></div>'+
+      '<div class="po-now"><div class="po-sc"><b data-s></b><em>/10</em></div><span class="dt" data-dt></span></div>'+
       '<div class="po-pl" data-pl><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="'+id+'l" x1="0" y1="'+poY(PO_HI)+'" x2="0" y2="'+poY(PO_LO)+'" gradientUnits="userSpaceOnUse">'+st+'</linearGradient><linearGradient id="'+id+'a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FA2FF" stop-opacity=".2"/><stop offset="1" stop-color="#7FA2FF" stop-opacity="0"/></linearGradient></defs>'+
         '<path d="'+dx+' L130 100 L-30 100 Z" fill="url(#'+id+'a)"/><path d="'+dx+'" fill="none" stroke="url(#'+id+'l)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><i class="cur" data-cur></i><i class="dot" data-dot></i></div>'+
-      '<div class="po-ax">'+ax+'</div><div class="po-split" data-sp></div><div class="po-sl" data-sl></div><span class="po-hl" data-hl></span>'+
+      '<div class="po-ax">'+ax+'</div><div class="po-split" data-sp></div><div class="po-sl" data-sl></div><button type="button" class="po-hl" data-phl data-po-news aria-label="'+e(rT('My news'))+'"></button>'+
       '<div class="hr-seg" role="tablist">'+[['1m','Last month'],['6m','6 months'],['1y','Year']].map(function(x){ return '<button type="button" role="tab" data-pop="'+x[0]+'" aria-selected="'+(p===x[0])+'">'+e(rT(x[1]))+'</button>' }).join('')+'</div>' }
   /* Smooth scrub (Ivan, 23 Oct): the finger moves day by day along the line; the dot glides on the line, the score counts 0.1 at a time
      like a digital counter, and the selection stays where the finger stopped. */
@@ -5542,11 +5544,11 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   function poTick(w){ if(w._raf) return; (function step(){ var d=Math.round((w._tv-w._dv)*10); if(!d){ w._raf=0; return } w._dv=Math.round((w._dv+(d>0?.1:-.1))*10)/10; poPaint(w); w._raf=setTimeout(step,Math.max(22,70-Math.abs(d)*8)) })() }
   function poShow(w,f,now){ var e=SE(), S=poSer(w.dataset.p), n=S.length, q=poAt(w,f), x=poX(q.f,n)+'%', y=poY(q.v)+'%', c=poCol(q.v); w._f=q.f;
     var df=poDF(w.dataset.p==='1m'?{day:'numeric',month:'short'}:{day:'numeric',month:'short',year:'numeric'});
-    w.querySelector('[data-dt]').textContent=df.format(q.d).replace(/\.(?=\s|$)/g,'').replace(/\s\./,'');
-    var tot=w.dataset.p==='1m'?S.reduce(function(a,z){ return a+z.n },0):S[q.m].n, ab=w.querySelector('[data-po-news]'), at=e(rT('{n} articles',{n:tot}))+PO_CHEV; if(ab.innerHTML!==at) ab.innerHTML=at;
+    /* articles sit in the date line, plain text; Last month leaves them out (Ivan, 23 Oct) */
+    w.querySelector('[data-dt]').textContent=df.format(q.d).replace(/\.(?=\s|$)/g,'').replace(/\s\./,'')+(w.dataset.p==='1m'?'':' · '+rT('{n} articles',{n:S[q.m].n}));
     var cu=w.querySelector('[data-cur]'); cu.style.left=x; var dt=w.querySelector('[data-dot]'); dt.style.left=x; dt.style.top=y; dt.style.borderColor=c;
     w._tv=Math.round(q.v*10)/10; if(now||w._dv==null){ clearTimeout(w._raf); w._raf=0; w._dv=w._tv; poPaint(w) } else poTick(w);
-    var N=poNews(), hl=w.querySelector('[data-hl]'); if(N.length){ var hk=(n-1-q.m)%N.length; if(hl._k!==hk){ var first=hl._k==null; hl._k=hk; hl.hidden=false; if(first||!hl.querySelector('.t')){ hl.innerHTML='<span class="t">'+e(N[hk].t)+'</span><small>'+e(rT('Most read article in this period'))+'</small>' } else { var tt=hl.querySelector('.t'); clearTimeout(hl._ft); tt.classList.add('fade'); hl._ft=setTimeout(function(){ tt.textContent=N[hl._k].t; tt.classList.remove('fade') },140) } } } else hl.hidden=true }
+    var N=poNews(), hl=w.querySelector('[data-phl]'); if(N.length){ var hk=(n-1-q.m)%N.length; if(hl._k!==hk){ var first=hl._k==null; hl._k=hk; hl.hidden=false; if(first||!hl.querySelector('.t')){ hl.innerHTML='<span class="t">'+e(N[hk].t)+'</span><small><span>'+e(rT('Most read article in this period'))+'</span>'+PO_CHEV+'</small>' } else { var tt=hl.querySelector('.t'); clearTimeout(hl._ft); tt.classList.add('fade'); hl._ft=setTimeout(function(){ tt.textContent=N[hl._k].t; tt.classList.remove('fade') },140) } } } else hl.hidden=true }
   function poMount(root){ (root||document).querySelectorAll('.po-lv').forEach(function(w){ w._dv=null; poShow(w,poSer(w.dataset.p).length-1,true) }) }
   window.rysePoMount=poMount;
   window.rysePoCard=function(){ if(P.ambition!=='already-pro') return ''; return '<div class="po po-lv" data-p="1m" data-k="h">'+poLive('1m','h')+'</div>' };
