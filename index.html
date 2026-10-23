@@ -4111,7 +4111,6 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       busy=false;
     },450);
   }
-  function afterBasics(){ return P.ambition==='already-pro'?'s07v':'s07b' }
   $('v-phone').addEventListener('input',function(){ $('v-send').disabled=this.value.replace(/\D/g,'').length<7 });
   function back(){ if(stack.length>1) go(stack[stack.length-2],true); }
   window.ryseGo=function(id){go(id)};
@@ -4333,10 +4332,10 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
         var age=ageFrom(P.dob), g=guardianRequired(P.country,age);
         var minor=age!==null&&age<18;
         P.guardian.required=minor; P.guardian.legallyRequired=g.required; P.guardian.status=minor?'needed':'not-required';
-        if(minor){ $('g-copy').textContent=g.required?rT('In {country}, players under {age} need a parent or guardian to approve their account.',{country:countryName(P.country),age:g.threshold}):rT('A parent or guardian needs to approve your account.'); go('s07g') } else go(afterBasics());
+        if(minor){ $('g-copy').textContent=g.required?rT('In {country}, players under {age} need a parent or guardian to approve their account.',{country:countryName(P.country),age:g.threshold}):rT('A parent or guardian needs to approve your account.'); go('s07g') } else go(P.ambition==='already-pro'?'s07v':'s07b');
         break;
-      case 'guardian': P.guardian.email=$('g-email').value.trim(); P.guardian.status='requested'; toast('Request sent to your guardian'); go(afterBasics()); break;
-      case 'guardian-later': P.guardian.status='needed'; go(afterBasics()); break;
+      case 'guardian': P.guardian.email=$('g-email').value.trim(); P.guardian.status='requested'; toast('Request sent to your guardian'); go(P.ambition==='already-pro'?'s07v':'s07b'); break;
+      case 'guardian-later': P.guardian.status='needed'; go(P.ambition==='already-pro'?'s07v':'s07b'); break;
       case 'verify': P.phone=P.phone||$('v-phone').value.trim(); P.verified=true; toast('Verified'); go('s07b'); break;
       case 'verify-later': P.verified=true; go('s07b'); break;
       case 'club-yes': go('s08c'); break;
