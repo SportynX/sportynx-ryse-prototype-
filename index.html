@@ -3031,6 +3031,11 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .po-up{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:23px;border:0;background:linear-gradient(180deg,#4F82FF,#2F63E8);color:#fff;font:600 15px/1 var(--font-body);cursor:pointer;box-shadow:0 10px 28px rgba(47,99,232,.35);transition:transform .15s ease}
 .po-up svg{width:17px;height:17px}.po-up:active{transform:scale(.97)}
 .po-lk-ov small{font:500 12.5px/1.3 var(--font-body);color:rgba(220,228,244,.8);text-align:center}
+.pane-out{opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .2s ease}
+.pane-in{animation:paneIn .5s cubic-bezier(.2,.7,.2,1) both}
+.pane-in #ry-list>*{animation:paneIn .55s cubic-bezier(.2,.7,.2,1) both}.pane-in #ry-list>*:nth-child(2){animation-delay:.07s}.pane-in #ry-list>*:nth-child(3){animation-delay:.14s}.pane-in #ry-list>*:nth-child(n+4){animation-delay:.2s}
+@keyframes paneIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.pane-out{transition:none}.pane-in,.pane-in #ry-list>*{animation:none}}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
@@ -6471,7 +6476,13 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
     if(ryCat==='all') $('ry-list').insertAdjacentHTML('afterbegin',ryMineCard()+ryLatestNews());
     if(!$('ry-list').innerHTML) $('ry-list').innerHTML='<p class="ry-empty">'+e(rT('Designed in a next step'))+'</p>' }
   $('ry-chips').addEventListener('click',function(ev){ var b=ev.target.closest('[data-cat]'); if(!b)return; ryCat=b.dataset.cat; renderRyse() });
-  window.ryseOpenNews=function(){ ryCat='news'; var t=document.querySelector('.hnav-tab[data-tab=ryseon]'); if(t) t.click(); renderRyse(); var l=$('ry-list'); if(l&&l.closest('.pane,[id^=pane]')) l.closest('.pane,[id^=pane]').scrollTop=0; var c=document.querySelector('#ry-chips [data-cat=news]'); if(c&&c.scrollIntoView) c.scrollIntoView({block:'nearest',inline:'center'}) };
+  /* Smooth hand-off to RYSEON · My news (Ivan, 23 Oct): the current tab fades out, RYSEON fades and rises in, the news cards follow one by one */
+  window.ryseOpenNews=function(){ if(window._ryNewsBusy) return; window._ryNewsBusy=true;
+    var cur=document.querySelector('.pane:not([hidden])'), t=document.querySelector('.hnav-tab[data-tab=ryseon]');
+    if(cur){ cur.classList.remove('pane-in'); cur.classList.add('pane-out') }
+    setTimeout(function(){ if(cur) cur.classList.remove('pane-out'); ryCat='news'; var R=$('pane-ryse'); R.scrollTop=0; R.classList.remove('pane-in'); void R.offsetWidth; R.classList.add('pane-in'); if(t) t.click();
+      var ch=$('ry-chips'), c=ch&&ch.querySelector('[data-cat=news]'); if(c){ var x=c.offsetLeft-(ch.clientWidth-c.offsetWidth)/2; try{ ch.scrollTo({left:Math.max(0,x),behavior:'smooth'}) }catch(_){ ch.scrollLeft=Math.max(0,x) } }
+      setTimeout(function(){ R.classList.remove('pane-in'); window._ryNewsBusy=false },700) },200) };
 
   /* Mateo Kovačić · dribbling skills: plays in portrait (black above and below); Full video view turns it to landscape over the whole phone */
   var KV={full:false};
