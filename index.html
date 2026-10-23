@@ -2885,7 +2885,7 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hrc-ecg path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .hrc-ecg .base{stroke:rgba(143,176,255,.3);stroke-width:1.4}
 /* Pulse runs once across the line, then stops (Ivan, 23 Oct) */
-.hrc-ecg .run{stroke:#6F98FF;stroke-width:2.4;stroke-dasharray:.16 2;stroke-dashoffset:.16;filter:drop-shadow(0 0 4px rgba(79,139,255,.85));animation:hrRun 2.6s linear .2s 1 forwards}
+.hrc-ecg .run{stroke:#6F98FF;stroke-width:2.4;stroke-dasharray:.16 2;stroke-dashoffset:.16;filter:drop-shadow(0 0 4px rgba(79,139,255,.85));animation:hrRun 2.6s linear .2s 1 forwards;animation-play-state:paused}.hrc.go .hrc-ecg .run{animation-play-state:running}
 @keyframes hrRun{to{stroke-dashoffset:-1}}
 .hrc-mm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .hrc-mm>div{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
@@ -5478,7 +5478,11 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       '<div class="hrc-v"><b data-to="'+o.avg+'"'+(seen?'':' data-cu="1"')+'>'+(seen?o.avg:0)+'</b><em>bpm</em></div><small class="hrc-c">'+e(rT(o.cap))+'</small>'+
       '<svg class="hrc-ecg" viewBox="0 0 320 64" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="'+HR_D+'"/><path class="run" d="'+HR_D+'" pathLength="1"/></svg>'+
       '<div class="hrc-mm"><div><small>'+e(rT('Maximum'))+'</small><b>'+o.max+'<em>bpm</em></b></div><div><small>'+e(rT('Minimum'))+'</small><b>'+o.min+'<em>bpm</em></b></div></div></div>' };
-  window.ryseHrCount=function(root){ (root||document).querySelectorAll('.hrc-v b[data-cu]').forEach(function(b){ var to=+b.dataset.to, id=b.closest('.hrc').id, t0=0; b.removeAttribute('data-cu'); HR_SEEN[id]=to;
+  /* Count-up and the pulse start only once the heart rate card is in view (Ivan, 23 Oct) */
+  var HR_IO=('IntersectionObserver' in window)?new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ HR_IO.unobserve(en.target); hrGo(en.target) } }) },{threshold:.45}):null;
+  function hrGo(c){ c.classList.add('go'); hrCountIn(c) }
+  window.ryseHrCount=function(root){ (root||document).querySelectorAll('.hrc').forEach(function(c){ if(c.classList.contains('go')) return; if(HR_IO) HR_IO.observe(c); else hrGo(c) }) };
+  function hrCountIn(root){ (root||document).querySelectorAll('.hrc-v b[data-cu]').forEach(function(b){ var to=+b.dataset.to, id=b.closest('.hrc').id, t0=0; b.removeAttribute('data-cu'); HR_SEEN[id]=to;
     function f(t){ if(!t0) t0=t; var k=Math.min(1,(t-t0)/1100), v=Math.round(to*(1-Math.pow(1-k,3))); b.textContent=v; if(k<1) requestAnimationFrame(f) } requestAnimationFrame(f) }) };
   /* example values until a watch / Apple Health is connected */
   window.ryseHrToday=function(){ var A=(P.hrLogs||[]).filter(function(x){ return ymd(new Date(x.at))===ymd(new Date()) }), base={avg:72,max:168,min:52};
