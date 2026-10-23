@@ -5495,16 +5495,31 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
         '<path d="'+d+' L'+poX(n-1,n)+' 100 L'+poX(0,n)+' 100 Z" fill="url(#'+id+'a)"/><path d="'+d+'" fill="none" stroke="url(#'+id+'l)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><i class="cur" data-cur></i><i class="dot" data-dot></i></div>'+
       '<div class="po-ax">'+ax+'</div><div class="po-split" data-sp></div><div class="po-sl" data-sl></div><span class="po-hl" data-hl></span>'+
       '<div class="hr-seg" role="tablist">'+[['1m','Last month'],['6m','6 months'],['1y','Year']].map(function(x){ return '<button type="button" role="tab" data-pop="'+x[0]+'" aria-selected="'+(p===x[0])+'">'+e(rT(x[1]))+'</button>' }).join('')+'</div>' }
-  function poShow(w,i){ var e=SE(), S=poSer(w.dataset.p), n=S.length; i=Math.max(0,Math.min(n-1,i)); var q=S[i], c=poCol(q.v), x=poX(i,n)+'%', y=poY(q.v)+'%';
-    var sb=w.querySelector('[data-s]'); sb.textContent=po1(q.v); sb.style.color=c;
-    w.querySelector('[data-dt]').textContent=q.l;
-    var tot=w.dataset.p==='1m'?S.reduce(function(a,z){ return a+z.n },0):q.n; w.querySelector('[data-po-news]').innerHTML=e(rT('{n} articles',{n:tot}))+PO_CHEV;
+  /* Smooth scrub (Ivan, 23 Oct): the finger moves day by day along the line; the dot glides on the line, the score counts 0.1 at a time
+     like a digital counter, and the selection stays where the finger stopped. */
+  function poDates(p){ var now=new Date(); now=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    if(p==='1m') return PO_D.map(function(x){ return x.d });
+    var k=p==='6m'?6:12, out=[]; for(var i=0;i<k;i++){ out.push(i===k-1?now:new Date(now.getFullYear(),now.getMonth()-(k-1-i),15)) } return out }
+  function poAt(w,f){ var S=poSer(w.dataset.p), D=poDates(w.dataset.p), n=S.length; f=Math.max(0,Math.min(n-1,f));
+    var i=Math.min(n-2,Math.floor(f)), t=f-i; if(n<2){ i=0; t=0 }
+    var A=D[i].getTime(), B=D[Math.min(n-1,i+1)].getTime(), day=new Date(Math.round((A+(B-A)*t)/864e5)*864e5+43200000);
+    var dd=new Date(day.getFullYear(),day.getMonth(),day.getDate()), tt=(B>A)?(dd.getTime()-A)/(B-A):0; tt=Math.max(0,Math.min(1,tt)); if(n<2) tt=0;
+    var v=S[i].v+((S[Math.min(n-1,i+1)]||S[i]).v-S[i].v)*tt, fi=i+tt, m=i;
+    if(w.dataset.p!=='1m'){ for(var j=0;j<n;j++) if(D[j].getMonth()===dd.getMonth()&&D[j].getFullYear()===dd.getFullYear()) m=j } else m=Math.round(fi);
+    return {f:fi,v:v,d:dd,m:m} }
+  function poPaint(w){ var e=SE(), v=w._dv, c=poCol(v), sb=w.querySelector('[data-s]'); if(!sb) return; sb.textContent=po1(v); sb.style.color=c;
+    var pos=Math.round(Math.max(20,Math.min(80,(v-5)*22))), neg=Math.round(Math.max(5,Math.min(40,(7.6-v)*14))), neu=Math.max(5,100-pos-neg), sp=w.querySelector('[data-sp]');
+    if(!sp.firstChild) sp.innerHTML='<i class="p"></i><i class="n"></i><i class="x"></i>'; sp.children[0].style.flex=pos; sp.children[1].style.flex=neu; sp.children[2].style.flex=neg;
+    w.querySelector('[data-sl]').innerHTML='<span>'+e(rT('Positive'))+' <b>'+pos+'%</b></span><span>'+e(rT('Neutral'))+' <b>'+neu+'%</b></span><span>'+e(rT('Negative'))+' <b>'+neg+'%</b></span>' }
+  function poTick(w){ if(w._raf) return; (function step(){ var d=Math.round((w._tv-w._dv)*10); if(!d){ w._raf=0; return } w._dv=Math.round((w._dv+(d>0?.1:-.1))*10)/10; poPaint(w); w._raf=setTimeout(step,Math.max(22,70-Math.abs(d)*8)) })() }
+  function poShow(w,f,now){ var e=SE(), S=poSer(w.dataset.p), n=S.length, q=poAt(w,f), x=poX(q.f,n)+'%', y=poY(q.v)+'%', c=poCol(q.v); w._f=q.f;
+    var df=poDF(w.dataset.p==='1m'?{day:'numeric',month:'short'}:{day:'numeric',month:'short',year:'numeric'});
+    w.querySelector('[data-dt]').textContent=df.format(q.d).replace(/\.(?=\s|$)/g,'').replace(/\s\./,'');
+    var tot=w.dataset.p==='1m'?S.reduce(function(a,z){ return a+z.n },0):S[q.m].n, ab=w.querySelector('[data-po-news]'), at=e(rT('{n} articles',{n:tot}))+PO_CHEV; if(ab.innerHTML!==at) ab.innerHTML=at;
     var cu=w.querySelector('[data-cur]'); cu.style.left=x; var dt=w.querySelector('[data-dot]'); dt.style.left=x; dt.style.top=y; dt.style.borderColor=c;
-    var pos=Math.round(Math.max(20,Math.min(80,(q.v-5)*22))), neg=Math.round(Math.max(5,Math.min(40,(7.6-q.v)*14))), neu=Math.max(5,100-pos-neg);
-    w.querySelector('[data-sp]').innerHTML='<i class="p" style="flex:'+pos+'"></i><i class="n" style="flex:'+neu+'"></i><i class="x" style="flex:'+neg+'"></i>';
-    w.querySelector('[data-sl]').innerHTML='<span>'+e(rT('Positive'))+' <b>'+pos+'%</b></span><span>'+e(rT('Neutral'))+' <b>'+neu+'%</b></span><span>'+e(rT('Negative'))+' <b>'+neg+'%</b></span>';
-    var N=poNews(), hl=w.querySelector('[data-hl]'); if(N.length){ hl.hidden=false; hl.innerHTML=e(N[(n-1-i)%N.length].t)+'<small>'+e(rT('Most read article in this period'))+'</small>' } else hl.hidden=true }
-  function poMount(root){ (root||document).querySelectorAll('.po-lv').forEach(function(w){ poShow(w,poSer(w.dataset.p).length-1) }) }
+    w._tv=Math.round(q.v*10)/10; if(now||w._dv==null){ clearTimeout(w._raf); w._raf=0; w._dv=w._tv; poPaint(w) } else poTick(w);
+    var N=poNews(), hl=w.querySelector('[data-hl]'); if(N.length){ var hk=(n-1-q.m)%N.length; if(hl._k!==hk){ hl._k=hk; hl.hidden=false; hl.innerHTML=e(N[hk].t)+'<small>'+e(rT('Most read article in this period'))+'</small>' } } else hl.hidden=true }
+  function poMount(root){ (root||document).querySelectorAll('.po-lv').forEach(function(w){ w._dv=null; poShow(w,poSer(w.dataset.p).length-1,true) }) }
   window.rysePoMount=poMount;
   window.rysePoCard=function(){ if(P.ambition!=='already-pro') return ''; return '<div class="po po-lv" data-p="6m" data-k="h">'+poLive('6m','h')+'</div>' };
   window.rysePoReport=function(){ if(P.ambition!=='already-pro') return ''; var e=SE(), L=poNews().slice(0,5);
@@ -5514,14 +5529,13 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(L.length) h+=pH('Latest coverage')+'<div class="po-list">'+L.map(function(a,i){ var sc=PO_SENT[i]||'n', col=sc==='p'?'#6F98FF':(sc==='x'?'#EE7D7D':'rgba(200,207,221,.45)'); return '<a href="'+e(a.u)+'" target="_blank" rel="noopener noreferrer"><span class="d" style="background:'+col+'"></span><span><b>'+e(a.t)+'</b><small>'+e(a.src)+' · '+e(rT(sc==='p'?'Positive':(sc==='x'?'Negative':'Neutral')))+'</small></span></a>' }).join('')+'</div>';
     return h+'<p class="pg-note" style="margin-top:12px">'+e(rT('Example data · scoring not final'))+'</p>' };
   (function(){ var drag=null;
-    function at(w,ev){ var pl=w.querySelector('[data-pl]'), r=pl.getBoundingClientRect(), n=poSer(w.dataset.p).length, f=((ev.clientX-r.left)/r.width*100-3)/94; poShow(w,Math.round(f*(n-1))) }
-    function end(){ if(!drag) return; var w=drag; drag=null; poShow(w,poSer(w.dataset.p).length-1) }
+    function at(w,ev){ var pl=w.querySelector('[data-pl]'), r=pl.getBoundingClientRect(), n=poSer(w.dataset.p).length, f=((ev.clientX-r.left)/r.width*100-3)/94; poShow(w,f*(n-1)) }
+    function end(){ drag=null }
     document.addEventListener('pointerdown',function(ev){ var pl=ev.target.closest('.po-lv [data-pl]'); if(!pl) return; drag=pl.closest('.po-lv'); at(drag,ev) });
-    document.addEventListener('pointermove',function(ev){ if(drag){ at(drag,ev); return } if(ev.pointerType==='mouse'){ var pl=ev.target.closest('.po-lv [data-pl]'); if(pl) at(pl.closest('.po-lv'),ev) } });
+    document.addEventListener('pointermove',function(ev){ if(drag) at(drag,ev) });
     document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
-    document.addEventListener('pointerout',function(ev){ if(drag||ev.pointerType!=='mouse') return; var pl=ev.target.closest('.po-lv [data-pl]'); if(pl&&!pl.contains(ev.relatedTarget)){ var w=pl.closest('.po-lv'); poShow(w,poSer(w.dataset.p).length-1) } });
     document.addEventListener('click',function(ev){ var t;
-      if((t=ev.target.closest('.po-lv [data-pop]'))){ var w=t.closest('.po-lv'); w.dataset.p=t.dataset.pop; w.innerHTML=poLive(w.dataset.p,w.dataset.k); poShow(w,poSer(w.dataset.p).length-1); return }
+      if((t=ev.target.closest('.po-lv [data-pop]'))){ var w=t.closest('.po-lv'); w.dataset.p=t.dataset.pop; w.innerHTML=poLive(w.dataset.p,w.dataset.k); poShow(w,poSer(w.dataset.p).length-1,true); return }
       if(ev.target.closest('.po-lv [data-po-news]')){ if(window.ryseOpenNews) window.ryseOpenNews() } }) })();
   /* ---------- Club verification · Scan team QR → confirm → request sent; status stays unverified until the team confirms ---------- */
   (function(){ var stream=null, timer=null, det=null;
