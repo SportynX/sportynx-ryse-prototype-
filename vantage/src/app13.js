@@ -9,7 +9,7 @@ var RM=function(){return window.matchMedia&&matchMedia('(prefers-reduced-motion:
 
 /* ---------- 1 · Tab bar lens (RYSEON "Tab bar lens (Ivan, 23 Oct)") ---------- */
 var _rs=renderShell;
-renderShell=function(){return _rs().replace('<nav class="bnav" aria-label="Main">','<nav class="bnav" aria-label="Main"><i class="hnav-pill" data-keep="pill" aria-hidden="true"></i>')};
+renderShell=function(){return _rs().replace('<nav class="bnav" aria-label="Main">','<div class="bnav-band" aria-hidden="true"></div><nav class="bnav" aria-label="Main"><i class="hnav-pill" data-keep="pill" aria-hidden="true"></i>')};
 var LBAR=null,PILL=null,ANIM=null,RO=null;
 function box(t){return {x:t.offsetLeft+4,w:t.offsetWidth-8}}
 function curTab(){return LBAR&&LBAR.querySelector('button[aria-current=page]')}
