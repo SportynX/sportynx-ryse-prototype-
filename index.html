@@ -2884,8 +2884,9 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hrc{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s ease}.hrc:active{transform:scale(.985)}
 .hrc-ecg path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .hrc-ecg .base{stroke:rgba(143,176,255,.3);stroke-width:1.4}
-.hrc-ecg .run{stroke:#6F98FF;stroke-width:2.4;stroke-dasharray:.16 .84;stroke-dashoffset:1;filter:drop-shadow(0 0 4px rgba(79,139,255,.85));animation:hrRun 2.6s linear infinite}
-@keyframes hrRun{to{stroke-dashoffset:0}}
+/* Pulse runs once across the line, then stops (Ivan, 23 Oct) */
+.hrc-ecg .run{stroke:#6F98FF;stroke-width:2.4;stroke-dasharray:.16 2;stroke-dashoffset:.16;filter:drop-shadow(0 0 4px rgba(79,139,255,.85));animation:hrRun 2.6s linear .2s 1 forwards}
+@keyframes hrRun{to{stroke-dashoffset:-1}}
 .hrc-mm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .hrc-mm>div{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
 .hrc-mm small{font:600 10px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:rgba(200,207,221,.72)}
