@@ -1102,6 +1102,7 @@ html[data-edit] #progress{display:none}
 .st-plan small{font:600 10.5px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:var(--s-acc)}
 .st-plan b{display:block;margin-top:9px;font:700 24px/1.08 var(--font-display);text-transform:uppercase;letter-spacing:-.01em;color:var(--s-text)}
 .st-plan span{display:block;margin-top:6px;font:500 14px/1.4 var(--font-body);color:var(--s-mut)}
+.st-plan span span,.st-plan small span,.st-plan b span{display:inline;margin:0;font:inherit;color:inherit;letter-spacing:inherit}
 .st-prog{display:flex;gap:6px;margin-top:18px}
 .st-prog i{flex:1;height:5px;border-radius:3px;background:var(--s-sw)}
 .st-prog i.on{background:var(--rb)}
@@ -4948,7 +4949,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       else h='<div class="st-plan"><small>'+e(rT('Current plan'))+'</small><b>'+e(trialTxt(rT('7-day free trial')))+'</b><span>'+e(rTp('{n} days left',pl.left))+' · '+e(rT('Then £11.99/month'))+'</span></div>'+
         sGroup('',[sRow({l:'Trial ends',v:fmtDate(pl.end.toISOString()),nochev:true,dis:true}),sRow({l:'Price after trial',v:'£11.99 / '+rT('month'),nochev:true,dis:true}),sRow({l:'Billed through',v:'App Store',nochev:true,dis:true})],'noic')+
         '<button class="st-btn" type="button" data-sa="upgrade">'+e(rT('Upgrade to RYSE Monthly'))+'</button><button class="st-btn ghost" type="button" data-sa="manage-sub">'+e(rT('Manage subscription'))+'</button>';
-      if(P.ambition==='already-pro') h+='<div class="st-plan" style="margin-top:22px"><small>RYSEON Premium</small><b>£24.90 / '+e(rT('month'))+'</b><span>'+e(rT('Added on top of your RYSEON plan.'))+'</span></div>'+
+      if(P.ambition==='already-pro') h+='<div class="st-plan" style="margin-top:22px"><small><span>RYSEON Premium</span></small><b>£24.90 / '+e(rT('month'))+'</b><span><span>'+e(rT('Added on top of your RYSEON plan.'))+'</span></span></div>'+
         sGroup('What you get with Premium',[sRow({ic:'video',l:'My clips',sub:rT('Every match and training clip of yours'),nochev:true,dis:true}),sRow({ic:'doc',l:'My news',sub:rT('The latest articles about you, newest first.'),nochev:true,dis:true}),sRow({ic:'star',l:'Public opinion',sub:rT('RYSEON AI analyses every article about you and scores the public opinion 1–10, month by month'),nochev:true,dis:true}),sRow({ic:'up',l:'Latest videos first',sub:rT('Your newest videos as soon as they’re ready'),nochev:true,dis:true})])+
         '<button class="st-btn" type="button" data-sa="premium">'+e(rT('Upgrade to Premium'))+'</button>';
       h+='<button class="st-link" type="button" data-sa="restore">'+e(rT('Restore purchase'))+'</button><button class="st-link" type="button" data-pg="doc-subterms">'+e(rT('Subscription terms'))+'</button>';
