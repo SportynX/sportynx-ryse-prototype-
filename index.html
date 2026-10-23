@@ -2880,7 +2880,10 @@ html[data-pro] .h-greet:not(.rank) .g2::after{content:"";display:inline-block;wi
 .vf-badge{display:flex;justify-content:center;margin:26px 0 4px}.vf-badge svg{width:64px;height:64px;filter:drop-shadow(0 6px 22px rgba(61,139,255,.45));animation:vfPop .7s cubic-bezier(.2,.8,.2,1.2) .2s both}
 @keyframes vfPop{from{opacity:0;transform:scale(.6) rotate(-20deg)}to{opacity:1;transform:none}}
 #s07v .skip-note{margin:0;font-size:14px;line-height:1.5;color:rgba(206,213,226,.92);text-align:center}
-.rm-list button.rm-self{border-color:rgba(61,139,255,.45)!important;background:rgba(61,139,255,.08)!important}
+.rm-list button{padding:10px 14px 10px 10px!important;border:1px solid transparent!important;border-bottom-color:rgba(255,255,255,.06)!important;border-radius:20px;margin:2px 0;transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease,transform .15s ease}
+.rm-list button:active{transform:scale(.985)}
+.rm-list button[aria-pressed=true]{border-color:rgba(111,152,255,.55)!important;background:linear-gradient(180deg,rgba(61,123,255,.16),rgba(61,123,255,.07))!important;box-shadow:0 0 0 1px rgba(111,152,255,.12) inset,0 8px 28px rgba(31,80,200,.22)}
+.rm-list button.rm-self:not([aria-pressed=true]){border-color:rgba(111,152,255,.25)!important;border-bottom-color:rgba(111,152,255,.25)!important}
 .rm-self .rm-av{overflow:hidden}.rm-self .rm-av img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 .rs-card.self{border-color:rgba(61,139,255,.45)!important;background:rgba(61,139,255,.08)!important}
 .ry-card.mine .art{background:radial-gradient(90% 80% at 70% 30%,#1B3A86,#0B1736 60%,#070B16)}
