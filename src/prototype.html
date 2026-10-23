@@ -2721,11 +2721,12 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hm-tip b{font:700 19px/1.2 var(--font-display);letter-spacing:-.01em}
 .hm-tip span{font:500 13px/1.45 var(--font-body);color:rgba(220,226,238,.85)}
 /* "I’m already a pro": muted champagne gold, premium but quiet */
-#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;color:#F2F6FF;border:1px solid rgba(140,172,255,.45)!important;background:radial-gradient(120% 160% at 50% -10%,rgba(92,138,255,.5),rgba(52,96,220,.32) 50%,rgba(28,56,150,.28) 100%)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(200,218,255,.18),0 10px 30px rgba(40,80,200,.25)}
-#s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:18px;height:18px;flex:none;opacity:.9}
+#s01 .btn[data-choice]{background:transparent!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:none!important;color:#F5F7FB}
+#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden}
+#s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:19px;height:19px;flex:none}
 #s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(220,232,255,.22) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
 @keyframes proSheen{0%,62%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-#s01 .btn[data-choice=already-pro].is-selected{background:radial-gradient(120% 160% at 50% -10%,rgba(110,152,255,.68),rgba(60,105,230,.45) 50%,rgba(32,64,170,.4) 100%)!important;border-color:rgba(180,202,255,.7)!important}
+#s01 .btn[data-choice].is-selected{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.5)!important}
 #s01 .btn:has(.b2){flex-direction:column;gap:0}#s01 .btn small.b2{display:block;margin-top:5px;font:500 11px/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.82}
 /* Plan ahead (Ivan, 20 Oct): planned training hides effort/feelings/photos/muscle load; free recovery planning has no injury card */
 #s18.lt-plan .pl-hide{display:none}
@@ -3050,7 +3051,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       </div>
       <div class="actions choices rise d3" role="group" aria-label="Your goal">
         <button class="btn btn-primary" type="button" data-choice="pro">Yes, that’s my goal</button>
-        <button class="btn btn-quiet" type="button" data-choice="already-pro"><span class="pro-l"><svg class="pro-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="pro-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2F6FF"/><stop offset="1" stop-color="#9DB4E8"/></linearGradient></defs><circle cx="12" cy="12" r="10.2" stroke="url(#pro-g)" stroke-width="1.2" opacity=".85"/><path d="M12 5.6 13.6 10.4 18.4 12 13.6 13.6 12 18.4 10.4 13.6 5.6 12 10.4 10.4Z" fill="url(#pro-g)"/></svg><span>I’m already a pro</span></span><small class="b2">keep improving</small></button>
+        <button class="btn btn-quiet" type="button" data-choice="already-pro"><span class="pro-l"><svg class="pro-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="pro-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9CF96"/><stop offset="1" stop-color="#A97F45"/></linearGradient></defs><circle cx="12" cy="12" r="10.2" stroke="url(#pro-g)" stroke-width="1.3"/><path d="M12 5.6 13.6 10.4 18.4 12 13.6 13.6 12 18.4 10.4 13.6 5.6 12 10.4 10.4Z" stroke="url(#pro-g)" stroke-width="1.3" stroke-linejoin="round"/></svg><span>I’m already a pro</span></span><small class="b2">keep improving</small></button>
       </div>
     </section>
 
