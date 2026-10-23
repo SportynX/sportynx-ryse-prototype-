@@ -17,6 +17,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
+/* Home-screen app on newer iPhones (Pro Max): iOS can report a viewport a little shorter than the screen, leaving a black strip at the bottom.
+   Size the app to the full screen height instead (same as RYSEON, Ivan 23 Oct). */
+html.vantage-fs,html.vantage-fs body{height:var(--app-h)}html.vantage-fs .stage{bottom:auto;height:var(--app-h)}
+</style>
+<script>
+(function(){ function fit(){ try{ var sa=window.navigator.standalone||matchMedia('(display-mode: standalone)').matches; if(!sa) return;
+  var port=innerHeight>=innerWidth, sh=port?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width), h=Math.max(innerHeight,sh);
+  var r=document.documentElement; r.style.setProperty('--app-h',h+'px'); r.classList.add('vantage-fs') }catch(e){} }
+  fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
+</script>
+<style>
 /* VANTAGE — built on the RYSEON design system.
    Layout: desktop = sidebar + portfolio canvas; tablet = icon rail; phone = floating bottom nav (no + button). */
 :root{
@@ -1362,6 +1373,35 @@ html:not([data-view]) .pg-pair small{color:#8FB0FF}
 .tag-a i{transition:background-color .2s ease,border-color .2s ease,transform .2s cubic-bezier(.3,1.4,.5,1)}
 button:active{transition-duration:.08s}
 @media (prefers-reduced-motion: reduce){.v-leave,.scrim.closing,.scrim.closing .sheet,.fullscr.closing,.fullscr.reveal{animation:none!important;transition:none!important}}
+/* ===== From RYSEON (Ivan, 23 Oct 2026) ===== */
+/* Tab bar · glass lens that slides to the new tab, like iOS. Selected tab keeps its blue icon + text; the lens is neutral glass, not blue */
+.bnav{transform-origin:50% 60%;background:rgba(22,23,27,.72);border-color:rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.bnav button{position:relative;z-index:1}
+.hnav-pill{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:26px;background:rgba(255,255,255,.075);pointer-events:none;z-index:0;opacity:0}
+.hnav-pill.on{opacity:1}
+/* Background theme: anthracite. Welcome screens: anthracite gradient + one slow blue orb (canvas). Inside the app: one flat anthracite, no orb */
+:root{--bg:#0C0D10}
+.stage{background:radial-gradient(120% 80% at 50% 0%,#111216 0%,#000 70%)}
+.device{background:#0A0B0D}
+.aura{background:linear-gradient(180deg,#121418 0%,#0C0D10 45%,#08090B 100%)}
+.aura i,.aura::after{display:none}
+.aura canvas{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .6s ease}
+.aura.calm{background:#0C0D10}
+.aura.calm canvas{opacity:0}
+.fullscr{background:#0C0D10}
+.dr-foot{background:linear-gradient(180deg,rgba(12,13,16,0),#0C0D10 30%)}
+.ryp .pg-sticky{background:linear-gradient(180deg,var(--bg) 70%,rgba(12,13,16,0))}
+.ob .ob-act{background:linear-gradient(180deg,rgba(8,9,11,0),rgba(8,9,11,.9) 26px,rgba(8,9,11,.96))}
+.sheet{background:rgba(16,17,20,.96)}
+.sheet-h{background:linear-gradient(180deg,rgb(16,17,20) 80%,rgba(16,17,20,0))}
+.sheet.calsheet{background:rgba(16,17,20,.9)}
+/* Pulses play once, and only once the card is in view */
+.live i{animation:none}
+.live.go i{animation:livep 1.8s ease-out 1}
+.orbit .ring{animation-iteration-count:1}
+/* Language rail follows the finger: the one in the frame is full colour and a little bigger, neighbours smaller and fainter */
+.lang-track.kr .lang-item{--k:0;opacity:calc(.45 + var(--k) * .55);transform:scale(calc(.86 + var(--k) * .14));transition:none;will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){.hnav-pill{transition:none}.aura canvas{transition:none}}
 </style>
 </head>
 <body>
@@ -3915,6 +3955,95 @@ render(true);
 })();
 
 /* ============================================================
+   VANTAGE — taken over from RYSEON (Ivan, 23 Oct 2026)
+   1 Tab bar glass lens · 3 anthracite background + one blue orb on
+   the welcome screens · 4 never-stuck navigation, one-shot pulses
+   that start in view, language rail that follows the finger + tick.
+   ============================================================ */
+(function(){
+var RM=function(){return window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches};
+
+/* ---------- 1 · Tab bar lens (RYSEON "Tab bar lens (Ivan, 23 Oct)") ---------- */
+var _rs=renderShell;
+renderShell=function(){return _rs().replace('<nav class="bnav" aria-label="Main">','<nav class="bnav" aria-label="Main"><i class="hnav-pill" data-keep="pill" aria-hidden="true"></i>')};
+var LBAR=null,PILL=null,ANIM=null,RO=null;
+function box(t){return {x:t.offsetLeft+4,w:t.offsetWidth-8}}
+function curTab(){return LBAR&&LBAR.querySelector('button[aria-current=page]')}
+function place(){var c=curTab();if(!c||!LBAR.offsetWidth){if(PILL) PILL.classList.remove('on');return}var b=box(c);PILL.style.left=b.x+'px';PILL.style.width=b.w+'px';PILL.classList.add('on');PILL._at=c.dataset.v}
+function lens(from,t){
+  if(!LBAR||!from||from===t||!LBAR.offsetWidth||!PILL.animate||RM()){requestAnimationFrame(place);return}
+  var a=box(from),b=box(t),mid=(a.x+b.x)/2,big=Math.max(a.w,b.w)*1.28,
+    glass='inset 0 0 0 1px rgba(255,255,255,.26),inset 0 1px 10px rgba(255,255,255,.12),0 6px 20px rgba(0,0,0,.35)',
+    rest='inset 0 0 0 0 rgba(255,255,255,0),inset 0 0 0 rgba(255,255,255,0),0 0 0 rgba(0,0,0,0)';
+  if(ANIM) ANIM.cancel();PILL.classList.add('on');
+  ANIM=PILL.animate([
+    {left:a.x+'px',width:a.w+'px',transform:'scale(1,1)',background:'rgba(255,255,255,.075)',boxShadow:rest},
+    {left:(a.x-(a.w*.08))+'px',width:(a.w*1.16)+'px',transform:'scale(1,1.3)',background:'rgba(255,255,255,.03)',boxShadow:glass,offset:.22},
+    {left:(mid+(Math.min(a.w,b.w)-big)/2)+'px',width:big+'px',transform:'scale(1,1.36)',background:'rgba(255,255,255,.025)',boxShadow:glass,offset:.55},
+    {left:(b.x-(b.w*.06))+'px',width:(b.w*1.12)+'px',transform:'scale(1,1.22)',background:'rgba(255,255,255,.035)',boxShadow:glass,offset:.8},
+    {left:b.x+'px',width:b.w+'px',transform:'scale(1,1)',background:'rgba(255,255,255,.075)',boxShadow:rest}
+  ],{duration:620,easing:'cubic-bezier(.3,.7,.25,1)'});
+  LBAR.animate([{transform:'scale(1)'},{transform:'scale(1.035)',offset:.35},{transform:'scale(1)'}],{duration:560,easing:'cubic-bezier(.3,.7,.25,1)'});
+  PILL.style.left=b.x+'px';PILL.style.width=b.w+'px';PILL._at=t.dataset.v;ANIM.onfinish=function(){ANIM=null}}
+function bindBar(){var bar=document.querySelector('.bnav');if(!bar) return;
+  if(bar!==LBAR){LBAR=bar;PILL=bar.querySelector('.hnav-pill');
+    if(RO) RO.disconnect();try{RO=new ResizeObserver(function(){if(!ANIM) place()});RO.observe(bar)}catch(_){}
+    setTimeout(place,0);return}
+  /* screen changed without a tab tap (e.g. opening an athlete): glide there too */
+  var c=curTab();if(!ANIM&&c&&PILL._at&&PILL._at!==c.dataset.v){var f=LBAR.querySelector('button[data-v="'+PILL._at+'"]');if(f) lens(f,c);else place()}
+  else if(!ANIM) place()}
+document.addEventListener('click',function(e){var t=e.target.closest('.bnav button[data-a=nav]');if(!t||!LBAR) return;var c=curTab();if(c!==t) lens(c||LBAR.querySelector('button[data-v="'+PILL._at+'"]'),t)},true);
+addEventListener('resize',function(){if(!ANIM&&LBAR) place()});
+
+/* ---------- 3 · background: anthracite + one slow blue orb on the welcome screens (RYSEON orb(t)) ---------- */
+var aura=document.getElementById('aura'),cv=document.createElement('canvas'),ctx=cv.getContext('2d'),W=0,H=0,t0=performance.now(),last=0,TAU=Math.PI*2;
+aura.appendChild(cv);
+function size(){var r=aura.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);W=Math.max(1,Math.round(r.width*d*.5));H=Math.max(1,Math.round(r.height*d*.5));cv.width=W;cv.height=H}
+size();addEventListener('resize',size);
+function orb(t){
+  var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#131519');g.addColorStop(.45,'#0d0e11');g.addColorStop(1,'#08090b');
+  ctx.globalCompositeOperation='source-over';ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+  var fx=.5+.30*Math.sin(TAU*t/23)+.08*Math.sin(TAU*t/7.3),fy=.28+.13*Math.sin(TAU*t/17+1.1)+.04*Math.sin(TAU*t/5.9);
+  var x=fx*W,y=fy*H,br=.5+.5*Math.sin(TAU*t/6.5),R=(.42+.05*br)*W;
+  function blob(r,stops){var rg=ctx.createRadialGradient(x,y,0,x,y,r);stops.forEach(function(s){rg.addColorStop(s[0],s[1])});ctx.fillStyle=rg;ctx.fillRect(0,0,W,H)}
+  blob(R*2.6,[[0,'rgba(30,70,190,'+(.16+.04*br)+')'],[.5,'rgba(22,52,150,.06)'],[1,'rgba(20,40,120,0)']]);
+  blob(R,[[0,'rgba(120,160,255,'+(.62+.1*br)+')'],[.35,'rgba(56,108,255,.42)'],[.7,'rgba(36,80,220,.14)'],[1,'rgba(30,70,200,0)']])}
+var hideAt=0;
+function frame(now){requestAnimationFrame(frame);
+  var calm=aura.classList.contains('calm');
+  if(calm){if(!hideAt) hideAt=now;if(now-hideAt>700) return}else hideAt=0;   /* inside the app: no orb, nothing to draw */
+  if(now-last<33) return;last=now;orb(RM()?0:(now-t0)/1000)}
+requestAnimationFrame(frame);
+
+/* ---------- 4a · one-shot pulses that start only once in view (threshold .45) ---------- */
+var IO=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){IO.unobserve(en.target);en.target.classList.add('go')}})},{threshold:.45}):null;
+function watch(){document.querySelectorAll('.live:not(.go)').forEach(function(el){if(el._io) return;el._io=1;if(IO) IO.observe(el);else el.classList.add('go')})}
+var _intro=introSvg;introSvg=function(){return _intro().replace(/repeatCount="indefinite"/g,'repeatCount="1" fill="freeze"')};
+
+/* ---------- 4b · language rail: the language inside the frame is full colour and a little bigger; follows the finger; quiet tick ---------- */
+var AC=null,BUF=null,LT=0;
+function ac(){try{if(!AC){var A=window.AudioContext||window.webkitAudioContext;if(!A) return null;AC=new A();try{if(navigator.audioSession) navigator.audioSession.type='ambient'}catch(_){}
+  var n=Math.floor(AC.sampleRate*.014);BUF=AC.createBuffer(1,n,AC.sampleRate);var d=BUF.getChannelData(0);
+  for(var j=0;j<n;j++){var q=j/n;d[j]=(Math.random()*2-1)*Math.pow(1-q,7)*.7+Math.sin(j/AC.sampleRate*2*Math.PI*2600)*Math.pow(1-q,9)*.55}}
+  if(AC.state==='suspended') AC.resume();return AC}catch(e){return null}}
+['touchstart','touchend','pointerdown'].forEach(function(t){document.addEventListener(t,function(){if(document.getElementById('lang-track')) ac()},{passive:true,capture:true})});
+window.vantageTick=function(){var now=performance.now();if(now-LT<38) return;LT=now;
+  try{var c=ac();if(c&&BUF&&c.state==='running'){var s=c.createBufferSource(),hp=c.createBiquadFilter(),g=c.createGain();s.buffer=BUF;hp.type='highpass';hp.frequency.value=1400;g.gain.value=.16;s.connect(hp);hp.connect(g);g.connect(c.destination);s.start()}}catch(e){}};
+function rail(){var tk=document.getElementById('lang-track');if(!tk||tk._k) return;tk._k=1;tk.classList.add('kr');
+  var it=[].slice.call(tk.querySelectorAll('.lang-item')),raf=0;
+  function near(){var mid=tk.scrollLeft+tk.clientWidth/2,best=null,bd=1e9;it.forEach(function(b){var d=Math.abs(b.offsetLeft+b.offsetWidth/2-mid);if(d<bd){bd=d;best=b}});return best}
+  function paint(){raf=0;var mid=tk.scrollLeft+tk.clientWidth/2;it.forEach(function(b){var w=b.offsetWidth||1,d=Math.abs(b.offsetLeft+w/2-mid)/w,k=Math.max(0,1-d);k=k*k*(3-2*k);b.style.setProperty('--k',k.toFixed(3))});
+    var nb=near();if(tk._nb!==nb){if(tk._nb&&tk._user) window.vantageTick();tk._nb=nb}}
+  tk.addEventListener('scroll',function(){if(!raf) raf=requestAnimationFrame(paint)},{passive:true});
+  ['touchstart','pointerdown','wheel'].forEach(function(t){tk.addEventListener(t,function(){tk._user=true},{passive:true})});
+  requestAnimationFrame(paint);setTimeout(paint,120)}
+
+/* ---------- hook after every render ---------- */
+var _r=render;render=function(top){_r(top);bindBar();watch();rail()};
+render(true);
+})();
+
+/* ============================================================
    VANTAGE — navigation transitions (RYSEON pattern).
    Changing screen: the current page eases out (fade + 8px up),
    then the next page is swapped in and its sections rise in.
@@ -3922,18 +4051,20 @@ render(true);
    ============================================================ */
 (function(){
 function vkey(){return S.ob?'ob:'+S.step:'v:'+S.view+':'+(S.view==='athlete'?S.aid:'')}
-var LAST=vkey(),PEND=null,TOP=false,inner=render;
+var LAST=vkey(),PEND=null,PAT=0,TOP=false,inner=render;
 function leaving(){var m=document.getElementById('main');
   if(!S._wasOb&&m) return Array.prototype.slice.call(m.children);
   return Array.prototype.slice.call(root.children).filter(function(n){return !isOv(n)&&!n.classList.contains('bnav')})}
 render=function(top){
   var k=vkey();
-  if(PEND){TOP=TOP||!!top;return}
+  /* Never get stuck (RYSEON, 23 Oct): a screen change older than 1.5 s is released */
+  if(PEND&&Date.now()-PAT<1500){TOP=TOP||!!top;return}
+  if(PEND){clearTimeout(PEND);PEND=null}
   if(k===LAST||!root.firstChild){LAST=k;S._wasOb=S.ob;inner(top);return}
   var els=leaving(),obSwitch=S._wasOb!==S.ob;
   els.forEach(function(e){e.classList.add('v-leave')});
-  TOP=!!top;
-  PEND=setTimeout(function(){PEND=null;LAST=vkey();SCREEN_FRESH=true;try{inner(TOP)}finally{SCREEN_FRESH=false}S._wasOb=S.ob;
+  TOP=!!top;PAT=Date.now();
+  PEND=setTimeout(function(){PEND=null;LAST=vkey();SCREEN_FRESH=true;try{inner(TOP)}catch(err){console.error(err)}finally{SCREEN_FRESH=false;document.querySelectorAll('.v-leave').forEach(function(e){e.classList.remove('v-leave')})}S._wasOb=S.ob;
     var m=document.getElementById('main');if(m) m.scrollTop=0;
     var col=document.querySelector('.ob-col');if(col) col.scrollTop=0},obSwitch?260:170);
 };

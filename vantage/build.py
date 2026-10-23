@@ -2,7 +2,7 @@
 import os
 D=os.path.dirname(os.path.abspath(__file__)); S=os.path.join(D,'src')
 r=lambda f:open(os.path.join(S,f),encoding='utf-8').read()
-css=r('style.css'); js=r('data.js')+'\n'+r('app1.js').replace('__LOGO__','')+'\n'+r('app2.js')+'\n'+r('app3.js')+'\n'+r('app4.js')+'\n'+r('app5.js')+'\n'+r('media.js')+'\n'+r('app6.js')+'\n'+r('app7.js')+'\n'+r('app8.js')+'\n'+r('app9.js')+'\n'+r('app10.js')+'\n'+r('app11.js')+'\n'+r('app12.js')
+css=r('style.css'); js=r('data.js')+'\n'+r('app1.js').replace('__LOGO__','')+'\n'+r('app2.js')+'\n'+r('app3.js')+'\n'+r('app4.js')+'\n'+r('app5.js')+'\n'+r('media.js')+'\n'+r('app6.js')+'\n'+r('app7.js')+'\n'+r('app8.js')+'\n'+r('app9.js')+'\n'+r('app10.js')+'\n'+r('app11.js')+'\n'+r('app13.js')+'\n'+r('app12.js')
 head='''<!doctype html>
 <html lang="en">
 <head>
@@ -21,6 +21,17 @@ head='''<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Home-screen app on newer iPhones (Pro Max): iOS can report a viewport a little shorter than the screen, leaving a black strip at the bottom.
+   Size the app to the full screen height instead (same as RYSEON, Ivan 23 Oct). */
+html.vantage-fs,html.vantage-fs body{height:var(--app-h)}html.vantage-fs .stage{bottom:auto;height:var(--app-h)}
+</style>
+<script>
+(function(){ function fit(){ try{ var sa=window.navigator.standalone||matchMedia('(display-mode: standalone)').matches; if(!sa) return;
+  var port=innerHeight>=innerWidth, sh=port?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width), h=Math.max(innerHeight,sh);
+  var r=document.documentElement; r.style.setProperty('--app-h',h+'px'); r.classList.add('vantage-fs') }catch(e){} }
+  fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
+</script>
 <style>
 '''
 body='''</style>

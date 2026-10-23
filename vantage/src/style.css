@@ -1343,3 +1343,32 @@ html:not([data-view]) .pg-pair small{color:#8FB0FF}
 .tag-a i{transition:background-color .2s ease,border-color .2s ease,transform .2s cubic-bezier(.3,1.4,.5,1)}
 button:active{transition-duration:.08s}
 @media (prefers-reduced-motion: reduce){.v-leave,.scrim.closing,.scrim.closing .sheet,.fullscr.closing,.fullscr.reveal{animation:none!important;transition:none!important}}
+/* ===== From RYSEON (Ivan, 23 Oct 2026) ===== */
+/* Tab bar · glass lens that slides to the new tab, like iOS. Selected tab keeps its blue icon + text; the lens is neutral glass, not blue */
+.bnav{transform-origin:50% 60%;background:rgba(22,23,27,.72);border-color:rgba(255,255,255,.08);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.bnav button{position:relative;z-index:1}
+.hnav-pill{position:absolute;top:5px;bottom:5px;left:0;width:0;border-radius:26px;background:rgba(255,255,255,.075);pointer-events:none;z-index:0;opacity:0}
+.hnav-pill.on{opacity:1}
+/* Background theme: anthracite. Welcome screens: anthracite gradient + one slow blue orb (canvas). Inside the app: one flat anthracite, no orb */
+:root{--bg:#0C0D10}
+.stage{background:radial-gradient(120% 80% at 50% 0%,#111216 0%,#000 70%)}
+.device{background:#0A0B0D}
+.aura{background:linear-gradient(180deg,#121418 0%,#0C0D10 45%,#08090B 100%)}
+.aura i,.aura::after{display:none}
+.aura canvas{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .6s ease}
+.aura.calm{background:#0C0D10}
+.aura.calm canvas{opacity:0}
+.fullscr{background:#0C0D10}
+.dr-foot{background:linear-gradient(180deg,rgba(12,13,16,0),#0C0D10 30%)}
+.ryp .pg-sticky{background:linear-gradient(180deg,var(--bg) 70%,rgba(12,13,16,0))}
+.ob .ob-act{background:linear-gradient(180deg,rgba(8,9,11,0),rgba(8,9,11,.9) 26px,rgba(8,9,11,.96))}
+.sheet{background:rgba(16,17,20,.96)}
+.sheet-h{background:linear-gradient(180deg,rgb(16,17,20) 80%,rgba(16,17,20,0))}
+.sheet.calsheet{background:rgba(16,17,20,.9)}
+/* Pulses play once, and only once the card is in view */
+.live i{animation:none}
+.live.go i{animation:livep 1.8s ease-out 1}
+.orbit .ring{animation-iteration-count:1}
+/* Language rail follows the finger: the one in the frame is full colour and a little bigger, neighbours smaller and fainter */
+.lang-track.kr .lang-item{--k:0;opacity:calc(.45 + var(--k) * .55);transform:scale(calc(.86 + var(--k) * .14));transition:none;will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){.hnav-pill{transition:none}.aura canvas{transition:none}}
