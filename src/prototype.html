@@ -3121,6 +3121,59 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 
 <div class="stage">
   <div class="device" id="device">
+    <!-- Loader (Ivan, 24 Oct): the app is large, so a calm loading screen holds the first screen back until everything is ready -->
+    <div id="rl" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <style>
+      #rl{position:absolute;inset:0;z-index:10000;display:grid;place-items:center;background:radial-gradient(90% 60% at 50% 42%,#0B1222 0%,#04060B 62%,#020305 100%);transition:opacity .7s cubic-bezier(.4,0,.2,1)}
+      #rl .rl-c{display:flex;flex-direction:column;align-items:center;gap:30px;transform:translateY(-4%)}
+      #rl .rl-ring{position:relative;width:148px;height:148px}
+      #rl .rl-glow{position:absolute;inset:-46px;border-radius:50%;background:radial-gradient(closest-side,rgba(47,107,255,.26),rgba(47,107,255,.08) 55%,transparent 100%);animation:rlBreath 3.2s ease-in-out infinite}
+      #rl svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+      #rl .rl-orbit{transform-origin:50% 50%;animation:rlSpin 14s linear infinite}
+      #rl .rl-scan{transform-origin:50% 50%;animation:rlSpin 2.6s cubic-bezier(.45,.05,.55,.95) infinite}
+      #rl .rl-arc{transition:stroke-dashoffset .25s linear}
+      #rl .rl-n{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:500 34px/1 "Archivo","Helvetica Neue",Arial,sans-serif;letter-spacing:-.02em;color:#F5F7FB;font-variant-numeric:tabular-nums}
+      #rl .rl-n small{font-size:.42em;font-weight:500;color:rgba(184,192,207,.7);margin-left:3px;align-self:flex-start;margin-top:58px}
+      #rl .rl-w{font:600 15px/1 "Archivo","Helvetica Neue",Arial,sans-serif;letter-spacing:.42em;margin-right:-.42em;color:#F5F7FB;opacity:0;animation:rlIn .9s .25s cubic-bezier(.2,.8,.2,1) forwards}
+      #rl .rl-w::before{content:"RYSE"}#rl .rl-w::after{content:"ON";color:rgba(184,192,207,.62)}
+      #rl .rl-l{width:120px;height:1px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:-12px}
+      #rl .rl-l i{display:block;height:100%;width:40%;background:linear-gradient(90deg,transparent,rgba(157,184,255,.9),transparent);animation:rlSweep 1.8s ease-in-out infinite}
+      #rl.done .rl-ring{transform:scale(1.06);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .55s ease}
+      #rl.done .rl-w,#rl.done .rl-l{opacity:0;transition:opacity .4s ease}
+      #rl.out{opacity:0;pointer-events:none}
+      @keyframes rlSpin{to{transform:rotate(360deg)}}
+      @keyframes rlBreath{0%,100%{opacity:.75;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+      @keyframes rlIn{from{opacity:0;letter-spacing:.6em}to{opacity:1}}
+      @keyframes rlSweep{from{transform:translateX(-110%)}to{transform:translateX(310%)}}
+      @media (prefers-reduced-motion:reduce){#rl *{animation:none!important}}
+      </style>
+      <div class="rl-c">
+        <div class="rl-ring">
+          <div class="rl-glow"></div>
+          <svg viewBox="0 0 148 148" aria-hidden="true">
+            <defs><linearGradient id="rl-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9DB8FF"/><stop offset="1" stop-color="#2F6BFF"/></linearGradient></defs>
+            <g class="rl-orbit"><circle cx="74" cy="74" r="72" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1" stroke-dasharray="1.2 5.8"/></g>
+            <circle cx="74" cy="74" r="62" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/>
+            <circle class="rl-arc" id="rl-arc" cx="74" cy="74" r="62" fill="none" stroke="url(#rl-g)" stroke-width="2" stroke-linecap="round" stroke-dasharray="389.6" stroke-dashoffset="389.6" transform="rotate(-90 74 74)"/>
+            <g class="rl-scan"><circle cx="74" cy="74" r="52" fill="none" stroke="rgba(157,184,255,.35)" stroke-width="1" stroke-dasharray="22 304.7" stroke-linecap="round"/></g>
+          </svg>
+          <div class="rl-n"><span id="rl-n">0</span><small>%</small></div>
+        </div>
+        <div class="rl-w" aria-label="RYSEON"></div>
+        <div class="rl-l"><i></i></div>
+      </div>
+    </div>
+    <script>
+    (function(){ var t0=Date.now(), p=0, done=false, el=document.getElementById('rl'), arc=document.getElementById('rl-arc'), num=document.getElementById('rl-n'), C=389.6;
+      function show(v){ p=Math.max(p,v); arc.style.strokeDashoffset=(C*(1-p)).toFixed(1); num.textContent=Math.round(p*100); el.setAttribute('aria-valuenow',Math.round(p*100)) }
+      /* honest-looking progress: glides towards 94 % while the app downloads, completes the moment it is ready */
+      var iv=setInterval(function(){ if(!done) show(.94*(1-Math.exp(-(Date.now()-t0)/2600))) },80);
+      window.__rlDone=function(cb){ if(done) return; done=true; clearInterval(iv);
+        var wait=Math.max(0,1100-(Date.now()-t0)), from=p;
+        setTimeout(function(){ var s=Date.now(); (function step(){ var k=Math.min(1,(Date.now()-s)/420); show(from+(1-from)*(1-Math.pow(1-k,3))); if(k<1) return requestAnimationFrame(step);
+          setTimeout(function(){ el.classList.add('done'); setTimeout(function(){ cb&&cb(); el.classList.add('out'); setTimeout(function(){ el.remove() },750) },260) },160) })() },wait) };
+    })();
+    </script>
     <div class="bg" aria-hidden="true">
       <canvas id="aura"></canvas>
       <div class="floor"></div>
@@ -7256,8 +7309,10 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 <script>
 /* Basics: build and centre the nationality rail whenever the screen opens */
 (function(){ var p=window.ryseOnEnter; window.ryseOnEnter=function(to){ p(to); if(to.id==='s07'&&window.ryseNatRail) try{ window.ryseNatRail() }catch(e){} } })();
-/* The app is ready: carry out a Continue that was tapped while it was still loading */
+/* The app is ready: the loader completes and lifts, the language screen plays its entrance; a Continue tapped while loading is carried out */
 (function(){ window.__ryseReady=true; var b=document.getElementById('lang-go'), L=document.getElementById('sLang');
   if(b) b.classList.remove('is-wait');
-  if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } })();
+  function reveal(){ if(L&&!L.classList.contains('is-hidden')) L.querySelectorAll('.line-in,.rise').forEach(function(el){ el.style.animation='none'; void el.getBoundingClientRect(); el.style.animation='' });
+    if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } }
+  if(window.__rlDone) window.__rlDone(reveal); else reveal() })();
 </script>
