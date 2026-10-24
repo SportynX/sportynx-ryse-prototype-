@@ -82,12 +82,9 @@ var SCENARIOS={
   waiting:{label:'Waiting for approval',role:'parent',plan:'individual',user:'Ivan',con:[{a:'luka',st:'pending',rel:'Parent',ago:0}]}
 };
 
-var PLANS={
-  individual:{name:'VANTAGE Individual',short:'Individual',price:6.9,incl:1,max:3},
-  v5:{name:'VANTAGE 5',short:'VANTAGE 5',price:15.9,incl:5,max:9},
-  pro:{name:'VANTAGE Professional',short:'Professional',price:25.9,incl:10,max:10}
-};
-var EXTRA=3.9;
+/* One membership only (Oct 2026): RYSEON VANTAGE £14.90 / month, includes 1 RYSEON athlete membership. Kept as PLANS so older code keeps working. */
+var PLANS={individual:{name:'RYSEON VANTAGE',short:'VANTAGE',price:14.9,incl:1,max:99}};PLANS.v5=PLANS.individual;PLANS.pro=PLANS.individual;
+var EXTRA=0;
 
 /* ---------- Schedule generation ---------- */
 var TPL={

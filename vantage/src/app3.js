@@ -95,8 +95,7 @@ function reportSheet(rid){
 function viewProfile(){
   var pl=PLANS[S.plan],L=live(),n=L.length;
   var h='<div class="page narrow">'+mtop()+'<div class="me rise d1"><label class="me-ph" title="Change profile photo">'+meAva()+'<input type="file" accept="image/*" id="me-file" hidden><span class="me-cam" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5Z"/><circle cx="12" cy="12.5" r="3.3"/></svg></span><span class="sr">Change profile photo</span></label><div><b>'+esc(S.user)+'</b><small>'+esc(S.email)+' · '+roleLabel(S.role)+'</small></div></div>';
-  h+='<div class="card focus rise d1"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap"><div><span class="mlabel acc">Your plan</span><p style="margin-top:10px;font:700 22px/1 var(--font-display);text-transform:uppercase">'+pl.name+'</p><p class="sub" style="margin-top:8px;font-size:14px">'+n+' of '+pl.max+' athletes · €'+price(S.plan,Math.max(n,1)).toFixed(2)+' / month</p></div>'+
-    '<button class="btn btn-primary btn-sm" type="button" data-a="nav" data-v="pricing">Manage plan</button></div><div class="usage">'+usageBar()+'</div></div>';
+  h+='<!--membership-->'; /* the Membership card (app14) goes here */
   h+='<div class="sec-h rise d2"><h2 class="h3">Connections</h2><button class="link" type="button" data-a="reqNew">Request another athlete</button></div>';
   h+='<div class="set rise d2">'+(S.cons.length?S.cons.map(function(c){var a=A(c.a),st={connected:['Connected','blue'],pending:['Pending',''],invited:['Invited',''],declined:['Declined',''],ended:['Access ended','']}[c.st];
       return '<button type="button" data-a="openA" data-id="'+a.id+'"'+(c.st==='connected'?' data-t="access"':'')+'>'+ava(a,'',c.st==='connected'?'':(c.st==='pending'?'locked':'ended'))+'<span class="t">'+esc(nm(a))+'<small>'+esc(c.rel)+(c.st==='connected'?' · '+PERM_LABELS.filter(function(x){return P(a.id)[x[0]]}).length+' of 9 areas shared':'')+'</small></span><span class="pill '+st[1]+'">'+st[0]+'</span>'+I.chev+'</button>'}).join(''):'<div><span class="t muted">No connections yet</span></div>')+'</div>';
@@ -115,30 +114,10 @@ function familyHtml(){
 }
 
 /* ---------- PRICING ---------- */
-function price(k,n){var p=PLANS[k];if(n>p.max) return null;return p.price+Math.max(0,n-p.incl)*EXTRA}
-function bestPlan(n){var best=null;['individual','v5','pro'].forEach(function(k){var v=price(k,n);if(v!=null&&(best===null||v<best[1]-1e-9)) best=[k,v]});return best}
-function viewPricing(){
-  var n=S.calcN||Math.max(1,live().length),bp=bestPlan(n),cur=S.plan;
-  var feats={individual:['<b>1 athlete</b> included','Add athletes for <b>€3.90</b> / athlete / month','Up to 3 athletes'],
-    v5:['<b>Up to 5 athletes</b> included','Add athletes for <b>€3.90</b> / athlete / month','Up to 9 athletes'],
-    pro:['<b>Up to 10 athletes</b> included','Built for agents and coaches with a full portfolio','10 athletes is the VANTAGE maximum']};
-  var h='<div class="page">'+mtop()+'<div class="ptop rise d1"><div class="t"><button class="textbtn" type="button" data-a="nav" data-v="profile" style="display:flex;align-items:center;gap:6px;margin-bottom:10px">'+I.left.replace('<svg','<svg style="width:16px;height:16px"')+'Profile</button><h1 class="ptitle">Choose your plan</h1><p class="psub">Every plan includes the full read-only VANTAGE experience. Athletes always decide what you see.</p></div></div>';
-  h+='<div class="plans rise d2">'+['individual','v5','pro'].map(function(k){var p=PLANS[k];return '<div class="plan'+(k==='v5'?' rec':'')+'">'+(k===cur?'<span class="pill blue cur">Current plan</span>':(k==='v5'?'<span class="pill cur">Most chosen</span>':''))+
-    '<span class="nm">'+p.name+'</span><div class="price"><b>€'+p.price.toFixed(2)+'</b><span>/ month</span></div>'+
-    '<ul>'+feats[k].map(function(f){return '<li>'+I.check+'<span>'+f+'</span></li>'}).join('')+'</ul>'+
-    '<button class="btn '+(k===cur?'btn-quiet':'btn-primary')+'" type="button" data-a="choosePlan" data-p="'+k+'"'+(k===cur||live().length>p.max?' disabled':'')+'>'+(k===cur?'Your plan':(live().length>p.max?'Connects up to '+p.max:'Choose '+p.short))+'</button></div>'}).join('')+'</div>';
-  h+='<div class="card rise d2 calc"><div class="out"><span class="mlabel acc">How many athletes will be in your team?</span><span class="muted" style="font-size:13.5px">Best value</span></div>'+
-    '<div class="out"><b><span id="calc-n">'+n+'</span> <span style="font-size:15px;font-family:var(--font-body);font-weight:500;color:var(--mut)">athlete'+(n>1?'s':'')+'</span></b><b id="calc-out">'+PLANS[bp[0]].short+' · €'+bp[1].toFixed(2)+'</b></div>'+
-    '<input type="range" id="calc" min="1" max="11" step="1" value="'+n+'" data-in="calc" aria-label="Number of athletes"><div class="ticks">'+[1,2,3,4,5,6,7,8,9,10,'10+'].map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><p class="note" id="calc-note">'+calcNote(n)+'</p></div>';
-  h+='<div class="rx rise d3"><div><span class="mlabel acc">RYSEON X</span><h3 style="margin-top:10px">Managing more than<br>10 athletes?</h3><p>RYSEON X is the professional command centre for teams, academies, national teams and football organisations.</p></div><a class="btn btn-quiet btn-sm" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a></div>';
-  h+='<p class="note">Prices include VAT where applicable. Cancel any time. Prototype only — no payment is taken.</p>';
-  return h+'</div>';
-}
-function calcNote(n){
-  if(n>10) return 'VANTAGE connects up to 10 athletes. For larger groups, RYSEON X is built for teams and organisations.';
-  var b=bestPlan(n),parts=['individual','v5','pro'].map(function(k){var v=price(k,n);return v==null?null:PLANS[k].short+' €'+v.toFixed(2)}).filter(Boolean);
-  return 'Options for '+n+': '+parts.join(' · ')+'.';
-}
+/* The old multi-tier plans are gone. Membership (app14) is the only price: RYSEON VANTAGE £14.90 / month. */
+function viewPricing(){return viewProfile()}
+function calcNote(){return ''}
+function bestPlan(){return ['individual',14.9]}
 
 /* ---------- REQUEST ANOTHER ATHLETE (in-app) ---------- */
 function slotsUsed(){return S.cons.filter(function(c){return c.st==='connected'||c.st==='pending'||c.st==='invited'}).length}
@@ -158,9 +137,7 @@ function renderOv(){
   var inner='',cls='sheet';
   if(o.t==='report') inner=reportSheet(o.id);
   else if(o.t==='stop'){cls+=' sm';var a=A(o.id);inner='<div class="sheet-b" style="padding-top:26px"><h2 class="rp-h" style="font-size:24px">Disconnect from '+esc(a.first)+'?</h2><p class="sub">You’ll lose access to everything '+esc(a.first)+' shares with you. To connect again, you’ll need to send a new request and '+esc(a.first)+' will need to approve it.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="doStop" data-id="'+a.id+'">Disconnect</button><button class="btn btn-quiet" type="button" data-a="closeOv">Stay connected</button></div></div>'}
-  else if(o.t==='limit'){cls+=' sm';var pl=PLANS[S.plan];
-    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE connects up to 10 athletes. RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
-      :'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">'+pl.name+'</span><h2 class="rp-h" style="font-size:26px">Your plan is full</h2><p class="sub">'+pl.name+' connects up to '+pl.max+' athletes. Move to a larger plan to request another athlete.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="nav" data-v="pricing">See plans</button><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
+  else if(o.t==='limit'){cls+=' sm';inner='<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing a whole team?</h2><p class="sub">RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
   else if(o.t==='role'){cls+=' sm';inner='<div class="sheet-h"><span class="mlabel">How you use VANTAGE</span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div><div class="sheet-b"><div class="roles" role="radiogroup">'+[['parent','Parent',I.parent],['agent','Agent',I.agent],['coach','Private Coach',I.coach],['other','Other',I.other]].map(function(r){return '<button class="role" type="button" role="radio" style="min-height:104px" aria-checked="'+(S.role===r[0])+'" data-a="setRole" data-r="'+r[0]+'"><span class="tick">'+I.check+'</span>'+r[2]+'<b>'+r[1]+'</b></button>'}).join('')+'</div><p class="note">This personalises VANTAGE. It doesn’t change what any athlete shares with you.</p></div>'}
   else if(o.t==='proto'){
     var L=live(),pend=others().filter(function(c){return c.st==='pending'});
@@ -332,7 +309,6 @@ function onInput(e){
   var t=e.target,k=t.getAttribute('data-in');if(!k) return;
   if(k==='find'){S.req.q=t.value;var r=document.getElementById('results');if(r) r.innerHTML=resultsHtml()}
   else if(k==='athQ'){S.athQ=t.value;var o=document.getElementById('ath-out');if(o) o.innerHTML=athOut()}
-  else if(k==='calc'){var n=+t.value;S.calcN=n;var b=n>10?null:bestPlan(n);document.getElementById('calc-n').textContent=n>10?'10+':n;document.getElementById('calc-out').textContent=b?PLANS[b[0]].short+' · €'+b[1].toFixed(2):'RYSEON X';document.getElementById('calc-note').textContent=calcNote(n)}
 }
 function onSubmit(e){
   var f=e.target.getAttribute('data-f');if(!f) return;e.preventDefault();

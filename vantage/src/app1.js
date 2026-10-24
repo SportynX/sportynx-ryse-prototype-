@@ -229,12 +229,7 @@ function idCard(a){
   return '<div class="idcard"><div class="who">'+ava(a,'lg')+'<div><div class="nm">'+esc(nm(a))+'</div><span class="tag">'+esc(a.pos)+'</span></div></div>'+
     '<dl><div><dt>Club</dt><dd>'+esc(a.club)+'</dd></div><div><dt>Team</dt><dd>'+esc(a.team)+'</dd></div><div><dt>City</dt><dd>'+esc(a.city)+'</dd></div><div><dt>RYSEON ID</dt><dd>'+a.ryid+'</dd></div></dl></div>';
 }
-function planNote(){
-  var n=live().length+S.cons.filter(function(c){return c.st==='pending'}).length, pl=PLANS[S.plan];
-  if(n<pl.incl) return '';
-  if(n>=pl.max) return '';
-  return '<p class="note">If approved, this adds €3.90 / month to your '+pl.name+' plan.</p>';
-}
+function planNote(){return ''}
 function requestBody(ob){
   var a=A(S.req.sel); if(!a) return '';
   var rels=['Parent','Agent','Private Coach','Other'];

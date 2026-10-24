@@ -6,7 +6,7 @@
    The athlete still decides: joining via the link = approving
    the connection, and they choose what to share.
    ============================================================ */
-var RYSEON_PRICE='£11.99 / month',RYSEON_TRIAL='7 days free';
+var RYSEON_PRICE='£11.90 / month',RYSEON_TRIAL='15 days free';
 var INV_N=0;
 function invCode(){var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';for(var i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)];return s}
 function newInvite(){return {first:'',last:'',contact:'',rel:roleLabel(S.role),pay:'me'}}

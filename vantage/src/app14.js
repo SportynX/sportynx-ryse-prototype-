@@ -50,8 +50,7 @@ function profileCard(){var s=state();
 function pillFor(s){return {inactive:'<span class="pill">Not active</span>',expired:'<span class="pill">Ended</span>',cancelling:'<span class="pill">Ending</span>'}[s]||'<span class="pill blue"><span class="dot"></span>Active</span>'}
 var _vp=viewProfile;
 viewProfile=function(){var h=_vp();
-  var i=h.indexOf('<div class="card focus rise d1">'),u=i<0?-1:h.indexOf('<div class="usage">',i),j=u<0?-1:h.indexOf('</div></div>',u)+12;
-  if(i>=0&&j>i) h=h.slice(0,i)+profileCard()+h.slice(j);
+  h=h.replace('<!--membership-->',profileCard());
   h=h.replace(/<button type="button" data-a="nav" data-v="pricing">(<svg[\s\S]*?<\/svg>)<span class="t">Subscription &amp; billing<\/span><span class="v">[^<]*<\/span>/,'<button type="button" data-a="memOpen">$1<span class="t">Membership<small>RYSEON VANTAGE · includes 1 RYSEON athlete membership</small></span><span class="v">'+({inactive:'Not active',expired:'Ended',cancelling:'Ending'}[state()]||'Active')+'</span>');
   h=h.replace(/<button type="button" data-a="nav" data-v="pricing">(<svg[\s\S]*?<\/svg>)<span class="t">Subscription & billing<\/span><span class="v">[^<]*<\/span>/,'<button type="button" data-a="memOpen">$1<span class="t">Membership<small>RYSEON VANTAGE · includes 1 RYSEON athlete membership</small></span><span class="v">'+({inactive:'Not active',expired:'Ended',cancelling:'Ending'}[state()]||'Active')+'</span>');
   return h};
@@ -286,6 +285,15 @@ function jump(s){var demo={first:'Luka',last:'Horvat',h:214};
   if(s==='connected'||s==='cancelling'){var p={};PERM_LABELS.forEach(function(x){p[x[0]]=DEF_PERMS[x[0]]});connect({first:demo.first,last:demo.last,h:demo.h},p)}
   if(s==='cancelling'){MEM.sub.st='cancelling';MEM.sub.ends=MEM.sub.renew}
   if(s==='revoked'){MEM.note='revoked';MEM.revokedName='Luka'}}
+/* ---------- one price only: RYSEON VANTAGE £14.90 / month (the old multi-tier plans are gone) ---------- */
+Object.keys(PLANS).forEach(function(k){PLANS[k]={name:'RYSEON VANTAGE',short:'VANTAGE',price:14.9,incl:1,max:99}});EXTRA=0;
+planNote=function(){return ''};
+viewPricing=function(){S.view='profile';setTimeout(function(){S.ov={t:'mem'};render()},0);return viewProfile()};
+document.addEventListener('click',function(e){var t=e.target.closest('[data-a=nav][data-v=pricing]');if(!t) return;e.stopImmediatePropagation();S.ov={t:'mem'};render()},true);
+var _rs14=renderShell;
+renderShell=function(){return _rs14().replace(/<div class="side-foot">[\s\S]*?<div class="usage">[\s\S]*?<\/div><\/div>/,'<div class="side-foot"><b>RYSEON VANTAGE</b><br>'+PRICE+' / month · '+summary()+'</div>')};
+var _va14=viewAthletes;
+viewAthletes=function(){var n=live().length;return _va14().replace(/<p class="psub">\d+ of \d+ on [^<]*<\/p>/,'<p class="psub">'+n+' '+(n===1?'athlete':'athletes')+' connected</p>')};
 var _ls=loadScenario;loadScenario=function(k){_ls(k);MEM.sub={st:'none'};MEM.cov=null;MEM.inv=null;MEM.incoming=null;MEM.note=null};
 render(true);
 })();
