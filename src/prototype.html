@@ -3060,6 +3060,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .nat-hint{margin:2px 0 0;text-align:center;font:500 12px/1.3 var(--font-body);color:rgba(200,207,221,.55);transition:opacity .3s ease}
 .nat-hint.done{opacity:0}
 #s07 .stack{gap:16px}
+#cc-list .crest{overflow:hidden;padding:0}#cc-list .crest .cc-fl{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
@@ -3301,6 +3302,9 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       <button class="nav-back" type="button" data-back aria-label="Back"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="head"><h1><span class="line"><span class="line-in l1">First,</span></span><span class="line"><span class="line-in l2">the basics.</span></span></h1></div>
       <form class="stack mt-l rise d2" id="basics" novalidate autocomplete="on">
+        <div class="field"><span class="flabel">Country / Nationality</span>
+          <div class="fm-rail nat-rail" id="nat-rail"><div class="fm-track" id="nat-track" role="listbox" aria-label="Country / Nationality"></div></div><p class="nat-hint" id="nat-hint">Swipe to choose your country</p>
+        </div>
         <div class="row2">
           <label class="field"><span class="flabel">First name</span><input class="input" id="f-first" name="given-name" autocomplete="given-name" placeholder="First name"></label>
           <label class="field"><span class="flabel">Last name</span><input class="input" id="f-last" name="family-name" autocomplete="family-name" placeholder="Last name"></label>
@@ -3308,9 +3312,6 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
         <label class="field"><span class="flabel">Date of birth</span><input class="input" type="date" id="f-dob" name="bday" autocomplete="bday"></label>
         <div class="field"><span class="flabel">Sex</span>
           <div class="seg" role="radiogroup" aria-label="Sex"><button type="button" role="radio" aria-pressed="false" data-sex="Male">Male</button><button type="button" role="radio" aria-pressed="false" data-sex="Female">Female</button></div>
-        </div>
-        <div class="field"><span class="flabel">Country / Nationality</span>
-          <div class="fm-rail nat-rail" id="nat-rail"><div class="fm-track" id="nat-track" role="listbox" aria-label="Country / Nationality"></div></div><p class="nat-hint" id="nat-hint">Swipe to choose your country</p>
         </div>
       </form>
       <div class="grow"></div>
@@ -6969,7 +6970,7 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
     if(to.id==='s07b'){ if(!P.height){ var d=defaults(); setTimeout(function(){wh.init(d[0]);ww.init(d[1])},30); $('body-go').disabled=true; $('fit').dataset.state='idle'; $('fit').removeAttribute('data-zone');
         $('fit-title').textContent=rT('Set your height and weight'); $('fit-text').textContent=rT('We’ll compare it with the optimal range for your age.') }
       else setTimeout(function(){wh.init(P.height);ww.init(P.weight);evaluate()},30) }
-    if(to.id==='s08c'){ $('cc-q').value=''; renderCC() }
+    if(to.id==='s08c'){ $('cc-q').value=(P.clubCountry||P.country)?countryName(P.clubCountry||P.country):''; renderCC() }   /* nationality comes first, already typed in; it can be changed (Ivan, 24 Oct) */
     if(to.id==='s12s'||to.id==='s12w') syncChips();
   };
   $('avatar').addEventListener('click',function(){ var b=$('photo-btn'); b.click() });
@@ -6987,7 +6988,8 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
   function renderCC(){ var q=$('cc-q').value.trim().toLowerCase(), DB=window.RYSE_CLUBS||{}, esc=window.ryseUI.esc;
     var withClubs=Object.keys(DB), all=(window.RYSE_COUNTRIES||[]);
     function nm(c){return countryName(c)}
-    function rowC(c){ var n=(DB[c]||[]).filter(function(x){return !x[2]}).length; return '<button type="button" data-cc="'+esc(c)+'"'+(P.clubCountry===c?' aria-pressed="true"':'')+'><span class="crest">'+esc((RYSE_ISO2[c]||c.slice(0,2)).toUpperCase())+'</span><span>'+esc(nm(c))+(n?'<span class="sub">'+esc(rT('{n} top-division clubs',{n:n}))+'</span>':'')+'</span></button>' }
+    function ccFlag(c){ var UKN={'England':'gb-eng','Scotland':'gb-sct','Wales':'gb-wls','Northern Ireland':'gb-nir'}, k=UKN[c]||(RYSE_ISO2[c]||'').toLowerCase(), fl=(window.RYSE_FLAGS||{})[k]; return fl?'<img class="cc-fl" src="'+fl+'" alt="">':esc((RYSE_ISO2[c]||c.slice(0,2)).toUpperCase()) }
+    function rowC(c){ var n=(DB[c]||[]).filter(function(x){return !x[2]}).length; return '<button type="button" data-cc="'+esc(c)+'"'+((P.clubCountry||P.country)===c?' aria-pressed="true"':'')+'><span class="crest">'+ccFlag(c)+'</span><span>'+esc(nm(c))+(n?'<span class="sub">'+esc(rT('{n} top-division clubs',{n:n}))+'</span>':'')+'</span></button>' }
     var html='';
     if(!q){ var sug=[]; if(P.country&&DB[P.country]) sug.push(P.country);
       withClubs.sort(function(a,b){return nm(a).localeCompare(nm(b),RYSE_I18N.code)}).forEach(function(c){ if(sug.indexOf(c)<0) sug.push(c) });
