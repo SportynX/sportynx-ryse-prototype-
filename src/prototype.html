@@ -881,6 +881,8 @@ h1 .ry-on{opacity:1;color:#8C94A7;-webkit-text-fill-color:#8C94A7}
 
 /* hold-to-skip feedback on the language Continue button (prototype shortcut) */
 #lang-go{overflow:hidden}
+#lang-go.is-wait{animation:langWait 1.1s ease-in-out infinite}
+@keyframes langWait{0%,100%{opacity:1}50%{opacity:.55}}
 #lang-go::before{content:"";position:absolute;inset:0;background:rgba(157,184,255,.16);transform:scaleX(0);transform-origin:left;pointer-events:none}
 #lang-go.holding::before{transform:scaleX(1);transition:transform 2s linear}
 
@@ -3146,6 +3148,12 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       <div class="lang-dial rise d2" id="lang-dial" aria-hidden="true"></div>
       <div class="actions rise d3"><button class="btn btn-primary" type="button" id="lang-go">Continue</button></div>
     </section>
+    <script>
+    /* Early Continue (Ivan, 24 Oct): the page is large, so on iPhone the language screen shows seconds before the app's code has loaded.
+       A tap on Continue in that time is remembered (the button pulses) and carried out the moment the app is ready. */
+    (function(){ function q(e){ if(window.__ryseReady) return; var b=e.target&&e.target.closest&&e.target.closest('#lang-go'); if(!b) return; window.__ryseQ=1; b.classList.add('is-wait') }
+      document.addEventListener('click',q,true); document.addEventListener('touchend',q,{capture:true,passive:true}) })();
+    </script>
 
     <!-- SCREEN 01 — Launch & Brand Intro -->
     <main class="screen is-hidden" id="screen-intro" data-scene="0" aria-label="Welcome to RYSEON" aria-hidden="true">
@@ -7248,4 +7256,8 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 <script>
 /* Basics: build and centre the nationality rail whenever the screen opens */
 (function(){ var p=window.ryseOnEnter; window.ryseOnEnter=function(to){ p(to); if(to.id==='s07'&&window.ryseNatRail) try{ window.ryseNatRail() }catch(e){} } })();
+/* The app is ready: carry out a Continue that was tapped while it was still loading */
+(function(){ window.__ryseReady=true; var b=document.getElementById('lang-go'), L=document.getElementById('sLang');
+  if(b) b.classList.remove('is-wait');
+  if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } })();
 </script>
