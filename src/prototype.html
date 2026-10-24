@@ -3060,7 +3060,29 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .nat-hint{margin:2px 0 0;text-align:center;font:500 12px/1.3 var(--font-body);color:rgba(200,207,221,.55);transition:opacity .3s ease}
 .nat-hint.done{opacity:0}
 #s07 .stack{gap:16px}
-#cc-list .crest{overflow:hidden;padding:0}#cc-list .crest .cc-fl{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
+/* Where does your club play · country drum (Ivan, 24 Oct): a vertical roller of flags — the one in the middle is chosen and larger,
+   the rows above and below roll away smaller; the nationality starts in the middle; search with a clear button filters the drum */
+#s08c{display:flex;flex-direction:column}
+.cc-sw{position:relative;margin-top:22px}
+.cc-sw .input{padding-right:46px}
+.cc-x{position:absolute;right:10px;top:50%;width:30px;height:30px;margin-top:-15px;padding:0;border:0;background:none;color:rgba(200,207,221,.55);cursor:pointer;display:grid;place-items:center}
+.cc-x svg{width:20px;height:20px}
+.ccw-wrap{position:relative;flex:none;height:300px;margin:16px calc(var(--gutter)*-1) 0}
+.ccw{position:absolute;inset:0;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;perspective:900px;
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%);mask:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%)}
+.ccw::-webkit-scrollbar{display:none}
+.ccw .pad{height:122px}
+.ccw button{--k:0;display:flex;align-items:center;gap:14px;width:100%;height:56px;padding:0 calc(var(--gutter) + 30px);border:0;background:transparent;color:#F5F7FB;cursor:pointer;scroll-snap-align:center;text-align:left;
+  transform-origin:50% 50%;will-change:transform,opacity;-webkit-tap-highlight-color:transparent}
+.ccw button .fl{flex:none;width:34px;height:34px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.16);display:grid;place-items:center;background:rgba(255,255,255,.08);font:600 11px/1 var(--font-display)}
+.ccw button .fl img{width:100%;height:100%;object-fit:cover;display:block}
+.ccw button .t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ccw button b{font:600 17px/1.1 var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccw button small{font:500 12px/1 var(--font-body);color:rgba(200,207,221,.62)}
+.ccw button.in .fl{box-shadow:0 0 0 2px rgba(157,184,255,.9),0 0 16px rgba(111,152,255,.35)}
+.ccw-frame{position:absolute;left:var(--gutter);right:var(--gutter);top:50%;height:60px;margin-top:-30px;border-radius:16px;border:1px solid rgba(157,184,255,.32);background:rgba(61,123,255,.06);pointer-events:none}
+.ccw-empty{display:grid;place-items:center;height:100%;font:500 14px/1.4 var(--font-body);color:rgba(200,207,221,.6);text-align:center;padding:0 30px}
+@media (max-height:760px){.ccw-wrap{height:240px}.ccw .pad{height:92px}}
 /* Home · water card under activity */
 .ha-water{display:flex;align-items:center;gap:14px;margin-top:2px;padding:14px 14px 14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035)}
 .ha-water .gl{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(79,139,255,.14);color:#8FB0FF}.ha-water .gl svg{width:22px;height:22px}
@@ -3410,8 +3432,10 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
       <div class="head"><h1><span class="line"><span class="line-in l1">Where does</span></span><span class="line"><span class="line-in l2">your club play?</span></span></h1>
         <p class="support rise d2">Choose the country your club competes in.</p>
       </div>
-      <div class="rise d2" style="margin-top:24px"><input class="input search" id="cc-q" type="search" placeholder="Search countries" autocomplete="off" aria-label="Search countries"></div>
-      <div class="club-list rise d2" id="cc-list" role="listbox" aria-label="Countries"></div>
+      <div class="cc-sw rise d2"><input class="input search" id="cc-q" type="text" placeholder="Search countries" autocomplete="off" aria-label="Search countries"><button type="button" class="cc-x" id="cc-x" aria-label="Clear" hidden><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="m9 9 6 6M15 9l-6 6" stroke="#0B0D12" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+      <div class="ccw-wrap rise d2"><div class="ccw" id="cc-list" role="listbox" aria-label="Countries"></div><i class="ccw-frame" aria-hidden="true"></i></div>
+      <div class="grow"></div>
+      <div class="actions rise d3"><button class="btn btn-primary" type="button" id="cc-go">Continue</button></div>
     </section>
 
     <!-- 09 — Club selection -->
@@ -6970,7 +6994,7 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
     if(to.id==='s07b'){ if(!P.height){ var d=defaults(); setTimeout(function(){wh.init(d[0]);ww.init(d[1])},30); $('body-go').disabled=true; $('fit').dataset.state='idle'; $('fit').removeAttribute('data-zone');
         $('fit-title').textContent=rT('Set your height and weight'); $('fit-text').textContent=rT('We’ll compare it with the optimal range for your age.') }
       else setTimeout(function(){wh.init(P.height);ww.init(P.weight);evaluate()},30) }
-    if(to.id==='s08c'){ $('cc-q').value=(P.clubCountry||P.country)?countryName(P.clubCountry||P.country):''; renderCC() }   /* nationality comes first, already typed in; it can be changed (Ivan, 24 Oct) */
+    if(to.id==='s08c'){ $('cc-q').value=''; CCW.user=false; renderCC(false) }   /* the drum starts on the nationality (or the country chosen before) */
     if(to.id==='s12s'||to.id==='s12w') syncChips();
   };
   $('avatar').addEventListener('click',function(){ var b=$('photo-btn'); b.click() });
@@ -6985,21 +7009,30 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
     if(i>-1) arr.splice(i,1); else arr.push(v); syncChips() });
 
   /* ---------- competition country ---------- */
-  function renderCC(){ var q=$('cc-q').value.trim().toLowerCase(), DB=window.RYSE_CLUBS||{}, esc=window.ryseUI.esc;
-    var withClubs=Object.keys(DB), all=(window.RYSE_COUNTRIES||[]);
-    function nm(c){return countryName(c)}
-    function ccFlag(c){ var UKN={'England':'gb-eng','Scotland':'gb-sct','Wales':'gb-wls','Northern Ireland':'gb-nir'}, k=UKN[c]||(RYSE_ISO2[c]||'').toLowerCase(), fl=(window.RYSE_FLAGS||{})[k]; return fl?'<img class="cc-fl" src="'+fl+'" alt="">':esc((RYSE_ISO2[c]||c.slice(0,2)).toUpperCase()) }
-    function rowC(c){ var n=(DB[c]||[]).filter(function(x){return !x[2]}).length; return '<button type="button" data-cc="'+esc(c)+'"'+((P.clubCountry||P.country)===c?' aria-pressed="true"':'')+'><span class="crest">'+ccFlag(c)+'</span><span>'+esc(nm(c))+(n?'<span class="sub">'+esc(rT('{n} top-division clubs',{n:n}))+'</span>':'')+'</span></button>' }
-    var html='';
-    if(!q){ var sug=[]; if(P.country&&DB[P.country]) sug.push(P.country);
-      withClubs.sort(function(a,b){return nm(a).localeCompare(nm(b),RYSE_I18N.code)}).forEach(function(c){ if(sug.indexOf(c)<0) sug.push(c) });
-      html='<div class="cap">'+rT('Leagues')+'</div>'+sug.map(rowC).join('') }
-    else { var UK={'England':1,'Scotland':1,'Wales':1,'Northern Ireland':1}, ukQ=['united kingdom','uk','great britain','britain','gb',nm('United Kingdom').toLowerCase()].some(function(a){return a.indexOf(q)===0||q.indexOf(a)===0});
-      var hits=all.filter(function(c){return c!=='United Kingdom'&&((c+' '+nm(c)).toLowerCase().indexOf(q)>-1||(ukQ&&UK[c]&&q.length>1))}).sort(function(a,b){return nm(a).localeCompare(nm(b),RYSE_I18N.code)});
-      html=hits.length?hits.map(rowC).join(''):'<div class="cap">'+esc(rT('No country matches “{q}”.',{q:q}))+'</div>' }
-    $('cc-list').innerHTML=html }
-  $('cc-q').addEventListener('input',renderCC);
-  document.addEventListener('click',function(e){ var b=e.target.closest('[data-cc]'); if(!b)return; P.clubCountry=b.dataset.cc; b.setAttribute('aria-pressed','true'); setTimeout(function(){go('s09')},220) });
+  var CCW={sel:null,raf:0,tm:0,user:false};
+  function ccFlag(c){ var UKN={'England':'gb-eng','Scotland':'gb-sct','Wales':'gb-wls','Northern Ireland':'gb-nir'}, k=UKN[c]||(RYSE_ISO2[c]||'').toLowerCase(), fl=(window.RYSE_FLAGS||{})[k], esc=window.ryseUI.esc; return fl?'<img src="'+fl+'" alt="">':esc((RYSE_ISO2[c]||c.slice(0,2)).toUpperCase()) }
+  function renderCC(keep){ var q=$('cc-q').value.trim().toLowerCase(), DB=window.RYSE_CLUBS||{}, esc=window.ryseUI.esc, W=$('cc-list');
+    $('cc-x').hidden=!q;
+    var nm=function(c){ return countryName(c) }, all=(window.RYSE_COUNTRIES||[]).filter(function(c){ return c!=='United Kingdom' });
+    var UK={'England':1,'Scotland':1,'Wales':1,'Northern Ireland':1}, ukQ=q&&['united kingdom','uk','great britain','britain','gb',nm('United Kingdom').toLowerCase()].some(function(x){ return x.indexOf(q)===0||q.indexOf(x)===0 });
+    var L=all.filter(function(c){ return !q||(c+' '+nm(c)).toLowerCase().indexOf(q)>-1||(ukQ&&UK[c]&&q.length>1) }).sort(function(x,y){ return nm(x).localeCompare(nm(y),RYSE_I18N.code) });
+    var pre=q?L.filter(function(c){ return nm(c).toLowerCase().indexOf(q)===0||c.toLowerCase().indexOf(q)===0 }):[];   /* centre the first name that starts with the query */
+    if(!L.length){ W.innerHTML='<div class="ccw-empty">'+esc(rT('No country matches “{q}”.',{q:$('cc-q').value.trim()}))+'</div>'; CCW.sel=null; $('cc-go').disabled=true; return }
+    W.innerHTML='<div class="pad"></div>'+L.map(function(c){ var n=(DB[c]||[]).filter(function(x){ return !x[2] }).length; return '<button type="button" role="option" data-ccw="'+esc(c)+'"><span class="fl">'+ccFlag(c)+'</span><span class="t"><b>'+esc(nm(c))+'</b>'+(n?'<small>'+esc(rT('{n} top-division clubs',{n:n}))+'</small>':'')+'</span></button>' }).join('')+'<div class="pad"></div>';
+    var want=keep&&L.indexOf(CCW.sel)>-1?CCW.sel:(q?(pre[0]||L[0]):(L.indexOf(P.clubCountry)>-1?P.clubCountry:(L.indexOf(P.country)>-1?P.country:L[0]))), b=W.querySelector('[data-ccw="'+want+'"]');
+    CCW.sel=want; $('cc-go').disabled=false;
+    var put=function(){ if(b) W.scrollTop=b.offsetTop-(W.clientHeight-b.offsetHeight)/2; ccPaint() }; put(); setTimeout(put,40); setTimeout(put,460) }
+  function ccPaint(){ CCW.raf=0; var W=$('cc-list'), mid=W.scrollTop+W.clientHeight/2, best=null, bd=1e9;
+    [].forEach.call(W.querySelectorAll('[data-ccw]'),function(b){ var c=b.offsetTop+b.offsetHeight/2, d=(c-mid)/b.offsetHeight, a=Math.abs(d); if(a<bd){ bd=a; best=b }
+      if(a>5){ b.style.opacity='0'; return } var k=Math.max(0,1-a/3.2);
+      b.style.transform='rotateX('+(-d*17).toFixed(1)+'deg) scale('+(a<1?1.08-.2*a:.88-.05*(a-1)).toFixed(3)+')'; b.style.opacity=Math.max(.12,1-a*.3).toFixed(2); b.classList.toggle('in',a<.5) });
+    if(best&&best.dataset.ccw!==CCW.sel){ CCW.sel=best.dataset.ccw; if(CCW.user&&window.ryseTick) window.ryseTick() } }
+  $('cc-list').addEventListener('scroll',function(){ if(!CCW.raf) CCW.raf=requestAnimationFrame(ccPaint) },{passive:true});
+  ['touchstart','pointerdown','wheel'].forEach(function(t){ $('cc-list').addEventListener(t,function(){ CCW.user=true },{passive:true}) });
+  $('cc-list').addEventListener('click',function(e){ var b=e.target.closest('[data-ccw]'); if(!b) return; CCW.user=true; var W=$('cc-list'); W.scrollTo({top:b.offsetTop-(W.clientHeight-b.offsetHeight)/2,behavior:'smooth'}) });
+  $('cc-q').addEventListener('input',function(){ renderCC(false) });
+  $('cc-x').addEventListener('click',function(){ $('cc-q').value=''; renderCC(false); $('cc-q').focus() });
+  $('cc-go').addEventListener('click',function(){ if(!CCW.sel) return; P.clubCountry=CCW.sel; go('s09') });
   var prevLang=window.ryseOnLang; window.ryseOnLang=function(){ prevLang&&prevLang(); if(P.height&&$('fit').dataset.state!=='idle') evaluate() };
 })();
 
