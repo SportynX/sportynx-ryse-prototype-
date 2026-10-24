@@ -2750,17 +2750,17 @@ html[data-theme=light][data-view=prof] .inj-done{background:rgba(31,107,255,.08)
 .hm-tip small{font:600 10.5px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(214,226,255,.75)}
 .hm-tip b{font:700 19px/1.2 var(--font-display);letter-spacing:-.01em}
 .hm-tip span{font:500 13px/1.45 var(--font-body);color:rgba(220,226,238,.85)}
-/* "I’m already a pro": muted champagne gold, premium but quiet */
+/* "I’m already a pro": SportynX blue frame (Ivan, 24 Oct — was champagne gold) */
 #s01 .btn[data-choice]{background:transparent;border:1px solid rgba(255,255,255,.28);box-shadow:none;color:#F5F7FB;-webkit-backdrop-filter:none;backdrop-filter:none;transition:transform .2s cubic-bezier(.2,.8,.2,1),background-color .25s ease,border-color .25s ease,box-shadow .3s ease}
 #s01 .btn[data-choice]:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.04);box-shadow:0 0 0 3px rgba(255,255,255,.05),0 10px 30px rgba(0,0,0,.35);transform:translateY(-1px)}
 #s01 .btn[data-choice]:active{transform:scale(.975);background:rgba(255,255,255,.08);transition-duration:.08s}
-#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;border-color:rgba(201,164,104,.62)}
-#s01 .btn[data-choice=already-pro]:hover{border-color:rgba(232,198,138,.95);background:rgba(201,164,104,.06);box-shadow:0 0 0 3px rgba(201,164,104,.1),0 10px 30px rgba(120,88,36,.25)}
-#s01 .btn[data-choice=already-pro]:active{background:rgba(201,164,104,.12)}
+#s01 .btn[data-choice=already-pro]{position:relative;overflow:hidden;border-color:rgba(111,152,255,.7)}
+#s01 .btn[data-choice=already-pro]:hover{border-color:rgba(157,184,255,.95);background:rgba(61,123,255,.06);box-shadow:0 0 0 3px rgba(61,123,255,.1),0 10px 30px rgba(20,40,110,.25)}
+#s01 .btn[data-choice=already-pro]:active{background:rgba(61,123,255,.12)}
 #s01 .pro-l{display:inline-flex;align-items:center;gap:9px}#s01 .pro-ic{width:19px;height:19px;flex:none}
 #s01 .btn[data-choice=already-pro]::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(220,232,255,.22) 48%,transparent 66%);transform:translateX(-120%);animation:proSheen 4.8s ease-in-out 1.2s infinite;pointer-events:none}
 @keyframes proSheen{0%,62%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-#s01 .btn[data-choice].is-selected{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.75)}#s01 .btn[data-choice=already-pro].is-selected{background:rgba(201,164,104,.12);border-color:rgba(232,198,138,.95)}
+#s01 .btn[data-choice].is-selected{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.75)}#s01 .btn[data-choice=already-pro].is-selected{background:rgba(61,123,255,.12);border-color:rgba(157,184,255,.95)}
 #s01 .btn:has(.b2){flex-direction:column;gap:0}#s01 .btn small.b2{display:block;margin-top:5px;font:500 11px/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:inherit;opacity:.82}
 /* Plan ahead (Ivan, 20 Oct): planned training hides effort/feelings/photos/muscle load; free recovery planning has no injury card */
 #s18.lt-plan .pl-hide{display:none}
@@ -3092,7 +3092,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 #s07 .stack{gap:16px}
 /* Where does your club play · country drum (Ivan, 24 Oct): a vertical roller of flags — the one in the middle is chosen and larger,
    the rows above and below roll away smaller; the nationality starts in the middle; search with a clear button filters the drum */
-#s08c{display:flex;flex-direction:column}
+#s08c,#s09{display:flex;flex-direction:column}
 .cc-sw{position:relative;margin-top:22px}
 .cc-sw .input{padding-right:46px}
 .cc-x{position:absolute;right:10px;top:50%;width:30px;height:30px;margin-top:-15px;padding:0;border:0;background:none;color:rgba(200,207,221,.55);cursor:pointer;display:grid;place-items:center}
@@ -3105,6 +3105,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .ccw button{--k:0;display:flex;align-items:center;gap:14px;width:100%;height:56px;padding:0 calc(var(--gutter) + 30px);border:0;background:transparent;color:#F5F7FB;cursor:pointer;scroll-snap-align:center;text-align:left;
   transform-origin:50% 50%;will-change:transform,opacity;-webkit-tap-highlight-color:transparent}
 .ccw button .fl{flex:none;width:34px;height:34px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.16);display:grid;place-items:center;background:rgba(255,255,255,.08);font:600 11px/1 var(--font-display)}
+.ccw button .fl.cr{font:700 12px/1 var(--font-display);letter-spacing:.04em;color:#C9D7FF;background:rgba(61,123,255,.12);box-shadow:0 0 0 1px rgba(157,184,255,.35)}
 .ccw button .fl img{width:100%;height:100%;object-fit:cover;display:block}
 .ccw button .t{display:flex;flex-direction:column;gap:4px;min-width:0}
 .ccw button b{font:600 17px/1.1 var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -3474,9 +3475,11 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
     <section class="screen task is-hidden" id="s09" data-scene="4" data-step="5" aria-label="Find your club" aria-hidden="true">
       <button class="nav-back" type="button" data-back aria-label="Back"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="head"><h1><span class="line"><span class="line-in l1">Find</span></span><span class="line"><span class="line-in l2">your club.</span></span></h1></div>
-      <div class="rise d2" style="margin-top:24px"><input class="input search" id="club-q" type="search" placeholder="Search football clubs" autocomplete="off" aria-label="Search football clubs"></div>
-      <div class="club-list rise d2" id="club-list" role="listbox" aria-label="Clubs"></div>
-      <div class="foot-note rise d3">Can’t find your club?<button class="link" type="button" data-go="s09m">Add club manually</button></div>
+      <div class="cc-sw rise d2"><input class="input search" id="club-q" type="text" placeholder="Search football clubs" autocomplete="off" aria-label="Search football clubs"><button type="button" class="cc-x" id="club-x" aria-label="Clear" hidden><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="m9 9 6 6M15 9l-6 6" stroke="#0B0D12" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+      <div class="ccw-wrap rise d2"><div class="ccw" id="club-list" role="listbox" aria-label="Clubs"></div><i class="ccw-frame" aria-hidden="true"></i></div>
+      <div class="grow"></div>
+      <div class="foot-note rise d3" style="margin-top:0">Can’t find your club?<button class="link" type="button" data-go="s09m">Add club manually</button></div>
+      <div class="actions rise d3" style="margin-top:14px"><button class="btn btn-primary" type="button" id="club-go">Continue</button></div>
     </section>
 
     <!-- 09m — Manual club entry -->
@@ -4485,17 +4488,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
 
   /* ---------- 09 Club search ---------- */
   var clubDraft={name:'',country:''};
-  function renderClubs(){ var q=$('club-q').value.trim().toLowerCase(), cc=P.clubCountry, all=(window.RYSE_CLUBS&&window.RYSE_CLUBS[cc])||[], html='';
-    var list=q?all.filter(function(c){return (c[0]+' '+c[1]).toLowerCase().indexOf(q)>-1}):all;
-    if(!all.length) html='<div class="cap">'+esc(rT('No clubs listed yet for {country}',{country:countryName(cc)}))+'</div>';
-    else if(!list.length) html='<div class="cap">'+rT('No clubs found')+'</div>';
-    else { var t1=list.filter(function(c){return !c[2]}), t2=list.filter(function(c){return c[2]===2}), t3=list.filter(function(c){return c[2]===3});
-      html=(t1.length?'<div class="cap">'+esc(rT('Top division · {country}',{country:countryName(cc)}))+'</div>'+t1.map(row).join(''):'')+
-           (t2.length?'<div class="cap">'+esc(rT('Second division · {country}',{country:countryName(cc)}))+'</div>'+t2.map(row).join(''):'')+
-           (t3.length?'<div class="cap">'+esc(rT('Third division · {country}',{country:countryName(cc)}))+'</div>'+t3.map(row).join(''):'') }
-    $('club-list').innerHTML=html;
-    function row(c){var on=P.club&&P.club.name===c[0];return '<button type="button" role="option" aria-pressed="'+on+'" data-club="'+esc(c[0])+'" data-loc="'+esc(c[1]+', '+cc)+'"><span class="crest">'+initials(c[0])+'</span><span>'+esc(c[0])+'<span class="sub">'+esc(c[1])+'</span></span></button>'} }
-  $('club-q').addEventListener('input',renderClubs);
+  function renderClubs(){ window.ryseClubDrum&&window.ryseClubDrum.enter() }   /* clubs roll on the same drum as the countries (Ivan, 24 Oct) */
 
   /* ---------- 05f Find yourself (professional players): country → league → club → squad ----------
      Prototype database: Premier League · Manchester City first team only (name, date of birth, nationality). */
@@ -4605,7 +4598,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       '<div><dt>'+rT('Height')+'</dt><dd>'+(P.height?P.height+' cm':'—')+'</dd></div><div><dt>'+rT('Weight')+'</dt><dd>'+(P.weight?P.weight+' kg':'—')+'</dd></div>'+'<div><dt>'+rT('Position')+'</dt><dd>'+(P.positions.primary?rT(byId(P.positions.primary).name):'—')+'</dd></div><div><dt>'+rT('Level')+'</dt><dd>'+(P.level?esc(rT(P.level)):'—')+'</dd></div></dl>'+((P.strengths&&P.strengths.length)?'<div class="tags">'+P.strengths.slice(0,5).map(function(x){return '<span>'+esc(rT(x))+'</span>'}).join('')+'</div>':'')+
       (P.guardian.required&&P.guardian.status!=='approved'?'<div class="pending">'+rT('Some features unlock when a parent approves.')+'</div>':'') }
 
-  var renderers={s09:function(){ $('club-q').value=''; renderClubs() },s13:renderCard,
+  var renderers={s09:function(){ renderClubs() },s13:renderCard,
     s09m:function(){ if(P.clubCountry&&!clubDraft.country){ clubDraft.country=P.clubCountry; setPicker($('m-country'),clubDraft.country); $('m-go').disabled=!(clubDraft.name&&clubDraft.country) } },
     s16:function(){ var t=rT((P.access&&P.access.type==='trial')?'Your 7-day free trial has started.':'Included with your club’s RYSEON X plan.'); $('act-copy').textContent=(P.access&&P.access.type==='trial')?trialTxt(t):t },
     s05f:function(){ window.ryseFmRender&&window.ryseFmRender() },
@@ -7026,7 +7019,7 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
     if(to.id==='s07b'){ if(!P.height){ var d=defaults(); setTimeout(function(){wh.init(d[0]);ww.init(d[1])},30); $('body-go').disabled=true; $('fit').dataset.state='idle'; $('fit').removeAttribute('data-zone');
         $('fit-title').textContent=rT('Set your height and weight'); $('fit-text').textContent=rT('We’ll compare it with the optimal range for your age.') }
       else setTimeout(function(){wh.init(P.height);ww.init(P.weight);evaluate()},30) }
-    if(to.id==='s08c'){ $('cc-q').value=''; CCW.user=false; renderCC(false) }   /* the drum starts on the nationality (or the country chosen before) */
+    if(to.id==='s08c'){ CCD.enter(P.clubCountry||P.country) }   /* the drum starts on the nationality (or the country chosen before) */
     if(to.id==='s12s'||to.id==='s12w') syncChips();
   };
   $('avatar').addEventListener('click',function(){ var b=$('photo-btn'); b.click() });
@@ -7041,30 +7034,50 @@ window.RYSE_CLUBS={"England":[["AFC Bournemouth","Bournemouth"],["Arsenal","Lond
     if(i>-1) arr.splice(i,1); else arr.push(v); syncChips() });
 
   /* ---------- competition country ---------- */
-  var CCW={sel:null,raf:0,tm:0,user:false};
+  /* Drum (Ivan, 24 Oct): a vertical roller — the row in the middle is chosen and larger, rows above and below roll away;
+     the search field above always shows the name in the middle; typing filters, the X clears */
+  function Drum(o){ var W=$(o.list), Q=$(o.q), X=$(o.x), G=$(o.btn), D={sel:null,raf:0,user:false,typed:false,keys:[]};
+    function centre(b,smooth){ var t=b.offsetTop-(W.clientHeight-b.offsetHeight)/2; if(smooth) W.scrollTo({top:t,behavior:'smooth'}); else W.scrollTop=t }
+    function showName(){ if(D.typed) return; Q.value=D.sel?o.label(D.sel):''; X.hidden=!Q.value }
+    function paint(){ D.raf=0; var mid=W.scrollTop+W.clientHeight/2, best=null, bd=1e9;
+      [].forEach.call(W.querySelectorAll('[data-dk]'),function(b){ var c=b.offsetTop+b.offsetHeight/2, d=(c-mid)/b.offsetHeight, a=Math.abs(d); if(a<bd){ bd=a; best=b }
+        if(a>5){ b.style.opacity='0'; return }
+        b.style.transform='rotateX('+(-d*17).toFixed(1)+'deg) scale('+(a<1?1.08-.2*a:.88-.05*(a-1)).toFixed(3)+')'; b.style.opacity=Math.max(.12,1-a*.3).toFixed(2); b.classList.toggle('in',a<.5) });
+      if(best&&best.dataset.dk!==D.sel){ D.sel=best.dataset.dk; if(D.user){ D.typed=false; window.ryseTick&&window.ryseTick() } showName() } }
+    D.render=function(keep,want){ var q=D.typed?Q.value.trim().toLowerCase():'', R=o.items(q), esc=window.ryseUI.esc; X.hidden=!Q.value;
+      if(!R.list.length){ W.innerHTML='<div class="ccw-empty">'+esc(R.empty)+'</div>'; D.sel=null; G.disabled=true; return }
+      D.keys=R.list.map(function(it){ return it.k });
+      W.innerHTML='<div class="pad"></div>'+R.list.map(function(it){ return '<button type="button" role="option" data-dk="'+esc(it.k)+'"><span class="fl'+(it.cr?' cr':'')+'">'+it.ic+'</span><span class="t"><b>'+esc(it.n)+'</b>'+(it.s?'<small>'+esc(it.s)+'</small>':'')+'</span></button>' }).join('')+'<div class="pad"></div>';
+      var w=want!=null&&D.keys.indexOf(want)>-1?want:(keep&&D.keys.indexOf(D.sel)>-1?D.sel:(R.first||D.keys[0])), b=W.querySelector('[data-dk="'+w.replace(/"/g,'\\"')+'"]');
+      D.sel=w; G.disabled=false; showName();
+      var put=function(){ if(b) centre(b); paint() }; put(); setTimeout(put,40); setTimeout(put,460) };
+    D.enter=function(want){ D.typed=false; D.user=false; D.render(false,want) };
+    W.addEventListener('scroll',function(){ if(!D.raf) D.raf=requestAnimationFrame(paint) },{passive:true});
+    ['touchstart','pointerdown','wheel'].forEach(function(t){ W.addEventListener(t,function(){ D.user=true; if(document.activeElement===Q) Q.blur() },{passive:true}) });
+    W.addEventListener('click',function(e){ var b=e.target.closest('[data-dk]'); if(!b) return; D.user=true; centre(b,true) });
+    Q.addEventListener('focus',function(){ if(!D.typed) setTimeout(function(){ try{ Q.select() }catch(e){} },0) });
+    Q.addEventListener('input',function(){ D.typed=!!Q.value.trim(); D.user=false; D.render(false) });
+    X.addEventListener('click',function(){ Q.value=''; D.typed=true; D.user=false; D.render(true); Q.focus() });
+    G.addEventListener('click',function(){ if(D.sel) o.go(D.sel) });
+    return D }
   function ccFlag(c){ var UKN={'England':'gb-eng','Scotland':'gb-sct','Wales':'gb-wls','Northern Ireland':'gb-nir'}, k=UKN[c]||(RYSE_ISO2[c]||'').toLowerCase(), fl=(window.RYSE_FLAGS||{})[k], esc=window.ryseUI.esc; return fl?'<img src="'+fl+'" alt="">':esc((RYSE_ISO2[c]||c.slice(0,2)).toUpperCase()) }
-  function renderCC(keep){ var q=$('cc-q').value.trim().toLowerCase(), DB=window.RYSE_CLUBS||{}, esc=window.ryseUI.esc, W=$('cc-list');
-    $('cc-x').hidden=!q;
-    var nm=function(c){ return countryName(c) }, all=(window.RYSE_COUNTRIES||[]).filter(function(c){ return c!=='United Kingdom' });
-    var UK={'England':1,'Scotland':1,'Wales':1,'Northern Ireland':1}, ukQ=q&&['united kingdom','uk','great britain','britain','gb',nm('United Kingdom').toLowerCase()].some(function(x){ return x.indexOf(q)===0||q.indexOf(x)===0 });
-    var L=all.filter(function(c){ return !q||(c+' '+nm(c)).toLowerCase().indexOf(q)>-1||(ukQ&&UK[c]&&q.length>1) }).sort(function(x,y){ return nm(x).localeCompare(nm(y),RYSE_I18N.code) });
-    var pre=q?L.filter(function(c){ return nm(c).toLowerCase().indexOf(q)===0||c.toLowerCase().indexOf(q)===0 }):[];   /* centre the first name that starts with the query */
-    if(!L.length){ W.innerHTML='<div class="ccw-empty">'+esc(rT('No country matches “{q}”.',{q:$('cc-q').value.trim()}))+'</div>'; CCW.sel=null; $('cc-go').disabled=true; return }
-    W.innerHTML='<div class="pad"></div>'+L.map(function(c){ var n=(DB[c]||[]).filter(function(x){ return !x[2] }).length; return '<button type="button" role="option" data-ccw="'+esc(c)+'"><span class="fl">'+ccFlag(c)+'</span><span class="t"><b>'+esc(nm(c))+'</b>'+(n?'<small>'+esc(rT('{n} top-division clubs',{n:n}))+'</small>':'')+'</span></button>' }).join('')+'<div class="pad"></div>';
-    var want=keep&&L.indexOf(CCW.sel)>-1?CCW.sel:(q?(pre[0]||L[0]):(L.indexOf(P.clubCountry)>-1?P.clubCountry:(L.indexOf(P.country)>-1?P.country:L[0]))), b=W.querySelector('[data-ccw="'+want+'"]');
-    CCW.sel=want; $('cc-go').disabled=false;
-    var put=function(){ if(b) W.scrollTop=b.offsetTop-(W.clientHeight-b.offsetHeight)/2; ccPaint() }; put(); setTimeout(put,40); setTimeout(put,460) }
-  function ccPaint(){ CCW.raf=0; var W=$('cc-list'), mid=W.scrollTop+W.clientHeight/2, best=null, bd=1e9;
-    [].forEach.call(W.querySelectorAll('[data-ccw]'),function(b){ var c=b.offsetTop+b.offsetHeight/2, d=(c-mid)/b.offsetHeight, a=Math.abs(d); if(a<bd){ bd=a; best=b }
-      if(a>5){ b.style.opacity='0'; return } var k=Math.max(0,1-a/3.2);
-      b.style.transform='rotateX('+(-d*17).toFixed(1)+'deg) scale('+(a<1?1.08-.2*a:.88-.05*(a-1)).toFixed(3)+')'; b.style.opacity=Math.max(.12,1-a*.3).toFixed(2); b.classList.toggle('in',a<.5) });
-    if(best&&best.dataset.ccw!==CCW.sel){ CCW.sel=best.dataset.ccw; if(CCW.user&&window.ryseTick) window.ryseTick() } }
-  $('cc-list').addEventListener('scroll',function(){ if(!CCW.raf) CCW.raf=requestAnimationFrame(ccPaint) },{passive:true});
-  ['touchstart','pointerdown','wheel'].forEach(function(t){ $('cc-list').addEventListener(t,function(){ CCW.user=true },{passive:true}) });
-  $('cc-list').addEventListener('click',function(e){ var b=e.target.closest('[data-ccw]'); if(!b) return; CCW.user=true; var W=$('cc-list'); W.scrollTo({top:b.offsetTop-(W.clientHeight-b.offsetHeight)/2,behavior:'smooth'}) });
-  $('cc-q').addEventListener('input',function(){ renderCC(false) });
-  $('cc-x').addEventListener('click',function(){ $('cc-q').value=''; renderCC(false); $('cc-q').focus() });
-  $('cc-go').addEventListener('click',function(){ if(!CCW.sel) return; P.clubCountry=CCW.sel; go('s09') });
+  var CCD=Drum({list:'cc-list',q:'cc-q',x:'cc-x',btn:'cc-go',label:function(c){ return countryName(c) },
+    items:function(q){ var DB=window.RYSE_CLUBS||{}, nm=countryName, all=(window.RYSE_COUNTRIES||[]).filter(function(c){ return c!=='United Kingdom' });
+      var UK={'England':1,'Scotland':1,'Wales':1,'Northern Ireland':1}, ukQ=q&&['united kingdom','uk','great britain','britain','gb',nm('United Kingdom').toLowerCase()].some(function(x){ return x.indexOf(q)===0||q.indexOf(x)===0 });
+      var L=all.filter(function(c){ return !q||(c+' '+nm(c)).toLowerCase().indexOf(q)>-1||(ukQ&&UK[c]&&q.length>1) }).sort(function(x,y){ return nm(x).localeCompare(nm(y),RYSE_I18N.code) });
+      var pre=q?L.filter(function(c){ return nm(c).toLowerCase().indexOf(q)===0||c.toLowerCase().indexOf(q)===0 }):[];
+      return {list:L.map(function(c){ var n=(DB[c]||[]).filter(function(x){ return !x[2] }).length; return {k:c,n:nm(c),ic:ccFlag(c),s:n?rT('{n} top-division clubs',{n:n}):''} }),
+        first:pre[0], empty:rT('No country matches “{q}”.',{q:$('cc-q').value.trim()})} },
+    go:function(c){ P.clubCountry=c; go('s09') }});
+  function cInit(s){ return s.replace(/\b(GNK|HNK|NK|FK|FC|AFC|SL|AC|SC|CF|1961|04|de)\b/g,'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0] }).join('').toUpperCase() }
+  var CLD=Drum({list:'club-list',q:'club-q',x:'club-x',btn:'club-go',label:function(k){ return k },
+    items:function(q){ var cc=P.clubCountry, all=(window.RYSE_CLUBS&&window.RYSE_CLUBS[cc])||[], DV={1:'Top division',2:'Second division',3:'Third division'};
+      var L=all.filter(function(c){ return !q||(c[0]+' '+c[1]).toLowerCase().indexOf(q)>-1 });
+      var pre=q?L.filter(function(c){ return c[0].toLowerCase().indexOf(q)===0 }):[];
+      return {list:L.map(function(c){ return {k:c[0],n:c[0],ic:cInit(c[0]),cr:1,s:c[1]+' · '+rT(DV[c[2]||1]+' · {country}',{country:'§'}).split(' · ')[0]} }), first:pre[0]&&pre[0][0],
+        empty:all.length?rT('No clubs found'):rT('No clubs listed yet for {country}',{country:countryName(cc)})} },
+    go:function(k){ var cc=P.clubCountry, c=((window.RYSE_CLUBS||{})[cc]||[]).filter(function(x){ return x[0]===k })[0]; P.club={name:k,location:(c?c[1]+', ':'')+cc,country:cc,source:'database'}; go('s10') }});
+  window.ryseClubDrum={enter:function(){ CLD.enter(P.club&&P.club.country===P.clubCountry?P.club.name:null) }};
   var prevLang=window.ryseOnLang; window.ryseOnLang=function(){ prevLang&&prevLang(); if(P.height&&$('fit').dataset.state!=='idle') evaluate() };
 })();
 
@@ -7270,7 +7283,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792827812',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+(function(){var B='1792828526',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
   fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
   addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
 </script>
