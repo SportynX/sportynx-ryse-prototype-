@@ -3054,6 +3054,9 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .hnav-tabs{background:rgba(22,23,27,.58);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .hfab,.hfab[aria-expanded=true]{background:rgba(245,247,251,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .ry-chips button{border:1px solid rgba(255,255,255,.2)}.ry-chips button.on{border-color:#F5F7FB}   /* RYSEON filter chips keep a visible outline (Ivan, 24 Oct) */
+/* RYSEON chips run to the screen edge and the chip padding is tuned per phone so a chip is always cut at the right — the row visibly scrolls (Ivan, 24 Oct) */
+#ry-chips{margin-right:-20px;padding-right:20px;scroll-padding-right:20px}
+#ry-chips button{padding-left:var(--chp,18px);padding-right:var(--chp,18px)}
 .avatar{clip-path:circle(50% at 50% 50%);-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transform:translateZ(0)}.avatar:focus{outline:none}   /* no black square flash when tapped on iPhone (Ivan, 24 Oct) */
 /* Basics · nationality rail (Ivan, 24 Oct): same rail as Find yourself — swipe, the country in the frame is chosen; every country has its flag */
 #s07 .nat-rail{margin-top:6px}
@@ -6621,7 +6624,16 @@ var RY_CLIP='data:image/webp;base64,UklGRhTLAABXRUJQVlA4IAjLAABwWwOdASrQAt4CPm0y
   function ryMineCard(){ var e=window.ryseUI&&window.ryseUI.esc||esc;
     var mine=P.ambition==='already-pro'?'<button type="button" class="ry-card ry-clip dk mine" data-home="myclips"><span class="art"><img src="'+(P.photo||RY_CLIPS[1].cov)+'" alt=""></span>'+RYPLAY+(P.premium?'':'<span class="lock">Premium</span>')+'<span class="cat">'+e(rT('My clips'))+'</span><h3>'+e(rT('My latest videos'))+'</h3><p>'+e(rT('Check your newest match and training clips.'))+'</p><span class="meta"><span>'+e(rTp('{n} videos',6))+'</span></span></button>':'';
     return mine }
-  function renderRyse(){ var e=window.ryseUI&&window.ryseUI.esc||esc;
+  /* chip row: pick the chip padding (14–22 px) that leaves the chip at the right edge cut roughly in half, whatever the screen width */
+  function ryChipFit(){ var ch=$('ry-chips'); if(!ch||!ch.offsetParent) return; var bs=[].filter.call(ch.querySelectorAll('button'),function(b){ return b.offsetParent }); if(bs.length<2) return;
+    var best=null, bv=1e9;
+    for(var p=14;p<=22.01;p+=.5){ ch.style.setProperty('--chp',p+'px'); var edge=ch.getBoundingClientRect().left+ch.clientWidth, sc=1e9;
+      for(var i=0;i<bs.length;i++){ var r=bs[i].getBoundingClientRect(); if(r.left<edge&&r.right>edge){ var vis=(edge-r.left)/r.width; sc=Math.abs(vis-.42)+(r.left-edge+r.width<28?1:0); break } }
+      sc+=Math.abs(p-18)*.01; if(sc<bv){ bv=sc; best=p } }
+    ch.style.setProperty('--chp',best+'px') }
+  window.addEventListener('resize',function(){ ryChipFit() });
+  try{ document.fonts&&document.fonts.ready.then(function(){ ryChipFit() }) }catch(_){}
+  function renderRyse(){ var e=window.ryseUI&&window.ryseUI.esc||esc; requestAnimationFrame(ryChipFit);
     $('ry-ed').textContent=rT('Education'); $('ry-dot').hidden=(P.ryseSeen||0)>=RY.length; var tt=$('ry-title'); tt.style.fontSize=''; requestAnimationFrame(function(){ var f=36; while(tt.scrollWidth>tt.clientWidth+1&&f>24){ f-=1; tt.style.fontSize=f+'px' } });
     document.documentElement.toggleAttribute('data-pro',P.ambition==='already-pro');
     if(ryCat==='news'&&P.ambition!=='already-pro') ryCat='all';
