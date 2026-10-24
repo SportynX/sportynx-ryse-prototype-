@@ -7314,5 +7314,5 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   if(b) b.classList.remove('is-wait');
   function reveal(){ if(L&&!L.classList.contains('is-hidden')) L.querySelectorAll('.line-in,.rise').forEach(function(el){ el.style.animation='none'; void el.getBoundingClientRect(); el.style.animation='' });
     if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } }
-  if(window.__rlDone) window.__rlDone(reveal); else reveal() })();
+  (window.__ryseGate||function(f){ f() })(function(){ if(window.__rlDone) window.__rlDone(reveal); else reveal() }) })();
 </script>

@@ -27,6 +27,12 @@ img{max-width:100%}[hidden]{display:none!important}
   var port=innerHeight>=innerWidth, sh=port?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width), h=Math.max(innerHeight,sh);
   var r=document.documentElement; r.style.setProperty('--app-h',h+'px'); r.classList.add('ryse-fs') }catch(e){} }
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
+/* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
+   When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
+(function(){ var B='1792830383'; window.__ryseB=B;
+  var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
+  window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
+    ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
 </script>
 <title>RYSEON</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7346,16 +7352,16 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   if(b) b.classList.remove('is-wait');
   function reveal(){ if(L&&!L.classList.contains('is-hidden')) L.querySelectorAll('.line-in,.rise').forEach(function(el){ el.style.animation='none'; void el.getBoundingClientRect(); el.style.animation='' });
     if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } }
-  if(window.__rlDone) window.__rlDone(reveal); else reveal() })();
+  (window.__ryseGate||function(f){ f() })(function(){ if(window.__rlDone) window.__rlDone(reveal); else reveal() }) })();
 </script>
 
 <script>
-(function(){var B='1792830062',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1792830383',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
   fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B&&safe()){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
-  addEventListener('load',function(){setTimeout(check,300)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
+  document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
 </script>
 </body>
 </html>
