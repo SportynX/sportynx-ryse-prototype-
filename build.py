@@ -17,8 +17,8 @@ head = """<!doctype html>
 <meta name="theme-color" content="#03050A">
 <meta name="robots" content="noindex,nofollow">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-180.png?v=5">
-<link rel="icon" type="image/png" href="icon-192.png?v=5">
+<link rel="apple-touch-icon" href="icon-180.png?v=6">
+<link rel="icon" type="image/png" href="icon-192.png?v=6">
 <style>
 html{background:#03050A;-webkit-text-size-adjust:100%}
 html,body{height:100%;margin:0;overscroll-behavior:none}
