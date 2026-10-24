@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1792859005'; window.__ryseB=B;
+(function(){ var B='1792859245'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -3257,7 +3257,7 @@ html[data-theme=light] .st-btn.mb-vbtn{background:transparent!important;color:#0
 .ie-f .t b{font:600 15px/1.2 var(--font-body);color:var(--s-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ie-f .t small{display:flex;align-items:center;gap:6px;font:500 12.5px/1.2 var(--font-body);color:var(--s-mut)}
 .ie-st{flex:none;width:7px;height:7px;border-radius:50%;background:var(--s-faint)}
-.ie-st.active{background:#3D7BFF}.ie-st.trial{background:transparent;box-shadow:inset 0 0 0 1.5px #6F98FF}.ie-st.inactive{background:rgba(160,166,180,.45)}
+.ie-st.active{background:#3D7BFF}.ie-st.invited{background:transparent;box-shadow:inset 0 0 0 1.5px var(--s-faint)}.ie-st.trial{background:transparent;box-shadow:inset 0 0 0 1.5px #6F98FF}.ie-st.inactive{background:rgba(160,166,180,.45)}
 .ie-plus{flex:none;font:700 15px/1 var(--font-display);color:#6F98FF}.ie-plus.off{color:var(--s-faint);font-weight:500}
 .mb-price s{font:500 14px/1 var(--font-body);color:var(--s-faint);margin-left:4px}
 .ie-sheet{position:absolute;inset:0;z-index:9000;display:flex;align-items:flex-end;background:rgba(3,5,10,0);transition:background .28s ease}
@@ -5444,8 +5444,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
      (or who is on a trial / no longer active) does not count. Prototype: friends and statuses are simulated. */
   var RYSEON_PRICE=11.90;
   function money(v){ return '£'+(Math.round(v*100)/100).toFixed(2) }
-  function REF(){ var R=P.ref; if(!R){ var n=P.invites===undefined?1:P.invites; R=P.ref={friends:[]}; var NM=['James Smith','Luka Perić','Marco Rossi','Tom Becker','Ivan Kovač'];
-      for(var i=0;i<Math.min(5,n);i++) R.friends.push({name:NM[i],status:'active'}) } return R }
+  function REF(){ var R=P.ref; if(!R||!R.v2){ R=P.ref={friends:[],code:R&&R.code,v2:1} } return R }   /* starts empty: a discount only appears once an invited friend has actually paid (Ivan, 24 Oct) */
   function refCount(){ return REF().friends.filter(function(f){ return f.status==='active'&&!f.vantage }).length }
   function refPct(){ return Math.min(5,refCount())*10 }
   function refPrice(p){ return RYSEON_PRICE*(1-(p===undefined?refPct():p)/100) }
@@ -5459,7 +5458,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   /* compact discount block for Membership (no duplicate dashboard) */
   function refMemBlock(){ var e=SE(), p=refPct(); if(!p) return '';
     return '<div class="ie-mem"><div class="r"><span>'+e(rT('RYSEON Membership'))+'</span><span>'+money(RYSEON_PRICE)+' / '+e(rT('month'))+'</span></div>'+
-      '<div class="r ie-acc"><span>'+e(rT('{p}% Invite & Earn discount',{p:p}))+'</span><span>−'+money(RYSEON_PRICE-refPrice())+'</span></div>'+
+      '<div class="r ie-acc"><span>'+e(rT('{p}% Invite & Earn discount approved',{p:p}))+'</span><span>−'+money(RYSEON_PRICE-refPrice())+'</span></div>'+
       '<div class="r ie-tot"><span>'+e(rT('Your price'))+'</span><b>'+money(refPrice())+' / '+e(rT('month'))+'</b></div>'+
       '<button type="button" class="st-link" data-pg="invite">'+e(rT('View Invite & Earn'))+'</button></div>' }
   function refShareText(){ return rT('Join me on RYSEON — use my invite and get 20% off your first 3 months. Code: {code}',{code:refCode()}) }
@@ -5481,7 +5480,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       case 'accept': toast(rT('Invite applied — 20% off your first 3 months')); PG.pop(); renderPage(); break;
     } }
   /* prototype: realistic test states (same "preview a state" pattern as Membership) */
-  function refDemo(s){ var R=REF(), A=function(n){ return ['James Smith','Luka Perić','Marco Rossi','Tom Becker','Ivan Kovač'].slice(0,n).map(function(x){ return {name:x,status:'active'} }) };
+  function refDemo(s){ var R=REF(); R.v2=1; var A=function(n){ return ['James Smith','Luka Perić','Marco Rossi','Tom Becker','Ivan Kovač'].slice(0,n).map(function(x){ return {name:x,status:'active'} }) };
     R.friends={zero:[],one:A(1),two:A(2),four:A(4),five:A(5),
       pending:A(2).concat([{name:'Noah Weber',status:'invited'}]),
       trial:A(2).concat([{name:'Mateo Silva',status:'trial'}]),
@@ -5500,20 +5499,21 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       h+='<div class="st-plan mb-plan"><small>'+e(rT('RYSEON Membership'))+'</small><b>'+e(memTitle(S))+'</b><span>'+e(memLine(S))+'</span>'+
         (S==='trial'||S==='trial_with_vantage_invite_pending'?'<i class="mb-bar" aria-hidden="true"><i style="width:'+Math.round(100*(15-pl.left)/15)+'%"></i></i>':'')+
         (S==='included_via_vantage'||S==='vantage_cancelling'?'<em>'+e(rT('Your RYSEON membership is included through {name}’s VANTAGE membership.',{name:M.vantage.name}))+'</em>':'')+'</div>';
-      /* Membership always shows the full price; the Invite & Earn discount lives on the Invite & Earn screen (Ivan, 24 Oct) */
+      /* the Invite & Earn discount shows here only once it is approved — an invited friend has paid (Ivan, 24 Oct) */
+      if(S==='direct_ryseon_subscription'||S==='ryseon_subscription_cancelling') h+=refMemBlock();
       if(S==='vantage_cancelling') h+='<div class="mb-warn"><b>'+e(rT('VANTAGE coverage ending'))+'</b><span>'+e(rT('Your RYSEON membership through VANTAGE ends on {date}.',{date:fmtDate(M.vantage.ends)}).replace(/\.\.$/,'.'))+'</span>'+
         '<button class="st-btn" type="button" data-sa="mem:subscribe">'+e(rT('Continue with RYSEON'))+' · £11.90 / '+e(rT('month'))+'</button><small>'+e(rT('You keep your account, history and progress.'))+'</small></div>';
       if(S==='vantage_expired'||S==='expired') h+='<div class="mb-warn mb-info"><b>'+e(rT('Your account is saved'))+'</b><span>'+e(rT('Your history, progress and data are kept. Choose how to continue.'))+'</span></div>';
       if(S==='included_via_vantage'||S==='vantage_cancelling') h+=memConnected();
       if(S==='included_via_vantage'&&M.direct&&M.direct.stopping) h+=sGroup('',[sRow({l:'Your own RYSEON subscription',sub:rT('Stops renewing on {date}. You won’t be charged again.',{date:fmtDate(M.direct.next)}),nochev:true,dis:true})],'noic');
-      if(S==='direct_ryseon_subscription') h+=sGroup('',[sRow({l:'Plan',v:'RYSEON Monthly',nochev:true,dis:true}),sRow({l:'Price',v:'£11.90 / '+rT('month'),nochev:true,dis:true}),sRow({l:(M.direct.trialFirst?'First payment':'Next billing date'),v:fmtDate(M.direct.next),nochev:true,dis:true}),sRow({l:'Billed through',v:'App Store',nochev:true,dis:true})],'noic')+
+      if(S==='direct_ryseon_subscription') h+=sGroup('',[sRow({l:'Plan',v:'RYSEON Monthly',nochev:true,dis:true}),sRow({l:'Price',v:money(refPrice())+' / '+rT('month'),nochev:true,dis:true}),sRow({l:(M.direct.trialFirst?'First payment':'Next billing date'),v:fmtDate(M.direct.next),nochev:true,dis:true}),sRow({l:'Billed through',v:'App Store',nochev:true,dis:true})],'noic')+
         '<button class="st-btn ghost" type="button" data-sa="manage-sub">'+e(rT('Manage subscription'))+'</button><button class="st-link mb-quiet" type="button" data-sa="mem:cancel-direct">'+e(rT('Cancel subscription'))+'</button>';
       if(S==='ryseon_subscription_cancelling') h+=sGroup('',[sRow({l:'Access until',v:fmtDate(M.direct.next),nochev:true,dis:true}),sRow({l:'Renewal',v:rT('Off'),nochev:true,dis:true})],'noic')+
         '<button class="st-btn" type="button" data-sa="mem:resume">'+e(rT('Resume subscription'))+'</button>';
       /* the two paths: subscribe directly, or get RYSEON through VANTAGE */
       if(S==='trial'||S==='trial_with_vantage_invite_pending'||S==='vantage_expired'||S==='expired')
         h+='<div class="mb-opt"><small>'+e(rT('Option 1'))+'</small><b>'+e(rT('Continue with RYSEON'))+'</b><span>'+e(rT(S==='expired'||S==='vantage_expired'?'Get full access again.':'Keep full access after your trial.'))+'</span>'+
-          '<span class="mb-price">£11.90 <i>/ '+e(rT('month'))+'</i></span>'+'<button class="st-btn" type="button" data-sa="mem:subscribe">'+e(rT('Subscribe'))+'</button></div>';
+          (refPct()?'<span class="mb-price">'+money(refPrice())+' <i>/ '+e(rT('month'))+'</i> <s>£11.90</s></span><span class="mb-fine">'+e(rT('{p}% Invite & Earn discount approved — your invited friends have paid.',{p:refPct()}))+'</span>':'<span class="mb-price">£11.90 <i>/ '+e(rT('month'))+'</i></span>')+'<button class="st-btn" type="button" data-sa="mem:subscribe">'+e(rT('Subscribe'))+'</button></div>';
       if(M.invite) h+=memPending();
       else if(S!=='included_via_vantage'&&S!=='vantage_cancelling') h+='<div class="mb-opt mb-v"><small>'+(S==='trial'||S==='expired'||S==='vantage_expired'?e(rT('Option 2'))+' · ':'')+'VANTAGE</small><b>'+e(rT('Get RYSEON through VANTAGE'))+'</b><span>'+e(rT('Someone who supports your development can activate VANTAGE and your RYSEON membership will be included.'))+'</span>'+
           (S==='direct_ryseon_subscription'||S==='ryseon_subscription_cancelling'?'<span class="mb-fine">'+e(rT('If they activate VANTAGE, your own subscription stops renewing — you’re never charged twice.'))+'</span>':'')+
@@ -5669,7 +5669,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
           (vcov?'<span class="ie-fine">'+e(rT('While VANTAGE covers your membership, your discount is kept for when you pay for RYSEON yourself.'))+'</span>':'')+'</div>';
       h+='<button class="st-btn" type="button" data-sa="ie:invite">'+e(rT('Invite a Friend'))+'</button>';
       h+='<div class="ie-code"><span><small>'+e(rT('Your invite code'))+'</small><b>'+e(refCode())+'</b></span><button type="button" class="ie-cbtn" data-sa="ie:code">'+e(rT('Copy Code'))+'</button></div>';
-      var ST4={invited:['Invited','Invitation sent'],trial:['Trial','Counts once they subscribe'],active:['Active',''],inactive:['Inactive','No longer active']};
+      var ST4={invited:['Pending','Invitation sent'],trial:['Pending','On free trial — not paid yet'],active:['Discount approved','Paid member'],inactive:['Inactive','No longer active']};
       if(R.friends.length) h+='<div class="st-cap">'+e(rT('Your Invited Friends'))+'</div><div class="st-group ie-list">'+R.friends.map(function(f){ var s=ST4[f.status]||ST4.invited, on=f.status==='active'&&!f.vantage;
           return '<div class="ie-f"><span class="mb-ava">'+e(f.name.split(/\s+/).map(function(w){ return w[0] }).join('').slice(0,2).toUpperCase())+'</span><span class="t"><b>'+e(f.name)+'</b><small><i class="ie-st '+f.status+'"></i>'+e(rT(s[0]))+(s[1]?' · '+e(rT(s[1])):'')+'</small></span><span class="ie-plus'+(on?'':' off')+'">'+(on?'+10%':'—')+'</span></div>' }).join('')+'</div>';
       h+=sNote(rT('Only friends with an active paid RYSEON membership count. Sending an invite or creating an account doesn’t add to your discount, and athletes whose membership is covered through VANTAGE don’t count.'))+
@@ -7818,7 +7818,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792859005',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1792859245',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
