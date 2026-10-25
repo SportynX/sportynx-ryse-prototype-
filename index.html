@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1792869916'; window.__ryseB=B;
+(function(){ var B='1792913553'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -2239,6 +2239,7 @@ html[data-theme=light][data-view=prof] .ij-body .s{fill:#2A3242;stroke:none}html
 html[data-theme=light][data-view=prof] .ij-body .h0{stop-color:#fff;stop-opacity:.7}
 .ij-com{display:flex;flex-direction:column;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--s-line)}
 .ij-com b{font:600 14px/1.2 var(--font-body);color:var(--s-text)}
+.ij-com.ij-com-solo{margin-top:0;padding-top:0;border-top:0}
 .ij-body{height:392px!important}
 
 /* Log injury v2: standard chips, body pop-up with the anatomical athlete */
@@ -6847,13 +6848,15 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
         (IJ.parts.length?'<div class="ij-parts">'+IJ.parts.map(function(x){ return '<span><i></i>'+e(x.label)+(x.id==='body'&&IJ.temp?' · '+e(IJ.temp.toLocaleString(locN(),{minimumFractionDigits:1,maximumFractionDigits:1}))+' °C':'')+'</span>' }).join('')+'</div>':'')+'<button type="button" class="ij-3d'+(IJ.parts.length?' on':' need')+'" data-ij3d>'+e(rT(IJ.parts.length?'Edit on 3D body':'Add using 3D body'))+'</button></div>'+
       '<div class="lt-card"><div class="lt-q"><div><b>'+e(rT('What kind of injury?'))+'</b><small>'+e(rT('Choose what fits best — your doctor can confirm it.'))+'</small></div></div>'+
         '<button type="button" class="ij-dd'+(IJ.types.length?' on':'')+'" data-ijtypes><span>'+(IJ.types.length?e(IJ.types.map(function(k){ return rT(IJT[k]) }).join(', ')):e(rT('Select injury type')))+'</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9.5 6 6 6-6"/></svg></button>'+
-        '<label class="ij-com"><b>'+e(rT('Additional comment'))+'</b><textarea class="lt-notes" id="ij-com" rows="2" placeholder="'+e(rT('What happened? How does it feel?'))+'">'+e(IJ.com||'')+'</textarea></label></div>'+
+        '</div>'+
       '<div class="lt-card"><label class="ij-date"><span><b>'+e(rT('Injury date'))+'</b></span><input type="date" id="ij-start" value="'+IJ.start+'"></label>'+
         '<div class="lt-q ij-ret"><div><b>'+e(rT('Expected return'))+'</b><small>'+e(rT('Slide to your expected recovery date.'))+'</small></div><span class="lt-score"><b id="ij-dur">'+e(ijDur(IJ.days))+'</b></span></div>'+
         '<input class="lt-range" id="ij-days" style="--p:'+((IJ.days-1)/119*100)+'%" type="range" min="1" max="120" step="1" value="'+IJ.days+'" aria-label="'+e(rT('Expected return'))+'"><div class="lt-ends"><span>'+e(rT('1 day'))+'</span><span id="ij-back">'+e(rT('Back around {date}',{date:ijFmt(ijEnd())}))+'</span><span>'+e(rT('4 months'))+'</span></div></div>'+
       '<div class="lt-card"><div class="lt-q"><div><b>'+e(rT('Medical documents'))+'</b><small>'+e(rT('Add your doctor’s report and any scan — X-ray, MRI or ultrasound.'))+'</small></div></div>'+
         '<div class="ij-docs">'+IJ.docs.map(doc).join('')+'</div><div class="ij-add"><button type="button" data-ijadd="report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3.5H7.5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V8Z"/><path d="M14 3.5V8h4.5M9 13h6M12 10v6"/></svg>'+e(rT('Doctor’s report'))+'</button><button type="button" data-ijadd="scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 12h6M12 9v6"/></svg>'+e(rT('Scan image'))+'</button></div>'+
         '<p class="ij-priv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>'+e(rT('Private to you. Not shared with your club unless you choose to.'))+'</p></div>'+
+      /* Additional comment moved to the very bottom, under the medical documents (Ivan, 25 Oct) */
+      '<div class="lt-card"><label class="ij-com ij-com-solo"><b>'+e(rT('Additional comment'))+'</b><textarea class="lt-notes" id="ij-com" rows="2" placeholder="'+e(rT('What happened? How does it feel?'))+'">'+e(IJ.com||'')+'</textarea></label></div>'+
       '<p class="ij-note">'+e(rT('RYSEON doesn’t diagnose injuries. Always follow your doctor’s advice.'))+'</p>';
     b.scrollTop=y; $('ij-save').disabled=!(IJ.where&&IJ.parts.length&&IJ.types.length) }
   /* full-body pop-up */
@@ -7819,7 +7822,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792869916',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1792913553',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
