@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1792929520'; window.__ryseB=B;
+(function(){ var B='1792931083'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -5347,7 +5347,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     h+=memCard()+(P.ambition==='already-pro'?'<div class="pf-gap"></div>'+sGroup('',[sRow({pg:'membership',ic:'star',l:'RYSEON Premium',sub:rT('My clips, My news, Public opinion'),v:P.premium?rT('Active'):'£24.90'})]):'');
     h+=sGroup('Account',[sRow({pg:'account',ic:'lock',l:'Account & security'}),sRow({pg:'connected',ic:'heart',l:'Connected data',v:healthOn()?rT('Connected'):rT('Not connected'),vc:healthOn()?'ok':''})]);
     if(P.ambition!=='already-pro') h+=sGroup('Pro profile',[sRow({act:'turnpro',ic:'up',l:'Turned professional?',sub:rT('Switch to a Pro profile — free')})]);
-    h+=sGroup('Preferences',[sRow({pg:'notif',ic:'bell',l:'Notifications'}),sRow({pg:'appearance',ic:'theme',l:'Appearance',v:rT({dark:'Dark',light:'Light',system:'System'}[ST().theme])}),sRow({pg:'appicon',ic:'appicon',l:'App icon',v:appIconName()}),sRow({edit:'lang',ic:'globe',l:'Language',v:langName(RYSE_I18N.code)})]);
+    h+=sGroup('Preferences',[sRow({pg:'notif',ic:'bell',l:'Notifications'}),sRow({pg:'appearance',ic:'theme',l:'Appearance',v:rT({dark:'Dark',light:'Light',system:'System'}[ST().theme])}),sRow({pg:'appicon',ic:'appicon',l:'App icon',v:appIconName()}),sRow({pg:'language',ic:'globe',l:'Language',v:langName(RYSE_I18N.code)})]);
     h+=sGroup('Privacy',[sRow({pg:'privacy',ic:'privacy',l:'Privacy & sharing'})]);
     h+=sGroup('Support',[sRow({pg:'help',ic:'help',l:'Help & support'}),sRow({pg:'legal',ic:'doc',l:'Legal'}),sRow({pg:'about',ic:'info',l:'About RYSEON'})]);
     h+='<button class="pf-logout" type="button" data-pf="logout-ask">'+e(rT('Log out'))+'</button>';
@@ -5719,6 +5719,10 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
         sGroup('',[sRow({l:'Account & security',sub:rT('Always on — important account alerts.'),key:'n.sec',tg:true,locked:true})],'noic')} },
     'notif-match':function(){ var M=ST().matchN, L=[['tomorrow','Match tomorrow'],['matchDay','Match-day preparation'],['sleep','Sleep preparation'],['nutrition','Nutrition timing'],['hydration','Hydration'],['mental','Mental preparation'],['checkin','Post-match check-in']];
       return {t:'Match preparation',h:sGroup('',L.map(function(x){ return sRow({l:x[1],key:'m.'+x[0],tg:M[x[0]]}) }),'noic')+sNote(rT('Turning reminders off doesn’t remove your matches from RYSEON.'))} },
+    /* Language (Ivan, 25 Oct): a plain settings list — the map and the language rail stay on the first screen only.
+       Picking a language switches the whole app at once and is remembered (ryse-lang), like the onboarding choice. */
+    language:function(){ var cur=RYSE_I18N.code, L=(window.RYSE_LANGS||[]).filter(function(l){ return l.code==='en'||RYSE_I18N.dict[l.code] });
+      return {t:'Language',h:sGroup('',L.map(function(l){ return sRow({radio:l.code===cur,key:'lang',rv:l.code,l:l.name,sub:l.sub}) }),'noic st-langs')} },
     appicon:function(){ var e=SE(), k=appIconKey(), ci=clubIcon(), cn=P.club?P.club.name:'';
       var tile=function(id,src,name,sub,cls){ return '<button type="button" class="ai-t'+(cls?' '+cls:'')+'" role="radio" data-sa="appicon:'+id+'" aria-checked="'+(k===id)+'"><span class="ai-i"><img src="'+src+'" alt=""></span><span class="ai-tx"><b>'+e(name)+'</b><small>'+e(sub)+'</small></span><span class="ai-ck" aria-hidden="true"></span></button>' };
       var h='<div class="st-hero"><p>'+e(rT('Choose how RYSEON looks on your Home Screen.'))+'</p></div>'+
@@ -5770,7 +5774,8 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(t.dataset.edit){ startEdit(t.dataset.edit); return }
     if(t.dataset.tg){ if(t.disabled) return; var k=t.dataset.tg, S=ST(), on=t.getAttribute('aria-checked')!=='true'; t.setAttribute('aria-checked',on);
       if(k.indexOf('vp.')===0){ var MV=MEM().vantage; if(MV){ MV.perms=MV.perms||{}; MV.perms[k.slice(3)]=on; memSave() } return } if(k==='bio') S.bio=on; else if(k==='disc') S.discovery=on; else if(k.indexOf('n.')===0) S.notif[k.slice(2)]=on; else if(k.indexOf('m.')===0) S.matchN[k.slice(2)]=on; return }
-    if(t.dataset.rd){ if(t.disabled) return; if(t.dataset.rd==='video') ST().video=t.dataset.rv; renderPage(); return }
+    if(t.dataset.rd){ if(t.disabled) return; if(t.dataset.rd==='lang'){ var lc=t.dataset.rv; if(lc!==RYSE_I18N.code){ RYSE_I18N.apply(lc); P.locale=lc; try{ localStorage.setItem('ryse-lang',lc); if(P.first) localStorage.setItem('ryse-last-profile',JSON.stringify(P)) }catch(_){} } renderPage(); return }
+      if(t.dataset.rd==='video') ST().video=t.dataset.rv; renderPage(); return }
     if(t.dataset.themeSet){ ST().theme=t.dataset.themeSet; window.ryseView('s21'); renderPage(); return }
     var a=t.dataset.sa||t.dataset.pf;
     if(a&&a.indexOf('ie:')===0){ refAct(a.slice(3)); return }
@@ -7855,7 +7860,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792929520',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1792931083',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
