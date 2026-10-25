@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1792928090'; window.__ryseB=B;
+(function(){ var B='1792929520'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -2951,7 +2951,7 @@ html[data-pro] .h-greet:not(.rank) .g2::after{content:"";display:inline-block;wi
 .fm-c b{font:600 15px/1.15 var(--font-display);letter-spacing:-.005em;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .fm-c small{font:600 9px/1.2 var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:rgba(157,184,255,.85);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .fm-c.in .fl{box-shadow:0 0 0 1px rgba(255,255,255,.14),0 0 18px rgba(111,152,255,.35)}
-.fm{display:flex;flex-direction:column;margin-top:22px}
+.fm{display:flex;flex-direction:column;margin-top:22px} .fm-top+.fm{margin-top:0} .fm-sw{margin-top:2px} .fm-none{margin:18px 0 4px;text-align:center;font-size:14px;color:rgba(200,207,221,.7)} .fm-lrow.two .fm-chips{flex-wrap:nowrap;width:100%;overflow-x:auto;scrollbar-width:none} .fm-lrow.two .fm-chips::-webkit-scrollbar{display:none} .fm-lrow.two .fm-chips button{flex:none;padding:0 12px;font-size:13.5px;gap:7px} .fm-lrow.two .fm-g{margin-left:auto} .fm-track .fm-c small{white-space:normal;overflow:visible;text-overflow:clip;text-align:center;max-width:96px}
 .fm .cap{font:600 11px/1 var(--font-body);letter-spacing:.18em;text-transform:uppercase;color:rgba(200,207,221,.86);padding:18px 0 10px}
 .fm .cap:first-child{padding-top:0}
 .fm-chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -3620,6 +3620,7 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
       <div class="head"><h1><span class="line"><span class="line-in l1">Find</span></span><span class="line"><span class="line-in l2">yourself.</span></span></h1>
         <p class="support rise d2">Professional players are already in the RYSEON database. Find yourself and we’ll fill in your details.</p>
       </div>
+      <div class="fm fm-top rise d2"><div class="cap" id="fm-cap">Country you play in</div><div class="cc-sw fm-sw"><input class="input search" id="fm-q" type="text" placeholder="Search countries" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="search" aria-label="Search countries"><button type="button" class="cc-x" id="fm-x" aria-label="Clear" hidden><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="currentColor"/><path d="m9 9 6 6M15 9l-6 6" stroke="#0B0D12" stroke-width="1.8" stroke-linecap="round"/></svg></button></div></div>
       <div class="fm rise d2" id="fm"></div>
       <div class="grow"></div>
       <div class="actions rise d3" id="fm-act" style="margin-top:22px" hidden>
@@ -4786,12 +4787,18 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
   /* women's teams: only countries/clubs with a women's squad are shown (prototype: Manchester City Women, Sep 2026) */
   var FM_W={England:{league:'Women’s Super League',clubs:{'Manchester City':[["Eartha Cumings", "1999-06-11", "Scotland"], ["Risa Shimizu", "1996-06-15", "Japan"], ["Jade Rose", "2003-02-12", "Canada"], ["Alex Greenwood", "1993-09-07", "England"], ["Grace Clinton", "2003-03-31", "England"], ["Beth Mead", "1995-05-09", "England"], ["Mary Fowler", "2003-02-14", "Australia"], ["Khadija Shaw", "1997-01-31", "Jamaica"], ["Vivianne Miedema", "1996-07-15", "Netherlands"], ["Lauren Hemp", "2000-08-07", "England"], ["Laura Wienroither", "1999-01-13", "Austria"], ["Anna Moorhouse", "1995-03-30", "England"], ["Sam Coffey", "1998-12-31", "United States"], ["Kerstin Casparij", "2000-08-19", "Netherlands"], ["Laura Blindkilde Brown", "", "England"], ["Aoba Fujino", "2004-01-27", "Japan"], ["Niamh Charles", "1999-06-21", "England"], ["Sydney Lohmann", "2000-06-19", "Germany"], ["Iman Beney", "2006-07-23", "Switzerland"], ["Yui Hasegawa", "1997-01-29", "Japan"], ["Rebecca Knaak", "1996-06-23", "Germany"], ["Gracie Prior", "2004-12-02", "England"], ["Ayaka Yamashita", "1995-09-29", "Japan"], ["Carlotta Wamser", "2003-11-01", "Germany"], ["Aoibhe Brennan", "", "Republic of Ireland"], ["Sacha Lewis", "2008-02-28", "England"], ["Mayzee Davies", "", "Wales"], ["Amelia Oldroyd", "", "Scotland"], ["Freya Hirons", "", "England"], ["Millie Burton", "", "England"]]}}};
   function fmCL(){ return FM.g==='w'?FM_C.filter(function(c){ return FM_W[c[0]] }).map(function(c){ return [c[0],FM_W[c[0]].league] }):FM_C }
+  function fmNorm(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase().trim() }
+  function fmFind(q){ var L=fmCL(); q=fmNorm(q); if(q.length<2) return L;
+    return L.filter(function(c){ return [countryName(c[0]),c[0],c[1]].some(function(n){ n=fmNorm(n); return n.indexOf(q)===0||n.split(/[\s\-]+/).some(function(w){ return w.indexOf(q)===0 }) }) }) }
   function fmLg(c){ var r=fmCL().filter(function(x){ return x[0]===c })[0]; return r?r[1]:'' }
   function fmSquad(){ return FM.g==='w'?((FM_W[FM.c]||{clubs:{}}).clubs[FM.club]):FM_SQ[FM.club] }
   var FM_CK='<i class="ck"><svg viewBox="0 0 16 16" fill="none"><path d="m3.5 8.5 3 3 6-6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>';
   function fmRender(){ if(FM.c&&!fmLg(FM.c)){ FM.c=null; FM.l=null }
-    var h='<div class="cap">'+esc(rT('Country you play in'))+'</div><div class="fm-rail"><div class="fm-track" id="fm-track">'+fmCL().map(function(c){ return '<button type="button" class="fm-c'+(FM.c===c[0]?' in':'')+'" data-fmc="'+c[0]+'" aria-pressed="'+(FM.c===c[0])+'"><span class="fl">'+fmFlag(c[0])+'</span><b>'+esc(countryName(c[0]))+'</b><small>'+esc(c[1])+'</small></button>' }).join('')+'</div></div>';
-    if(FM.c){ var lg=fmLg(FM.c); var lgs=[lg].concat(FM.g!=='w'&&FM_L2[FM.c]?[FM_L2[FM.c]]:[]); h+='<div class="cap" data-fms="l">'+esc(rT(lgs.length>1?'Leagues':'Top league'))+'</div><div class="fm-lrow"><div class="fm-chips">'+lgs.map(function(l){ return '<button type="button" data-fml="'+esc(l)+'" aria-pressed="'+(FM.l===l)+'">'+fmFlag(FM.c)+esc(l)+'</button>' }).join('')+'</div><div class="fm-g" role="group" aria-label="'+esc(rT('Team'))+'"><button type="button" data-fmg="m" aria-pressed="'+(FM.g!=='w')+'">'+esc(rT('Men'))+'</button><button type="button" data-fmg="w" aria-pressed="'+(FM.g==='w')+'">'+esc(rT('Women'))+'</button></div></div>' }
+    /* country search (Ivan, 25 Oct): 2+ letters filter the rail; otherwise it shows the country chosen by swiping, with X to clear */
+    var q=$('fm-q'), cl=fmFind(FM.q); $('fm-cap').textContent=rT('Country you play in'); q.placeholder=rT('Search countries'); q.setAttribute('aria-label',rT('Search countries'));
+    if(document.activeElement!==q) q.value=FM.q||(FM.c?countryName(FM.c):''); $('fm-x').hidden=!q.value;
+    var h=cl.length?'<div class="fm-rail"><div class="fm-track" id="fm-track">'+cl.map(function(c){ return '<button type="button" class="fm-c'+(FM.c===c[0]?' in':'')+'" data-fmc="'+c[0]+'" aria-pressed="'+(FM.c===c[0])+'"><span class="fl">'+fmFlag(c[0])+'</span><b>'+esc(countryName(c[0]))+'</b><small>'+esc(c[1])+'</small></button>' }).join('')+'</div></div>':'<p class="fm-none">'+esc(rT('No country found'))+'</p>';
+    if(FM.c){ var lg=fmLg(FM.c); var lgs=[lg].concat(FM.g!=='w'&&FM_L2[FM.c]?[FM_L2[FM.c]]:[]); h+='<div class="cap" data-fms="l">'+esc(rT(lgs.length>1?'Leagues':'Top league'))+'</div><div class="fm-lrow'+(lgs.length>1?' two':'')+'"><div class="fm-chips">'+lgs.map(function(l){ return '<button type="button" data-fml="'+esc(l)+'" aria-pressed="'+(FM.l===l)+'">'+fmFlag(FM.c)+esc(l)+'</button>' }).join('')+'</div><div class="fm-g" role="group" aria-label="'+esc(rT('Team'))+'"><button type="button" data-fmg="m" aria-pressed="'+(FM.g!=='w')+'">'+esc(rT('Men'))+'</button><button type="button" data-fmg="w" aria-pressed="'+(FM.g==='w')+'">'+esc(rT('Women'))+'</button></div></div>' }
     if(FM.l){ var top=FM_TOP[FM.c]||[], clubs=(FM.g==='w'?Object.keys((FM_W[FM.c]||{clubs:{}}).clubs).map(function(n){ return [n,(((window.RYSE_CLUBS||{})[FM.c]||[]).filter(function(c){ return c[0]===n })[0]||['',''])[1]] }):((window.RYSE_CLUBS||{})[FM.c]||[]).filter(function(c){ return FM.l&&FM.l===FM_L2[FM.c]?c[2]===2:!c[2] })).sort(function(a,b){ var ia=top.indexOf(a[0]), ib=top.indexOf(b[0]); ia=ia<0?99:ia; ib=ib<0?99:ib; return ia-ib||a[0].localeCompare(b[0]) });
       h+='<div class="cap" data-fms="club">'+esc(rT('{league} clubs',{league:FM.l}))+'</div><div class="club-list">'+(FM.club?'<button type="button" aria-pressed="true" data-fmclub="">'+fmCrest(FM.club)+'<span>'+esc(FM.club)+'</span><span class="fm-chg">'+esc(rT('Change'))+'</span></button>':clubs.map(function(c){ return '<button type="button" data-fmclub="'+esc(c[0])+'">'+fmCrest(c[0])+'<span>'+esc(c[0])+'<span class="sub">'+esc(c[1])+'</span></span></button>' }).join(''))+'</div>' }
     if(FM.club){ var sq=fmSquad();
@@ -4811,9 +4818,16 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     tk.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(paint); clearTimeout(tm);
       tm=setTimeout(function(){ var m=near(); if(m&&(m.dataset.fmc!==FM.c)&&(tk._user||FM.c)){ fmPick(m.dataset.fmc) } },260) },{passive:true});
     ['touchstart','pointerdown','wheel'].forEach(function(t){ tk.addEventListener(t,function(){ tk._user=true },{passive:true}) }) }
-  function fmPick(c){ FM={c:c,l:fmLg(c),club:null,pi:-1,g:FM.g}; var st=$('s05f').scrollTop; fmRender(); $('s05f').scrollTop=st }
+  function fmPick(c){ FM={c:c,l:fmLg(c),club:null,pi:-1,g:FM.g,q:FM.q||''}; var st=$('s05f').scrollTop; fmRender(); $('s05f').scrollTop=st }
   function fmTo(k){ setTimeout(function(){ var el=$('fm').querySelector('[data-fms="'+k+'"]'); if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'}) },60) }
   window.ryseFmRender=fmRender;
+  $('fm-q').addEventListener('focus',function(){ if(!FM.q&&this.value){ var t=this; setTimeout(function(){ try{ t.setSelectionRange(0,t.value.length) }catch(_){} },0) } });
+  $('fm-q').addEventListener('input',function(){ FM.q=this.value; $('fm-x').hidden=!this.value; var m=fmFind(FM.q), qn=fmNorm(FM.q);
+    if(qn.length>=2&&m.length===1){ if(FM.c!==m[0][0]){ FM={c:m[0][0],l:fmLg(m[0][0]),club:null,pi:-1,g:FM.g,q:FM.q} } }
+    else if(qn.length>=2&&FM.c&&!m.some(function(c){ return c[0]===FM.c })){ FM.c=null; FM.l=null; FM.club=null; FM.pi=-1 }
+    fmRender() });
+  $('fm-q').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); this.blur() } });
+  $('fm-x').addEventListener('click',function(){ FM={c:null,l:null,club:null,pi:-1,g:FM.g,q:''}; var q=$('fm-q'); q.value=''; fmRender(); q.focus() });
   $('s05f').addEventListener('click',function(ev){ var b;
     if((b=ev.target.closest('[data-fmg]'))){ FM.g=b.dataset.fmg; if(!fmLg(FM.c)){ FM.c=null; FM.l=null } else FM.l=fmLg(FM.c); FM.club=null; FM.pi=-1; fmRender(); return }
     if((b=ev.target.closest('[data-fmc]'))){ var tk=$('fm-track'), x=b.offsetLeft-(tk.clientWidth-b.offsetWidth)/2; if(Math.abs(tk.scrollLeft-x)<4){ if(FM.c!==b.dataset.fmc) fmPick(b.dataset.fmc) } else { tk._user=true; tk.scrollTo({left:x,behavior:'smooth'}) } return }
@@ -7841,7 +7855,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1792928090',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1792929520',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
