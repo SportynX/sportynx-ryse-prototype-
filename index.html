@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793003544'; window.__ryseB=B;
+(function(){ var B='1793004132'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -2077,7 +2077,7 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .vp2 .vp-segs i.done b{width:100%}
 
 /* ================= 16i RYSEON Intelligence (Ivan, 26 Oct) ================= */
-#s16i{padding-top:calc(env(safe-area-inset-top,0px) + 58px)}
+#s16i{padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
 #s16i .ri-stage{flex:1;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;transform-origin:50% 30%;transition:opacity 1s cubic-bezier(.4,0,.2,1),transform 1.1s cubic-bezier(.4,0,.2,1),filter 1s ease}
 #s16i.ri-out .ri-stage,#s16i.ri-out .ri-act{opacity:0;transform:scale(1.08);filter:blur(8px)}
 #s16i .ri-learn{display:flex;align-items:center;justify-content:center;height:16px;margin-bottom:22px;font:600 10px/1 var(--font-body);letter-spacing:.22em;text-transform:uppercase;color:#C9D6FF;transition:opacity .6s ease}
@@ -2102,8 +2102,7 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 #s16i .ri-ray{position:absolute;width:0;height:0}
 #s16i .ri-ray i{position:absolute;left:0;top:-2px;width:3px;height:3px;border-radius:50%;background:#9DB8FF;box-shadow:0 0 8px rgba(111,152,255,.9);animation:riIn 2.4s cubic-bezier(.55,0,.75,.4) infinite}
 #s16i .ri-ray.big i{width:5px;height:5px;top:-2.5px}
-#s16i .ri-h1{margin-top:34px;font:700 38px/1.02 var(--font-display);letter-spacing:-.01em;text-transform:uppercase;color:#F5F7FB}
-#s16i .ri-l1,#s16i .ri-l2{display:block;white-space:nowrap}
+#s16i .ri-h1{margin-top:34px;min-height:2.04em;font:700 38px/1.02 var(--font-display);letter-spacing:-.01em;text-transform:uppercase;color:#F5F7FB;white-space:pre-line}
 #s16i .ri-hdots{display:inline-flex;gap:5px;margin-left:7px;vertical-align:4px}
 #s16i .ri-hdots i{width:6px;height:6px}
 #s16i .ri-hdots.off{display:none}
@@ -2117,7 +2116,7 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 #s16i .ri-copy .tc{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-2px;background:#8FB0FF;animation:riBlink 1s steps(1) infinite}
 #s16i .ri-act{margin-top:16px;padding-top:0;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .7s ease,transform .7s ease,filter 1s ease}
 #s16i .ri-act.on{opacity:1;transform:none;pointer-events:auto}
-@media (max-height:760px){ #s16i{padding-top:calc(env(safe-area-inset-top,0px) + 34px)} #s16i .ri-vis{height:222px} #s16i .ri-ring{transform:scale(.86)} #s16i .ri-learn{margin-bottom:12px} #s16i .ri-h1{margin-top:22px;font-size:32px} #s16i .ri-copy{font-size:13.5px;line-height:1.45} }
+@media (max-height:760px){ #s16i{padding-top:calc(env(safe-area-inset-top,0px) + 40px)} #s16i .ri-vis{height:222px} #s16i .ri-ring{transform:scale(.86)} #s16i .ri-learn{margin-bottom:12px} #s16i .ri-h1{margin-top:22px;font-size:32px} #s16i .ri-copy{font-size:13.5px;line-height:1.45} }
 @keyframes riDot{0%,80%,100%{opacity:.2;transform:translateY(0)}40%{opacity:1;transform:translateY(-2px)}}
 @keyframes riSpin{to{transform:rotate(360deg)}}
 @keyframes riCore{0%,100%{transform:scale(.92);opacity:.75}50%{transform:scale(1.06);opacity:1}}
@@ -3922,15 +3921,14 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
         <h1><span class="line"><span class="line-in l1">RYSEON access</span></span><span class="line"><span class="line-in l2">activated.</span></span></h1>
         <p class="support rise d2" id="act-copy">Included with your club’s RYSEON X plan.</p>
       </div>
-      <div class="actions rise d3"><button class="btn btn-primary" type="button" data-act="intel">Continue</button></div>
+      <div class="actions rise d3"><button class="btn btn-primary" type="button" data-act="enter">Start your journey</button></div>
     </section>
 
-    <!-- 16i — RYSEON Intelligence (Ivan, 26 Oct): the last screen before Home. The ring fills while the text types,
-         the headline deletes "Connecting" and types "Integrated.", then "Start your journey" appears. -->
+    <!-- 16i — RYSEON Intelligence (Ivan, 26 Oct): after the trial / club access, before Access activated. The ring fills while the text types;
+         at 87 % the headline "Learning your patterns" is deleted letter by letter and "Your data. Integrated." is typed; then Continue appears. -->
     <section class="screen is-hidden" id="s16i" data-scene="0" aria-label="RYSEON Intelligence" aria-hidden="true">
       <div class="ri-stage" id="ri-stage">
-        <div class="ri-learn" id="ri-learn"><span id="ri-learn-t"></span><span class="ri-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-        <div class="ri-vis" id="ri-vis" aria-hidden="true">
+                <div class="ri-vis" id="ri-vis" aria-hidden="true">
           <div class="ri-fx" id="ri-fx"></div>
           <svg class="ri-ring" viewBox="0 0 214 214">
             <defs>
@@ -3945,10 +3943,10 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
           </svg>
           <div class="ri-mid"><b><span id="ri-pct">0</span><small>%</small></b><span class="ri-st" id="ri-st"></span></div>
         </div>
-        <div class="ri-h1" role="heading" aria-level="1"><span class="ri-l1" id="ri-l1"></span><span class="ri-l2"><span id="ri-word"></span><span class="ri-hdots" id="ri-hdots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ri-caret" id="ri-hcaret" aria-hidden="true"></span></span></div>
+        <div class="ri-h1" role="heading" aria-level="1"><span id="ri-word"></span><span class="ri-hdots" id="ri-hdots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ri-caret" id="ri-hcaret" aria-hidden="true"></span></div>
         <div class="ri-copy nobrand"><p id="ri-p0"></p><p id="ri-p1"></p><p id="ri-p2" class="b"></p></div>
       </div>
-      <div class="actions ri-act" id="ri-act"><button class="btn btn-primary" type="button" data-act="ri-enter">Start your journey</button></div>
+      <div class="actions ri-act" id="ri-act"><button class="btn btn-primary" type="button" data-act="ri-enter">Continue</button></div>
     </section>
 
     <!-- 17 — RYSEON Home: the player's daily intelligence screen (one viewport, no scroll) -->
@@ -4998,15 +4996,14 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
       case 'club-no': P.club=null; go('s10'); break;
       case 'club-manual': P.club={name:clubDraft.name,location:clubDraft.country,country:clubDraft.country,source:'manual'}; go('s10'); break;
       case 'consent': go('s15'); break;
-      case 'trial': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading'); P.access={type:'trial',days:15,price:'£11.90/month'}; go('s16') },1400); break;
+      case 'trial': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading'); P.access={type:'trial',days:15,price:'£11.90/month'}; go('s16i') },1400); break;
       case 'restore': toast('No previous purchase found'); break;
       case 'daytona': $('d-copy').textContent=rT('Clubs, organisations and federations on RYSEON X can include RYSEON for their players. We’ll check whether your club gives you access.'); $('d-go').textContent=rT('Check access'); $('d-go').dataset.act='daytona-check'; openSheet('sh-daytona'); break;
       case 'daytona-check': t.classList.add('loading'); setTimeout(function(){ t.classList.remove('loading');
-          if(sim==='yes'){ P.access={type:'daytona'}; closeSheet(); go('s16') }
+          if(sim==='yes'){ P.access={type:'daytona'}; closeSheet(); go('s16i') }
           else { $('d-copy').textContent=rT('We couldn’t find a RYSEON X club plan that includes you. You can still start your free trial.'); t.textContent=rT('Back to free trial'); t.dataset.act='close-sheet' } },1300); break;
       case 'enter': go('s17'); break;
-      case 'intel': go('s16i'); break;
-      case 'ri-enter': if(window.ryseIntelEnter) window.ryseIntelEnter(); else go('s17'); break;
+      case 'ri-enter': if(window.ryseIntelEnter) window.ryseIntelEnter(); else go('s16'); break;
       case 'restart': try{location.reload()}catch(_){window.ryseGo('screen-intro')} break;
       case 'bio-on': bioDone(true); break;
       case 'bio-off': bioDone(false); break;
@@ -7936,9 +7933,9 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 <script>
 /* ================= 16i RYSEON Intelligence (Ivan, 26 Oct) =================
-   Last screen before Home. "RYSEON access activated" → Continue → here → Start your journey → Home.
-   The ring fills (it reaches 100 % at three quarters of the text) while the three paragraphs type letter by letter;
-   at 97 % the headline deletes "Connecting" and types "Integrated."; the button appears once the text is complete. */
+   Trial / club access → here → Continue → "RYSEON access activated" → Start your journey → Home (the hold shortcut skips this screen).
+   The ring fills (100 % at three quarters of the text) while the three paragraphs type letter by letter; at 87 % the
+   headline "Learning your patterns" is deleted letter by letter and "Your data. Integrated." is typed; Continue appears last. */
 (function(){
   var K={learn:'Learning your patterns',st:'Integrated',l1:'Your data.',a:'Connecting',b:'Integrated.',
     p0:'RYSEON Intelligence connects your performance, training, recovery, activity and health data into one intelligent system.',
@@ -7985,36 +7982,38 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
     fx.innerHTML=html;
     /* keep every label inside the screen on narrow phones */
     var vr=$('ri-vis').getBoundingClientRect(); [].forEach.call(fx.querySelectorAll('.ri-tag'),function(t){ var r=t.getBoundingClientRect(), d=0; if(r.right>vr.right-8) d=vr.right-8-r.right; else if(r.left<vr.left+8) d=vr.left+8-r.left; if(d) t.style.left=(parseFloat(t.style.left)+d).toFixed(1)+'px' }) }
-  function fit(){ var h=S.querySelector('.ri-h1'); h.style.fontSize=''; var fs=parseFloat(getComputedStyle(h).fontSize), n=0;
-    while(n++<20&&fs>22&&(h.querySelector('.ri-l1').scrollWidth>h.clientWidth||h.querySelector('.ri-l2').scrollWidth>h.clientWidth)){ fs-=1; h.style.fontSize=fs+'px' } }
+  /* one size for both headlines: each must stay within two lines and no word may run past the edge */
+  function fit(A,B){ var h=S.querySelector('.ri-h1'), w=$('ri-word'), keep=w.textContent; h.style.fontSize=''; var fs=parseFloat(getComputedStyle(h).fontSize), n=0;
+    function bad(){ return [A,B].some(function(t){ w.textContent=t; return h.offsetHeight>Math.ceil(fs*1.02*2)+3||h.scrollWidth>h.clientWidth+1 }) }
+    while(n++<24&&fs>22&&bad()){ fs-=1; h.style.fontSize=fs+'px' } w.textContent=keep }
   function run(){
-    stop(); S.classList.remove('ri-out'); $('ri-act').classList.remove('on'); $('ri-learn').classList.remove('off'); $('ri-st').classList.remove('on');
-    var P=[rT(K.p0),rT(K.p1),rT(K.p2)], A=rT(K.a), B=rT(K.b), PAUSE=18;
-    $('ri-learn-t').textContent=rT(K.learn); $('ri-st').textContent=rT(K.st); $('ri-l1').textContent=rT(K.l1);
+    stop(); S.classList.remove('ri-out'); $('ri-act').classList.remove('on'); $('ri-st').classList.remove('on');
+    var P=[rT(K.p0),rT(K.p1),rT(K.p2)], A=rT(K.learn), B=rT(K.l1)+'\n'+rT(K.b), PAUSE=18;
+    $('ri-st').textContent=rT(K.st);
     $('ri-word').textContent=A; $('ri-hdots').classList.remove('off'); $('ri-hcaret').classList.remove('on');
     ['ri-p0','ri-p1','ri-p2'].forEach(function(id){ $(id).innerHTML='' });
-    build(); fit();
+    build(); fit(A,B);
     var s1=P[0].length+PAUSE, s2=s1+P[1].length+PAUSE, total=s2+P[2].length, n=0, head=false, arc=$('ri-arc'), pct=$('ri-pct');
     function paint(){ var t0=P[0].slice(0,Math.min(P[0].length,n)), t1=P[1].slice(0,Math.max(0,Math.min(P[1].length,n-s1))), t2=P[2].slice(0,Math.max(0,n-s2)), cur=n<s1?0:(n<s2?1:2), car='<span class="tc"></span>';
       $('ri-p0').innerHTML=brand(t0)+(cur===0?car:''); $('ri-p1').innerHTML=esc(t1)+(cur===1?car:''); $('ri-p2').innerHTML=esc(t2)+(cur===2?car:'');
       var f=Math.min(1,n/(total*.75)); arc.setAttribute('stroke-dashoffset',(603.2*(1-f)).toFixed(1)); pct.textContent=Math.round(f*100);
-      if(f>=1){ $('ri-learn').classList.add('off'); $('ri-st').classList.add('on') }
-      if(!head&&f>=.97){ head=true; headline() } }
+      if(f>=1) $('ri-st').classList.add('on');
+      if(!head&&f>=.87){ head=true; headline() } }
     function headline(){ var k=A.length, ph=1; $('ri-hdots').classList.add('off'); $('ri-hcaret').classList.add('on');
       hv=setInterval(function(){ if(ph===1){ if(k>0){ k--; $('ri-word').textContent=A.slice(0,k) } else ph=2; return }
         if(k<B.length){ k++; $('ri-word').textContent=B.slice(0,k); return }
-        clearInterval(hv); fit(); timers.push(setTimeout(function(){ $('ri-hcaret').classList.remove('on') },1400)) },65) }
+        clearInterval(hv); timers.push(setTimeout(function(){ $('ri-hcaret').classList.remove('on') },1400)) },55) }
     paint();
     timers.push(setTimeout(function(){ iv=setInterval(function(){ if(n<total){ n++; paint() } else { clearInterval(iv); $('ri-act').classList.add('on') } },24) },500));
   }
   var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ if(prev) prev(to); if(to&&to.id==='s16i') run(); else stop() };
-  /* Start your journey: the screen dissolves (scale, blur, fade) and Home comes in */
-  window.ryseIntelEnter=function(){ S.classList.add('ri-out'); timers.push(setTimeout(function(){ window.ryseGo('s17') },650)) };
+  /* Continue: the screen dissolves (scale, blur, fade) into RYSEON access activated */
+  window.ryseIntelEnter=function(){ S.classList.add('ri-out'); timers.push(setTimeout(function(){ window.ryseGo('s16') },650)) };
 })();
 </script>
 
 <script>
-(function(){var B='1793003544',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1793004132',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;
