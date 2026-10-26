@@ -29,10 +29,10 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793006036'; window.__ryseB=B;
+(function(){ var B='1793022074'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
-    ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
+    ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); setTimeout(cb,20000); return } }catch(_){} } go() }) } })();
 </script>
 <title>RYSEON</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3479,6 +3479,12 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
        A tap on Continue in that time is remembered (the button pulses) and carried out the moment the app is ready. */
     (function(){ function q(e){ if(window.__ryseReady) return; var b=e.target&&e.target.closest&&e.target.closest('#lang-go'); if(!b) return; window.__ryseQ=1; b.classList.add('is-wait') }
       document.addEventListener('click',q,true); document.addEventListener('touchend',q,{capture:true,passive:true}) })();
+    /* Continue must always work (Ivan, 26 Oct): if a tap on Continue has not moved the app on 1.6 s later, finish it here;
+       if the app's code is not running at all, reload the app (it opens from the phone's copy). */
+    (function(){ var last=0; function w(e){ if(!window.__ryseReady) return; var b=e.target&&e.target.closest&&e.target.closest('#lang-go'); if(!b) return; var t=last=Date.now();
+        setTimeout(function(){ if(t!==last) return; var L=document.getElementById('sLang'); if(!L||L.classList.contains('is-hidden')||L.classList.contains('is-leaving')||b.classList.contains('holding')) return;
+          if(typeof window.ryseGo==='function'){ try{ window.ryseGo('screen-intro') }catch(_){ location.reload() } } else location.reload() },1600) }
+      document.addEventListener('click',w,true); document.addEventListener('touchend',w,{capture:true,passive:true}) })();
     </script>
 
     <!-- SCREEN 01 — Launch & Brand Intro -->
@@ -8043,12 +8049,30 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1793006036',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
-  /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
-  function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
+/* Auto-update + offline copy (Ivan, 26 Oct): the app keeps a copy of itself on the phone (sw.js), so it opens instantly
+   and works without internet. When it opens or comes back to the front and a newer build is live, the new build is
+   downloaded in the background first; only when it is fully on the phone, nobody is touching the screen and the
+   language screen is showing, the app switches to it (in about a second, under the loading cover). The screen is never
+   left frozen on an old page while a download runs, which made Continue look dead. */
+(function(){var B='1793022074',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
+  addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+  try{ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')) addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').then(function(){ return navigator.serviceWorker.ready }).then(function(){ return cachedB() }).then(function(cb){ if(!cb) setTimeout(function(){ prefetch(B) },3000) }).catch(function(){}) }) }catch(_){}
+  function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')&&!window.__ryseQ&&!document.hidden }
+  function cachedB(){ if(!window.caches) return Promise.resolve(null); return caches.open(CN).then(function(c){ return c.match(BASE+'__b') }).then(function(r){ return r?r.text():null }).catch(function(){ return null }) }
+  function prefetch(nb){ if(!window.caches) return Promise.resolve(false);
+    return fetch(BASE+'index.html?fresh='+nb,{cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.text() }).then(function(t){
+      var m=/var B='(\d+)'; window\.__ryseB=B/.exec(t.slice(0,60000)); if(!m||t.indexOf('</html>')<0) return false;
+      return caches.open(CN).then(function(c){ return Promise.all([c.put(BASE+'__app',new Response(t,{headers:{'Content-Type':'text/html; charset=utf-8'}})),c.put(BASE+'__b',new Response(m[1]))]) }).then(function(){ return m[1]===nb }) }).catch(function(){ return false }) }
+  function cover(){ try{ var d=document.createElement('div'); d.id='ryse-upd-cover'; d.style.cssText='position:fixed;inset:0;z-index:2147483000;background:radial-gradient(90% 60% at 50% 42%,#0B1222 0%,#04060B 62%,#020305 100%);display:grid;place-items:center;font:600 15px/1 Archivo,Helvetica Neue,Arial,sans-serif;letter-spacing:.42em;color:#F5F7FB;opacity:0;transition:opacity .25s';
+    d.innerHTML='<span>RYSE<span style="color:rgba(184,192,207,.62)">ON</span></span>'; document.body.appendChild(d); requestAnimationFrame(function(){ d.style.opacity='1' });
+    setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d) },15000) }catch(_){} }
+  function apply(nb){ if(!safe()) return; var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===nb) return; sessionStorage.setItem(k,nb) }catch(_){} cover(); setTimeout(function(){ location.replace(location.pathname+'?v='+nb) },260) }
   function check(){if(busy||!window.fetch) return;busy=1;
-  fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){busy=0;if(v&&v.b&&v.b!==B&&safe()){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)===v.b) return; sessionStorage.setItem(k,v.b) }catch(_){} location.replace(location.pathname+'?v='+v.b) }}).catch(function(){busy=0})}
-  document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
+  fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){ var nb=v&&v.b; if(!nb||nb===B){ busy=0; return }
+    return cachedB().then(function(cb){ return cb===nb?true:prefetch(nb) }).then(function(ok){ busy=0; if(ok) apply(nb) }) }).catch(function(){busy=0})}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden) check()});
+  addEventListener('pageshow',function(e){ if(e.persisted) check() });
+  setTimeout(check,8000) })();
 </script>
 </body>
 </html>

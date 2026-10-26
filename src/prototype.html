@@ -3441,6 +3441,12 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
        A tap on Continue in that time is remembered (the button pulses) and carried out the moment the app is ready. */
     (function(){ function q(e){ if(window.__ryseReady) return; var b=e.target&&e.target.closest&&e.target.closest('#lang-go'); if(!b) return; window.__ryseQ=1; b.classList.add('is-wait') }
       document.addEventListener('click',q,true); document.addEventListener('touchend',q,{capture:true,passive:true}) })();
+    /* Continue must always work (Ivan, 26 Oct): if a tap on Continue has not moved the app on 1.6 s later, finish it here;
+       if the app's code is not running at all, reload the app (it opens from the phone's copy). */
+    (function(){ var last=0; function w(e){ if(!window.__ryseReady) return; var b=e.target&&e.target.closest&&e.target.closest('#lang-go'); if(!b) return; var t=last=Date.now();
+        setTimeout(function(){ if(t!==last) return; var L=document.getElementById('sLang'); if(!L||L.classList.contains('is-hidden')||L.classList.contains('is-leaving')||b.classList.contains('holding')) return;
+          if(typeof window.ryseGo==='function'){ try{ window.ryseGo('screen-intro') }catch(_){ location.reload() } } else location.reload() },1600) }
+      document.addEventListener('click',w,true); document.addEventListener('touchend',w,{capture:true,passive:true}) })();
     </script>
 
     <!-- SCREEN 01 — Launch & Brand Intro -->

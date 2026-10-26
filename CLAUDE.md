@@ -11,6 +11,12 @@ https://sportynx.github.io/sportynx-ryse-prototype-/
 
 Never ask the user to do manual deploy steps.
 
+## Offline copy + auto-update (26 Oct)
+`build.py` also writes `sw.js`: the phone keeps a copy of the app, so it opens instantly and works without internet.
+A newer build is downloaded in the background first and switched to only when fully on the phone (under a cover), so
+the screen is never frozen on an old page while a download runs (that made Continue look dead on relaunch/resume).
+The language screen Continue also has a watchdog: if a tap has not moved on after 1.6 s, it finishes the step.
+
 ## Viewing on iPhone
 Open the link in Safari → Share → Add to Home Screen → launch "RYSE" (fullscreen, edge to edge).
 
