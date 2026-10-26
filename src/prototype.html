@@ -2087,6 +2087,20 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 @keyframes riTag{0%,100%{opacity:.45;border-color:rgba(255,255,255,.08)}45%,60%{opacity:1;border-color:rgba(143,176,255,.55)}}
 @keyframes riIn{0%{transform:translateX(150px);opacity:0}18%{opacity:1}80%{opacity:.95}100%{transform:translateX(26px);opacity:0}}
 @keyframes riBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+/* Access activated ring (Ivan, 26 Oct) */
+#s16 svg.ak{width:min(280px,72vw);height:auto;overflow:visible}
+#s16 .ak-core{transform-origin:150px 150px;animation:akIn .9s cubic-bezier(.2,.7,.2,1) both,akCore 3.4s ease-in-out .9s infinite}
+#s16 .ak-spin{transform-origin:150px 150px;animation:akSpin 22s linear infinite}
+#s16 .ak-spin.r{animation:akSpin 34s linear infinite reverse}
+#s16 .ak-ring{stroke-dashoffset:804.3;animation:akDrawR 1.2s cubic-bezier(.65,0,.35,1) .2s forwards}
+#s16 .ak-burst{transform-origin:150px 150px;opacity:0;animation:akBurst 1s cubic-bezier(.2,.7,.2,1) 1.4s}
+#s16 .ak-check{stroke-dashoffset:117;filter:drop-shadow(0 0 10px rgba(143,176,255,.8));animation:akDrawC .55s cubic-bezier(.65,0,.35,1) 1.35s forwards}
+@keyframes akDrawR{from{stroke-dashoffset:804.3}to{stroke-dashoffset:0}}
+@keyframes akDrawC{from{stroke-dashoffset:117}to{stroke-dashoffset:0}}
+@keyframes akSpin{to{transform:rotate(360deg)}}
+@keyframes akCore{0%,100%{transform:scale(.94);opacity:.8}50%{transform:scale(1.05);opacity:1}}
+@keyframes akIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes akBurst{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.45);opacity:0}}
 /* s16 Access activated: let the check-mark area shrink so "Start your journey" stays above the home indicator */
 #s16 .visual{flex:1 1 0!important;min-height:0;padding-top:24px!important;padding-bottom:8px}
 
@@ -3878,7 +3892,21 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
 
     <!-- 16 — Access activated (RYSEON X entitlement) -->
     <section class="screen is-hidden" id="s16" data-scene="0" aria-label="Access activated" aria-hidden="true">
-      <div class="visual"><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="44" pathLength="1" class="draw anim" style="--d:.2s"/><path d="m43 61 11 11 23-25" pathLength="1" class="draw anim" style="--d:1s"/></svg></div>
+      <div class="visual"><svg class="ak" viewBox="0 0 300 300" aria-hidden="true">
+          <!-- Access activated ring (Ivan, 26 Oct · design "Ring"): the same ring language as RYSEON Intelligence -->
+          <defs>
+            <linearGradient id="akG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6BFF"/><stop offset="1" stop-color="#9DB8FF"/></linearGradient>
+            <linearGradient id="akW" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9D6FF"/></linearGradient>
+            <radialGradient id="akC"><stop offset="0" stop-color="#7FA6FF" stop-opacity=".95"/><stop offset=".6" stop-color="#2F6BFF" stop-opacity=".3"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient>
+          </defs>
+          <circle class="ak-core" cx="150" cy="150" r="88" fill="url(#akC)"/>
+          <circle cx="150" cy="150" r="128" fill="none" stroke="rgba(143,176,255,.16)" stroke-width="2"/>
+          <g class="ak-spin"><circle cx="150" cy="150" r="108" fill="none" stroke="rgba(143,176,255,.7)" stroke-width="1" stroke-dasharray="2 8"/></g>
+          <g class="ak-spin r"><circle cx="150" cy="150" r="94" fill="none" stroke="rgba(111,152,255,.5)" stroke-width="1" stroke-dasharray="44 20 6 20"/></g>
+          <circle class="ak-ring" cx="150" cy="150" r="128" fill="none" stroke="url(#akG)" stroke-width="3.5" stroke-linecap="round" transform="rotate(-90 150 150)" stroke-dasharray="804.3"/>
+          <circle class="ak-burst" cx="150" cy="150" r="128" fill="none" stroke="rgba(157,184,255,.8)" stroke-width="2"/>
+          <path class="ak-check" d="M112 153 L138 179 L190 124" fill="none" stroke="url(#akW)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="117"/>
+        </svg></div>
       <div class="intro-copy">
         <h1><span class="line"><span class="line-in l1">RYSEON access</span></span><span class="line"><span class="line-in l2">activated.</span></span></h1>
         <p class="support rise d2" id="act-copy">Included with your club’s RYSEON X plan.</p>
@@ -4628,7 +4656,7 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     if(window.ryseView) window.ryseView(toId); else document.documentElement.removeAttribute('data-app');
     try{ var PP=window.ryseProfile; if(PP&&PP.first) localStorage.setItem('ryse-last-profile',JSON.stringify(PP)) }catch(e){}
     if(window.ryseFitH1) window.ryseFitH1();
-    if(window.ryseOrbAnchor){ if(to.id==='s16') window.ryseOrbAnchor(to.querySelector('.mark'),2600,Infinity);   // lands on the circle's centre as the circle closes
+    if(window.ryseOrbAnchor){ if(to.id==='s16') window.ryseOrbAnchor(to.querySelector('svg.ak'),2600,Infinity);   // lands on the circle's centre as the circle closes
       else if(to.id==='s06') window.ryseOrbAnchor(to.querySelector('#avatar'),1600,2600);                          // starts in the photo circle, then drifts away
       else window.ryseOrbAnchor(null) }
     }catch(err){ try{ console.error('screen change',err) }catch(_){} }
@@ -7968,7 +7996,9 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
     paint();
     timers.push(setTimeout(function(){ iv=setInterval(function(){ if(n<total){ n++; paint() } else { clearInterval(iv); $('ri-act').classList.add('on') } },24) },500));
   }
-  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ if(prev) prev(to); if(to&&to.id==='s16i') run(); else stop() };
+  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ if(prev) prev(to); if(to&&to.id==='s16i') run(); else stop();
+    /* Access activated: restart the ring and check every time the screen opens */
+    if(to&&to.id==='s16'){ var m=to.querySelector('svg.ak'); if(m){ var c=m.cloneNode(true); m.parentNode.replaceChild(c,m); if(window.ryseOrbAnchor) try{ window.ryseOrbAnchor(c,2600,Infinity) }catch(_){} } } };
   /* Continue: the screen dissolves (scale, blur, fade) into RYSEON access activated */
   window.ryseIntelEnter=function(){ S.classList.add('ri-out'); timers.push(setTimeout(function(){ window.ryseGo('s16') },650)) };
 })();
