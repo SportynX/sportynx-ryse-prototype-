@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793004897'; window.__ryseB=B;
+(function(){ var B='1793005478'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); return } }catch(_){} } go() }) } })();
@@ -920,7 +920,7 @@ h1 .ry-on{opacity:1;color:#8C94A7;-webkit-text-fill-color:#8C94A7}
 #lang-go.is-wait{animation:langWait 1.1s ease-in-out infinite}
 @keyframes langWait{0%,100%{opacity:1}50%{opacity:.55}}
 #lang-go::before{content:"";position:absolute;inset:0;background:rgba(157,184,255,.16);transform:scaleX(0);transform-origin:left;pointer-events:none}
-#lang-go.holding::before{transform:scaleX(1);transition:transform 2s linear}
+#lang-go.holding::before{transform:scaleX(1);transition:transform 3s linear}
 
 /* ================= Global + · Quick actions overlay (tile grid) ================= */
 .home .home-dim{background:rgba(6,7,9,.55);-webkit-backdrop-filter:blur(1.5px) saturate(90%);backdrop-filter:blur(1.5px) saturate(90%);transition:opacity .22s ease}
@@ -7929,7 +7929,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
         positions:{primary:'CB',secondary:['LB']},foot:'Left',height:185,weight:80,strengths:['Vision','Technique'],improve:['Speed'],roleModels:{CB:['Virgil van Dijk','Rúben Dias','William Saliba']}};
       Object.keys(saved).forEach(function(k){ if(k!=='locale') P[k]=saved[k] });
       if(!P.access) P.access={type:'trial',days:15};
-      window.ryseGo('s16i') },2000) });   /* hold shortcut → RYSEON Intelligence (Ivan, 26 Oct), then Access activated */
+      window.ryseGo('s16') },3000) });   /* hold shortcut (3 s) → straight to Access activated (Ivan, 26 Oct) */
   ['pointerup','pointerleave','pointercancel'].forEach(function(n){ lg.addEventListener(n,endHold) });
 
   /* ---------- Start: the iPhone's own language, else English ---------- */
@@ -8043,7 +8043,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 
 <script>
-(function(){var B='1793004897',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
+(function(){var B='1793005478',busy=0,touch=0;addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   /* never reload under the finger (Ivan, 24 Oct): only while nobody has touched the screen for 4 s, and only on the language screen — otherwise the update waits for the next launch */
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!window.__ryseQ }
   function check(){if(busy||!window.fetch) return;busy=1;

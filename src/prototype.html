@@ -884,7 +884,7 @@ h1 .ry-on{opacity:1;color:#8C94A7;-webkit-text-fill-color:#8C94A7}
 #lang-go.is-wait{animation:langWait 1.1s ease-in-out infinite}
 @keyframes langWait{0%,100%{opacity:1}50%{opacity:.55}}
 #lang-go::before{content:"";position:absolute;inset:0;background:rgba(157,184,255,.16);transform:scaleX(0);transform-origin:left;pointer-events:none}
-#lang-go.holding::before{transform:scaleX(1);transition:transform 2s linear}
+#lang-go.holding::before{transform:scaleX(1);transition:transform 3s linear}
 
 /* ================= Global + · Quick actions overlay (tile grid) ================= */
 .home .home-dim{background:rgba(6,7,9,.55);-webkit-backdrop-filter:blur(1.5px) saturate(90%);backdrop-filter:blur(1.5px) saturate(90%);transition:opacity .22s ease}
@@ -7891,7 +7891,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
         positions:{primary:'CB',secondary:['LB']},foot:'Left',height:185,weight:80,strengths:['Vision','Technique'],improve:['Speed'],roleModels:{CB:['Virgil van Dijk','Rúben Dias','William Saliba']}};
       Object.keys(saved).forEach(function(k){ if(k!=='locale') P[k]=saved[k] });
       if(!P.access) P.access={type:'trial',days:15};
-      window.ryseGo('s16i') },2000) });   /* hold shortcut → RYSEON Intelligence (Ivan, 26 Oct), then Access activated */
+      window.ryseGo('s16') },3000) });   /* hold shortcut (3 s) → straight to Access activated (Ivan, 26 Oct) */
   ['pointerup','pointerleave','pointercancel'].forEach(function(n){ lg.addEventListener(n,endHold) });
 
   /* ---------- Start: the iPhone's own language, else English ---------- */
