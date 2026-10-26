@@ -7846,7 +7846,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   $('lang-go').addEventListener('click',function(ev){ if(holdFired){ holdFired=false; ev.stopImmediatePropagation(); return } window.ryseGo('screen-intro') });
   /* iOS fallback: if the tap's click never arrives, the touch itself continues (only while the language screen is still showing) */
   $('lang-go').addEventListener('touchend',function(){ setTimeout(function(){ var L=$('sLang'); if(!holdFired&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')) window.ryseGo('screen-intro') },380) },{passive:true});
-  /* Prototype shortcut: hold Continue for 2 s → straight to the last onboarding screen ("Start your journey") with the last profile you created */
+  /* Prototype shortcut: hold Continue for 2 s → straight to RYSEON Intelligence (then Access activated · Start your journey) with the last profile you created */
   var holdT=0, holdFired=false, lg=$('lang-go');
   function endHold(){ clearTimeout(holdT); lg.classList.remove('holding') }
   lg.addEventListener('pointerdown',function(){ holdFired=false; lg.classList.add('holding');
@@ -7863,7 +7863,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
         positions:{primary:'CB',secondary:['LB']},foot:'Left',height:185,weight:80,strengths:['Vision','Technique'],improve:['Speed'],roleModels:{CB:['Virgil van Dijk','Rúben Dias','William Saliba']}};
       Object.keys(saved).forEach(function(k){ if(k!=='locale') P[k]=saved[k] });
       if(!P.access) P.access={type:'trial',days:15};
-      window.ryseGo('s16') },2000) });
+      window.ryseGo('s16i') },2000) });   /* hold shortcut → RYSEON Intelligence (Ivan, 26 Oct), then Access activated */
   ['pointerup','pointerleave','pointercancel'].forEach(function(n){ lg.addEventListener(n,endHold) });
 
   /* ---------- Start: the iPhone's own language, else English ---------- */
@@ -7895,7 +7895,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
 </script>
 <script>
 /* ================= 16i RYSEON Intelligence (Ivan, 26 Oct) =================
-   Trial / club access → here → Continue → "RYSEON access activated" → Start your journey → Home (the hold shortcut skips this screen).
+   Trial / club access (or the hold shortcut) → here → Continue → "RYSEON access activated" → Start your journey → Home.
    The ring fills (100 % at three quarters of the text) while the three paragraphs type letter by letter; at 87 % the
    headline "Learning your patterns" is deleted letter by letter and "Your data. Integrated." is typed; Continue appears last. */
 (function(){
