@@ -2040,6 +2040,54 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .vp2 .vp-segs i b{display:block;height:100%;width:0;background:#fff;border-radius:2px}
 .vp2 .vp-segs i.done b{width:100%}
 
+/* ================= 16i RYSEON Intelligence (Ivan, 26 Oct) ================= */
+#s16i{padding-top:calc(env(safe-area-inset-top,0px) + 58px)}
+#s16i .ri-stage{flex:1;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;transform-origin:50% 30%;transition:opacity 1s cubic-bezier(.4,0,.2,1),transform 1.1s cubic-bezier(.4,0,.2,1),filter 1s ease}
+#s16i.ri-out .ri-stage,#s16i.ri-out .ri-act{opacity:0;transform:scale(1.08);filter:blur(8px)}
+#s16i .ri-learn{display:flex;align-items:center;justify-content:center;height:16px;margin-bottom:22px;font:600 10px/1 var(--font-body);letter-spacing:.22em;text-transform:uppercase;color:#C9D6FF;transition:opacity .6s ease}
+#s16i .ri-learn.off{opacity:0}
+#s16i .ri-dots{display:inline-flex;gap:3px;margin-left:5px}
+#s16i .ri-dots i,#s16i .ri-hdots i{border-radius:50%;background:#9DB8FF;animation:riDot 1.2s ease-in-out infinite}
+#s16i .ri-dots i{width:3px;height:3px}
+#s16i .ri-dots i:nth-child(2),#s16i .ri-hdots i:nth-child(2){animation-delay:.2s}
+#s16i .ri-dots i:nth-child(3),#s16i .ri-hdots i:nth-child(3){animation-delay:.4s}
+#s16i .ri-vis{position:relative;flex:none;height:262px;margin:0 calc(var(--gutter) * -1)}
+#s16i .ri-ring{position:absolute;left:50%;top:50%;width:184px;height:184px;margin:-92px 0 0 -92px;overflow:visible}
+#s16i #ri-arc{transition:stroke-dashoffset .2s linear}
+#s16i .ri-spin{transform-origin:107px 107px;animation:riSpin 22s linear infinite}
+#s16i .ri-spin.r{animation:riSpin 34s linear infinite reverse}
+#s16i .ri-core{transform-origin:107px 107px;animation:riCore 3.2s ease-in-out infinite}
+#s16i .ri-mid{position:absolute;left:0;right:0;top:50%;margin-top:-24px;display:flex;flex-direction:column;align-items:center;gap:5px;pointer-events:none}
+#s16i .ri-mid b{font:600 31px/1 var(--font-display);letter-spacing:-.01em;color:#F5F7FB}
+#s16i .ri-mid small{font-size:15px;color:#9DB8FF}
+#s16i .ri-st{font:600 9px/1 var(--font-body);letter-spacing:.22em;text-transform:uppercase;color:#C9D6FF;opacity:0;transition:opacity .6s ease}
+#s16i .ri-st.on{opacity:1}
+#s16i .ri-tag{position:absolute;transform:translate(-50%,-50%);padding:5px 9px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(10,12,18,.55);font:600 9px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:#C9D0DC;white-space:nowrap;animation:riTag 4.2s ease-in-out infinite}
+#s16i .ri-ray{position:absolute;width:0;height:0}
+#s16i .ri-ray i{position:absolute;left:0;top:-2px;width:3px;height:3px;border-radius:50%;background:#9DB8FF;box-shadow:0 0 8px rgba(111,152,255,.9);animation:riIn 2.4s cubic-bezier(.55,0,.75,.4) infinite}
+#s16i .ri-ray.big i{width:5px;height:5px;top:-2.5px}
+#s16i .ri-h1{margin-top:34px;font:700 38px/1.02 var(--font-display);letter-spacing:-.01em;text-transform:uppercase;color:#F5F7FB}
+#s16i .ri-l1,#s16i .ri-l2{display:block;white-space:nowrap}
+#s16i .ri-hdots{display:inline-flex;gap:5px;margin-left:7px;vertical-align:4px}
+#s16i .ri-hdots i{width:6px;height:6px}
+#s16i .ri-hdots.off{display:none}
+#s16i .ri-caret{display:none;width:3px;height:.82em;margin-left:3px;vertical-align:-2px;background:#8FB0FF;animation:riBlink .9s steps(1) infinite}
+#s16i .ri-caret.on{display:inline-block}
+#s16i .ri-copy{margin-top:14px;font:500 14.5px/1.5 var(--font-body);color:#C9D0DC}
+#s16i .ri-copy p{margin:0 0 9px;min-height:0}
+#s16i .ri-copy p.b{color:#F5F7FB;font-weight:600;margin:0}
+#s16i .ri-copy .ry{font-weight:700;color:#F5F7FB}
+#s16i .ri-copy .ry-on{color:#8A93A5}
+#s16i .ri-copy .tc{display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-2px;background:#8FB0FF;animation:riBlink 1s steps(1) infinite}
+#s16i .ri-act{margin-top:16px;padding-top:0;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .7s ease,transform .7s ease,filter 1s ease}
+#s16i .ri-act.on{opacity:1;transform:none;pointer-events:auto}
+@media (max-height:760px){ #s16i{padding-top:calc(env(safe-area-inset-top,0px) + 34px)} #s16i .ri-vis{height:222px} #s16i .ri-ring{transform:scale(.86)} #s16i .ri-learn{margin-bottom:12px} #s16i .ri-h1{margin-top:22px;font-size:32px} #s16i .ri-copy{font-size:13.5px;line-height:1.45} }
+@keyframes riDot{0%,80%,100%{opacity:.2;transform:translateY(0)}40%{opacity:1;transform:translateY(-2px)}}
+@keyframes riSpin{to{transform:rotate(360deg)}}
+@keyframes riCore{0%,100%{transform:scale(.92);opacity:.75}50%{transform:scale(1.06);opacity:1}}
+@keyframes riTag{0%,100%{opacity:.45;border-color:rgba(255,255,255,.08)}45%,60%{opacity:1;border-color:rgba(143,176,255,.55)}}
+@keyframes riIn{0%{transform:translateX(150px);opacity:0}18%{opacity:1}80%{opacity:.95}100%{transform:translateX(26px);opacity:0}}
+@keyframes riBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
 /* s16 Access activated: let the check-mark area shrink so "Start your journey" stays above the home indicator */
 #s16 .visual{flex:1 1 0!important;min-height:0;padding-top:24px!important;padding-bottom:8px}
 
@@ -3836,7 +3884,33 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
         <h1><span class="line"><span class="line-in l1">RYSEON access</span></span><span class="line"><span class="line-in l2">activated.</span></span></h1>
         <p class="support rise d2" id="act-copy">Included with your club’s RYSEON X plan.</p>
       </div>
-      <div class="actions rise d3"><button class="btn btn-primary" type="button" data-act="enter">Start your journey</button></div>
+      <div class="actions rise d3"><button class="btn btn-primary" type="button" data-act="intel">Continue</button></div>
+    </section>
+
+    <!-- 16i — RYSEON Intelligence (Ivan, 26 Oct): the last screen before Home. The ring fills while the text types,
+         the headline deletes "Connecting" and types "Integrated.", then "Start your journey" appears. -->
+    <section class="screen is-hidden" id="s16i" data-scene="0" aria-label="RYSEON Intelligence" aria-hidden="true">
+      <div class="ri-stage" id="ri-stage">
+        <div class="ri-learn" id="ri-learn"><span id="ri-learn-t"></span><span class="ri-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="ri-vis" id="ri-vis" aria-hidden="true">
+          <div class="ri-fx" id="ri-fx"></div>
+          <svg class="ri-ring" viewBox="0 0 214 214">
+            <defs>
+              <linearGradient id="riG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F6BFF"/><stop offset="1" stop-color="#9DB8FF"/></linearGradient>
+              <radialGradient id="riC"><stop offset="0" stop-color="#8FB0FF" stop-opacity="1"/><stop offset=".55" stop-color="#3D78FF" stop-opacity=".5"/><stop offset="1" stop-color="#2F6BFF" stop-opacity="0"/></radialGradient>
+            </defs>
+            <circle cx="107" cy="107" r="96" fill="none" stroke="rgba(143,176,255,.16)" stroke-width="2"/>
+            <circle id="ri-arc" cx="107" cy="107" r="96" fill="none" stroke="url(#riG)" stroke-width="3" stroke-linecap="round" transform="rotate(-90 107 107)" stroke-dasharray="603.2" stroke-dashoffset="603.2"/>
+            <g class="ri-spin"><circle cx="107" cy="107" r="80" fill="none" stroke="rgba(143,176,255,.75)" stroke-width="1" stroke-dasharray="2 7"/></g>
+            <g class="ri-spin r"><circle cx="107" cy="107" r="66" fill="none" stroke="rgba(111,152,255,.55)" stroke-width="1" stroke-dasharray="40 18 6 18"/></g>
+            <circle class="ri-core" cx="107" cy="107" r="58" fill="url(#riC)"/>
+          </svg>
+          <div class="ri-mid"><b><span id="ri-pct">0</span><small>%</small></b><span class="ri-st" id="ri-st"></span></div>
+        </div>
+        <div class="ri-h1" role="heading" aria-level="1"><span class="ri-l1" id="ri-l1"></span><span class="ri-l2"><span id="ri-word"></span><span class="ri-hdots" id="ri-hdots" aria-hidden="true"><i></i><i></i><i></i></span><span class="ri-caret" id="ri-hcaret" aria-hidden="true"></span></span></div>
+        <div class="ri-copy nobrand"><p id="ri-p0"></p><p id="ri-p1"></p><p id="ri-p2" class="b"></p></div>
+      </div>
+      <div class="actions ri-act" id="ri-act"><button class="btn btn-primary" type="button" data-act="ri-enter">Start your journey</button></div>
     </section>
 
     <!-- 17 — RYSEON Home: the player's daily intelligence screen (one viewport, no scroll) -->
@@ -4893,6 +4967,8 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
           if(sim==='yes'){ P.access={type:'daytona'}; closeSheet(); go('s16') }
           else { $('d-copy').textContent=rT('We couldn’t find a RYSEON X club plan that includes you. You can still start your free trial.'); t.textContent=rT('Back to free trial'); t.dataset.act='close-sheet' } },1300); break;
       case 'enter': go('s17'); break;
+      case 'intel': go('s16i'); break;
+      case 'ri-enter': if(window.ryseIntelEnter) window.ryseIntelEnter(); else go('s17'); break;
       case 'restart': try{location.reload()}catch(_){window.ryseGo('screen-intro')} break;
       case 'bio-on': bioDone(true); break;
       case 'bio-off': bioDone(false); break;
@@ -7819,4 +7895,82 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
   function reveal(){ if(L&&!L.classList.contains('is-hidden')) L.querySelectorAll('.line-in,.rise').forEach(function(el){ el.style.animation='none'; void el.getBoundingClientRect(); el.style.animation='' });
     if(window.__ryseQ&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')){ window.__ryseQ=0; setTimeout(function(){ window.ryseGo('screen-intro') },60) } }
   (window.__ryseGate||function(f){ f() })(function(){ if(window.__rlDone) window.__rlDone(reveal); else reveal() }) })();
+</script>
+<script>
+/* ================= 16i RYSEON Intelligence (Ivan, 26 Oct) =================
+   Last screen before Home. "RYSEON access activated" → Continue → here → Start your journey → Home.
+   The ring fills (it reaches 100 % at three quarters of the text) while the three paragraphs type letter by letter;
+   at 97 % the headline deletes "Connecting" and types "Integrated."; the button appears once the text is complete. */
+(function(){
+  var K={learn:'Learning your patterns',st:'Integrated',l1:'Your data.',a:'Connecting',b:'Integrated.',
+    p0:'RYSEON Intelligence connects your performance, training, recovery, activity and health data into one intelligent system.',
+    p1:'It learns your patterns and turns your data into personalized insights, recommendations and actions.',
+    p2:'The more it understands you, the more personalized your program becomes.'};
+  var TAGS=['Training','Sleep','Recovery','Activity','Health','Matches','Wellbeing'];
+  var TR={
+    hr:['Učim tvoje obrasce','Integrirano','Tvoji podaci.','Povezivanje','Integrirani.','RYSEON Intelligence povezuje tvoje podatke o izvedbi, treningu, oporavku, aktivnosti i zdravlju u jedan inteligentan sustav.','Uči tvoje obrasce i pretvara tvoje podatke u personalizirane uvide, preporuke i akcije.','Što te bolje razumije, to tvoj program postaje personaliziraniji.',['Trening','San','Oporavak','Aktivnost','Zdravlje','Utakmice','Dobrobit']],
+    sl:['Spoznavam tvoje vzorce','Integrirano','Tvoji podatki.','Povezovanje','Integrirani.','RYSEON Intelligence poveže tvoje podatke o zmogljivosti, treningu, regeneraciji, aktivnosti in zdravju v en inteligenten sistem.','Spozna tvoje vzorce ter tvoje podatke spremeni v prilagojene vpoglede, priporočila in dejanja.','Bolj ko te razume, bolj prilagojen postane tvoj program.',['Trening','Spanje','Regeneracija','Aktivnost','Zdravje','Tekme','Počutje']],
+    'sr-Latn':['Učim tvoje obrasce','Integrisano','Tvoji podaci.','Povezivanje','Integrisani.','RYSEON Intelligence povezuje tvoje podatke o učinku, treningu, oporavku, aktivnosti i zdravlju u jedan inteligentan sistem.','Uči tvoje obrasce i pretvara tvoje podatke u personalizovane uvide, preporuke i akcije.','Što te bolje razume, to tvoj program postaje personalizovaniji.',['Trening','San','Oporavak','Aktivnost','Zdravlje','Utakmice','Blagostanje']],
+    de:['Lernt deine Muster','Integriert','Deine Daten.','Verbinden','Integriert.','RYSEON Intelligence verbindet deine Leistungs-, Trainings-, Regenerations-, Aktivitäts- und Gesundheitsdaten zu einem intelligenten System.','Es lernt deine Muster und macht aus deinen Daten persönliche Einblicke, Empfehlungen und Aktionen.','Je besser es dich versteht, desto persönlicher wird dein Programm.',['Training','Schlaf','Regeneration','Aktivität','Gesundheit','Spiele','Wohlbefinden']],
+    it:['Apprendimento dei tuoi schemi','Integrati','I tuoi dati.','Connessione','Integrati.','RYSEON Intelligence collega i tuoi dati di prestazione, allenamento, recupero, attività e salute in un unico sistema intelligente.','Impara i tuoi schemi e trasforma i tuoi dati in analisi, consigli e azioni personalizzati.','Più ti conosce, più il tuo programma diventa personalizzato.',['Allenamento','Sonno','Recupero','Attività','Salute','Partite','Benessere']],
+    'es-ES':['Aprendiendo tus patrones','Integrados','Tus datos.','Conectando','Integrados.','RYSEON Intelligence conecta tus datos de rendimiento, entrenamiento, recuperación, actividad y salud en un único sistema inteligente.','Aprende tus patrones y convierte tus datos en análisis, recomendaciones y acciones personalizadas.','Cuanto más te entiende, más personalizado se vuelve tu programa.',['Entrenamiento','Sueño','Recuperación','Actividad','Salud','Partidos','Bienestar']],
+    'pt-BR':['Aprendendo seus padrões','Integrados','Seus dados.','Conectando','Integrados.','A RYSEON Intelligence conecta seus dados de desempenho, treino, recuperação, atividade e saúde em um único sistema inteligente.','Ela aprende seus padrões e transforma seus dados em insights, recomendações e ações personalizados.','Quanto mais ela entende você, mais personalizado fica o seu programa.',['Treino','Sono','Recuperação','Atividade','Saúde','Jogos','Bem-estar']],
+    'pt-PT':['A aprender os teus padrões','Integrados','Os teus dados.','A ligar','Integrados.','A RYSEON Intelligence liga os teus dados de desempenho, treino, recuperação, atividade e saúde num único sistema inteligente.','Aprende os teus padrões e transforma os teus dados em análises, recomendações e ações personalizadas.','Quanto mais te compreende, mais personalizado se torna o teu programa.',['Treino','Sono','Recuperação','Atividade','Saúde','Jogos','Bem-estar']],
+    fr:['Apprentissage de tes habitudes','Intégrées','Tes données.','Connexion','Intégrées.','RYSEON Intelligence relie tes données de performance, d’entraînement, de récupération, d’activité et de santé en un seul système intelligent.','Il apprend tes habitudes et transforme tes données en analyses, recommandations et actions personnalisées.','Plus il te comprend, plus ton programme devient personnalisé.',['Entraînement','Sommeil','Récupération','Activité','Santé','Matchs','Bien-être']],
+    nl:['Leert je patronen','Geïntegreerd','Jouw data.','Verbinden','Geïntegreerd.','RYSEON Intelligence verbindt je prestatie-, trainings-, herstel-, activiteits- en gezondheidsdata tot één intelligent systeem.','Het leert je patronen en zet je data om in persoonlijke inzichten, aanbevelingen en acties.','Hoe beter het je begrijpt, hoe persoonlijker je programma wordt.',['Training','Slaap','Herstel','Activiteit','Gezondheid','Wedstrijden','Welzijn']],
+    pl:['Poznaję twoje wzorce','Zintegrowane','Twoje dane.','Łączenie','Zintegrowane.','RYSEON Intelligence łączy twoje dane o wydolności, treningu, regeneracji, aktywności i zdrowiu w jeden inteligentny system.','Poznaje twoje wzorce i zamienia twoje dane w spersonalizowane wnioski, rekomendacje i działania.','Im lepiej cię rozumie, tym bardziej spersonalizowany staje się twój program.',['Trening','Sen','Regeneracja','Aktywność','Zdrowie','Mecze','Samopoczucie']],
+    cs:['Učím se tvé vzorce','Integrováno','Tvá data.','Propojování','Integrována.','RYSEON Intelligence propojuje tvá data o výkonu, tréninku, regeneraci, aktivitě a zdraví do jednoho inteligentního systému.','Učí se tvé vzorce a mění tvá data v personalizované poznatky, doporučení a kroky.','Čím lépe tě chápe, tím osobnější je tvůj program.',['Trénink','Spánek','Regenerace','Aktivita','Zdraví','Zápasy','Pohoda']],
+    ro:['Îți învață tiparele','Integrate','Datele tale.','Conectare','Integrate.','RYSEON Intelligence conectează datele tale de performanță, antrenament, recuperare, activitate și sănătate într-un singur sistem inteligent.','Îți învață tiparele și transformă datele tale în analize, recomandări și acțiuni personalizate.','Cu cât te înțelege mai bine, cu atât programul tău devine mai personalizat.',['Antrenament','Somn','Recuperare','Activitate','Sănătate','Meciuri','Stare de bine']],
+    el:['Μαθαίνει τα μοτίβα σου','Ενσωματώθηκαν','Τα δεδομένα σου.','Σύνδεση','Ενσωματώθηκαν.','Το RYSEON Intelligence συνδέει τα δεδομένα απόδοσης, προπόνησης, αποκατάστασης, δραστηριότητας και υγείας σου σε ένα ευφυές σύστημα.','Μαθαίνει τα μοτίβα σου και μετατρέπει τα δεδομένα σου σε εξατομικευμένες πληροφορίες, προτάσεις και ενέργειες.','Όσο καλύτερα σε καταλαβαίνει, τόσο πιο εξατομικευμένο γίνεται το πρόγραμμά σου.',['Προπόνηση','Ύπνος','Αποκατάσταση','Δραστηριότητα','Υγεία','Αγώνες','Ευεξία']],
+    tr:['Örüntülerini öğreniyor','Entegre edildi','Verilerin.','Bağlanıyor','Entegre edildi.','RYSEON Intelligence performans, antrenman, toparlanma, aktivite ve sağlık verilerini tek bir akıllı sistemde birleştirir.','Örüntülerini öğrenir ve verilerini kişiselleştirilmiş içgörülere, önerilere ve aksiyonlara dönüştürür.','Seni ne kadar iyi anlarsa, programın o kadar kişisel hâle gelir.',['Antrenman','Uyku','Toparlanma','Aktivite','Sağlık','Maçlar','İyi oluş']],
+    sv:['Lär sig dina mönster','Integrerad','Din data.','Ansluter','Integrerad.','RYSEON Intelligence kopplar ihop din prestations-, tränings-, återhämtnings-, aktivitets- och hälsodata till ett intelligent system.','Den lär sig dina mönster och omvandlar din data till personliga insikter, rekommendationer och åtgärder.','Ju bättre den förstår dig, desto mer personligt blir ditt program.',['Träning','Sömn','Återhämtning','Aktivitet','Hälsa','Matcher','Välmående']],
+    da:['Lærer dine mønstre','Integreret','Dine data.','Forbinder','Integreret.','RYSEON Intelligence forbinder dine data om præstation, træning, restitution, aktivitet og sundhed i ét intelligent system.','Den lærer dine mønstre og omsætter dine data til personlige indsigter, anbefalinger og handlinger.','Jo bedre den forstår dig, jo mere personligt bliver dit program.',['Træning','Søvn','Restitution','Aktivitet','Sundhed','Kampe','Trivsel']],
+    'nb-NO':['Lærer mønstrene dine','Integrert','Dataene dine.','Kobler til','Integrert.','RYSEON Intelligence kobler sammen dataene dine om prestasjon, trening, restitusjon, aktivitet og helse i ett intelligent system.','Den lærer mønstrene dine og gjør dataene dine om til personlige innsikter, anbefalinger og handlinger.','Jo bedre den forstår deg, desto mer personlig blir programmet ditt.',['Trening','Søvn','Restitusjon','Aktivitet','Helse','Kamper','Velvære']],
+    ja:['パターンを学習中','統合完了','あなたのデータ。','接続中','統合完了。','RYSEON Intelligenceは、パフォーマンス、トレーニング、リカバリー、アクティビティ、健康のデータをひとつのインテリジェントなシステムにつなげます。','あなたのパターンを学習し、データをパーソナライズされたインサイト、推奨、アクションに変えます。','あなたを理解するほど、プログラムはよりパーソナライズされていきます。',['トレーニング','睡眠','リカバリー','アクティビティ','健康','試合','ウェルビーイング']],
+    'zh-Hans':['正在学习你的模式','已整合','你的数据。','连接中','已整合。','RYSEON Intelligence 将你的表现、训练、恢复、活动和健康数据连接成一个智能系统。','它学习你的模式，并将你的数据转化为个性化的洞察、建议和行动。','它越了解你，你的计划就越个性化。',['训练','睡眠','恢复','活动','健康','比赛','身心状态']],
+    ar:['يتعلّم أنماطك','تم الدمج','بياناتك.','جارٍ الربط','مدمجة.','يربط RYSEON Intelligence بيانات أدائك وتدريبك وتعافيك ونشاطك وصحتك في نظام ذكي واحد.','يتعلّم أنماطك ويحوّل بياناتك إلى رؤى وتوصيات وإجراءات مخصّصة.','كلما فهمك أكثر، أصبح برنامجك أكثر تخصيصًا.',['التدريب','النوم','التعافي','النشاط','الصحة','المباريات','العافية']]
+  };
+  TR['es-MX']=TR['es-ES']; TR['es-AR']=TR['es-ES'];
+  /* into the app's dictionary (never overriding an existing translation), so rT() and the language switch both work */
+  var keys=[K.learn,K.st,K.l1,K.a,K.b,K.p0,K.p1,K.p2];
+  Object.keys(TR).forEach(function(c){ var d=RYSE_I18N.dict[c]; if(!d) return; var t=TR[c];
+    keys.forEach(function(k,i){ if(!(k in d)) d[k]=t[i] }); TAGS.forEach(function(k,i){ if(!(k in d)) d[k]=t[8][i] }) });
+
+  var $=function(id){ return document.getElementById(id) }, S=$('s16i'); if(!S) return;
+  var timers=[], iv=0, hv=0;
+  function stop(){ clearInterval(iv); clearInterval(hv); timers.forEach(clearTimeout); timers=[] }
+  function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+  function brand(t){ return esc(t).replace(/RYSEON/g,'<span class="ry">RYSE<span class="ry-on">ON</span></span>') }
+  function build(){ var fx=$('ri-fx'), w=$('ri-vis').offsetWidth||390, h=$('ri-vis').offsetHeight||262, cx=w/2, cy=h/2, rx=Math.min(150,cx-44), ry=Math.min(112,cy-18), html='';
+    for(var i=0;i<16;i++){ var deg=i*22.5+(i%2?9:0); html+='<span class="ri-ray'+(i%3?'':' big')+'" style="left:'+cx+'px;top:'+cy+'px;transform:rotate('+deg+'deg)"><i style="animation-duration:'+(2.2+(i%4)*.35).toFixed(2)+'s;animation-delay:'+((i*.37)%2.6).toFixed(2)+'s"></i></span>' }
+    TAGS.forEach(function(l,i){ var a=(-90+i*360/TAGS.length)*Math.PI/180; html+='<span class="ri-tag" style="left:'+(cx+Math.cos(a)*rx).toFixed(1)+'px;top:'+(cy+Math.sin(a)*ry).toFixed(1)+'px;animation-delay:'+(i*.6).toFixed(1)+'s">'+esc(rT(l))+'</span>' });
+    fx.innerHTML=html;
+    /* keep every label inside the screen on narrow phones */
+    var vr=$('ri-vis').getBoundingClientRect(); [].forEach.call(fx.querySelectorAll('.ri-tag'),function(t){ var r=t.getBoundingClientRect(), d=0; if(r.right>vr.right-8) d=vr.right-8-r.right; else if(r.left<vr.left+8) d=vr.left+8-r.left; if(d) t.style.left=(parseFloat(t.style.left)+d).toFixed(1)+'px' }) }
+  function fit(){ var h=S.querySelector('.ri-h1'); h.style.fontSize=''; var fs=parseFloat(getComputedStyle(h).fontSize), n=0;
+    while(n++<20&&fs>22&&(h.querySelector('.ri-l1').scrollWidth>h.clientWidth||h.querySelector('.ri-l2').scrollWidth>h.clientWidth)){ fs-=1; h.style.fontSize=fs+'px' } }
+  function run(){
+    stop(); S.classList.remove('ri-out'); $('ri-act').classList.remove('on'); $('ri-learn').classList.remove('off'); $('ri-st').classList.remove('on');
+    var P=[rT(K.p0),rT(K.p1),rT(K.p2)], A=rT(K.a), B=rT(K.b), PAUSE=18;
+    $('ri-learn-t').textContent=rT(K.learn); $('ri-st').textContent=rT(K.st); $('ri-l1').textContent=rT(K.l1);
+    $('ri-word').textContent=A; $('ri-hdots').classList.remove('off'); $('ri-hcaret').classList.remove('on');
+    ['ri-p0','ri-p1','ri-p2'].forEach(function(id){ $(id).innerHTML='' });
+    build(); fit();
+    var s1=P[0].length+PAUSE, s2=s1+P[1].length+PAUSE, total=s2+P[2].length, n=0, head=false, arc=$('ri-arc'), pct=$('ri-pct');
+    function paint(){ var t0=P[0].slice(0,Math.min(P[0].length,n)), t1=P[1].slice(0,Math.max(0,Math.min(P[1].length,n-s1))), t2=P[2].slice(0,Math.max(0,n-s2)), cur=n<s1?0:(n<s2?1:2), car='<span class="tc"></span>';
+      $('ri-p0').innerHTML=brand(t0)+(cur===0?car:''); $('ri-p1').innerHTML=esc(t1)+(cur===1?car:''); $('ri-p2').innerHTML=esc(t2)+(cur===2?car:'');
+      var f=Math.min(1,n/(total*.75)); arc.setAttribute('stroke-dashoffset',(603.2*(1-f)).toFixed(1)); pct.textContent=Math.round(f*100);
+      if(f>=1){ $('ri-learn').classList.add('off'); $('ri-st').classList.add('on') }
+      if(!head&&f>=.97){ head=true; headline() } }
+    function headline(){ var k=A.length, ph=1; $('ri-hdots').classList.add('off'); $('ri-hcaret').classList.add('on');
+      hv=setInterval(function(){ if(ph===1){ if(k>0){ k--; $('ri-word').textContent=A.slice(0,k) } else ph=2; return }
+        if(k<B.length){ k++; $('ri-word').textContent=B.slice(0,k); return }
+        clearInterval(hv); fit(); timers.push(setTimeout(function(){ $('ri-hcaret').classList.remove('on') },1400)) },65) }
+    paint();
+    timers.push(setTimeout(function(){ iv=setInterval(function(){ if(n<total){ n++; paint() } else { clearInterval(iv); $('ri-act').classList.add('on') } },24) },500));
+  }
+  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ if(prev) prev(to); if(to&&to.id==='s16i') run(); else stop() };
+  /* Start your journey: the screen dissolves (scale, blur, fade) and Home comes in */
+  window.ryseIntelEnter=function(){ S.classList.add('ri-out'); timers.push(setTimeout(function(){ window.ryseGo('s17') },650)) };
+})();
 </script>
