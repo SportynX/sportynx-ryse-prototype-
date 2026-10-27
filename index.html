@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793119835'; window.__ryseB=B;
+(function(){ var B='1793120561'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); setTimeout(cb,20000); return } }catch(_){} } go() }) } })();
@@ -2151,7 +2151,6 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .mxc-pct span{font:600 13px/1 var(--font-body);color:rgba(214,220,232,.88)}
 .mx-cover .hm-type{min-height:0;margin:10px 0 14px;padding-bottom:26px;font-weight:500}
 .mx-cover .hm-ex{margin-top:auto}
-.mx-cover .hm-ex button{padding:0 16px}
 /* the stats sheet */
 .sheet.mx{height:94%;max-height:94%;padding:10px 0 0;gap:0;background:#101114}
 .mx-scroll{flex:1;min-height:0;overflow-y:auto;padding:0 18px calc(env(safe-area-inset-bottom,0px) + 32px);scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -2160,7 +2159,7 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .mx .ml{font:600 10.5px/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;color:rgba(200,207,221,.82)}
 .mx .mla{color:#8FB0FF}
 .mx .h2{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.mx .ttl{font:700 26px/1.04 var(--font-display);text-transform:uppercase;letter-spacing:-.005em;margin:10px 0 6px}
+.mx .ttl{font:700 18px/1.1 var(--font-display);text-transform:uppercase;letter-spacing:-.005em;margin:10px 0 6px}
 .mx .meta{font:500 13.5px/1.35 var(--font-body);color:rgba(200,207,221,.82)}
 .mx-chg{display:inline-flex;align-items:center;gap:6px;flex:none;height:34px;padding:0 14px;border-radius:17px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#F5F7FB;font:600 13px/1 var(--font-body);cursor:pointer}
 .mx-chg svg{width:12px;height:12px;transition:transform .25s ease}
@@ -8349,7 +8348,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
     var lab=m.days===1?t('Yesterday’s match'):t('Last match');
     return '<div class="hm-card hm-intro mx-cover" role="group" aria-label="'+esc(lab)+'"><span class="who">'+STAR+esc(lab)+'</span>'+
       '<div class="mxc-pct"><b class="mxc-n" data-v="'+S.lvl+'">'+(COUNTED?S.lvl:0)+'%</b><span>'+esc(t('of your level'))+'</span></div>'+
-      '<p class="hm-type mxc-type" data-line="'+esc(line)+'">'+(TYPED?esc(line):'')+'</p><div class="hm-ex mxc-ex'+(TYPED?' on':'')+'"><span>'+esc(title(m))+'</span><button type="button" data-mx-open>'+esc(t('Your detailed stats'))+'</button></div></div>' }
+      '<p class="hm-type mxc-type" data-line="'+esc(line)+'">'+(TYPED?esc(line):'')+'</p><div class="hm-ex mxc-ex'+(TYPED?' on':'')+'"><span>'+esc(title(m))+'</span><button type="button" data-mx-open>'+esc(t('Full stats'))+'</button></div></div>' }
   function dots(){ var d=$('mx-dots'); if(!d) return; [].forEach.call(d.children,function(b,i){ b.setAttribute('aria-selected',String(i===IDX)) }) }
   function wrap(){ var box=$('h-intel'); if(!box) return; var intro=box.querySelector(':scope > .hm-intro'); if(!intro) return; var cv=coverHTML(); if(!cv) return;
     var car=document.createElement('div'); car.className='hm-car'; car.innerHTML='<div class="hm-track" id="hm-track"></div>';
@@ -8387,7 +8386,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
    downloaded in the background first; only when it is fully on the phone, nobody is touching the screen and the
    language screen is showing, the app switches to it (in about a second, under the loading cover). The screen is never
    left frozen on an old page while a download runs, which made Continue look dead. */
-(function(){var B='1793119835',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
+(function(){var B='1793120561',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
   addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   try{ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')) addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').then(function(){ return navigator.serviceWorker.ready }).then(function(){ return cachedB() }).then(function(cb){ if(!cb) setTimeout(function(){ prefetch(B) },3000) }).catch(function(){}) }) }catch(_){}
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')&&!window.__ryseQ&&!document.hidden }
