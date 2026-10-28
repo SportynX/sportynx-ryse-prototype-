@@ -3494,6 +3494,137 @@ html[data-theme=light] .ij-more{color:#0E1524;background:rgba(47,107,255,.08)}ht
 .ry-clip .ry-play.ry-pl2{z-index:3;right:auto;left:64%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border:1.2px solid rgba(255,255,255,.42);background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(10px) saturate(120%);backdrop-filter:blur(10px) saturate(120%);box-shadow:none}
 .ry-clip .ry-play.ry-pl2 svg{width:32px;height:32px;margin-left:4px;color:rgba(178,180,186,.82)}
 .ry-clip .meta{margin-top:auto}
+
+/* ================= Light mode v2 (Ivan, 28 Oct): white cards with a fine border, no dark boxes, black rings and lines,
+   white + menu and sheets — like the reference app. Photo cards (videos) keep their image look. */
+html[data-theme=light][data-view=prof] .dv,html[data-theme=light][data-view=prof] .dv.dk,html[data-theme=light][data-view=prof] .h-focus.dk,html[data-theme=light][data-view=prof] .hm-card,html[data-theme=light][data-view=prof] .hm-intro,html[data-theme=light][data-view=prof] .hm-tasks,html[data-theme=light][data-view=prof] .po,html[data-theme=light][data-view=prof] .ha-water,html[data-theme=light][data-view=prof] .hrc,html[data-theme=light][data-view=prof] .pg-sum,html[data-theme=light][data-view=prof] .ph-nudge{--s-text:#0E1524;--s-mut:#5A6375;--s-faint:#8A92A3;--s-card:#F6F7FA;--s-line:rgba(14,21,36,.08);--s-input:#F2F4F8;--s-acc:#0E1524;--s-sw:rgba(14,21,36,.14);--ryse-white:#0E1524;--ryse-grey:#5A6375;--rb:#0E1524;--cvb:#0E1524;--lb:#0E1524;--c1:#0E1524;
+  background:#FFFFFF!important;border:1px solid rgba(14,21,36,.08)!important;box-shadow:0 6px 22px rgba(14,21,36,.06)!important;color:#0E1524}
+html[data-theme=light][data-view=prof] .h-focus.dk *{text-shadow:none}
+html[data-theme=light][data-view=prof] .h-focus.dk .hf-vid,html[data-theme=light][data-view=prof] .h-focus.dk .hf-vid *{--s-text:#F5F7FB;--s-mut:rgba(220,226,238,.85);--ryse-white:#F5F7FB}
+html[data-theme=light][data-view=prof] .h-focus.dk .h-plan,html[data-theme=light][data-view=prof] .hm-ex button{background:#0E1524!important;color:#fff!important;border-color:#0E1524!important}
+html[data-theme=light][data-view=prof] .h-focus.dk .h-plan svg{color:#fff}
+html[data-theme=light][data-view=prof] .h-focus.dk .mlabel,html[data-theme=light][data-view=prof] .h-focus.dk .h-fmeta,html[data-theme=light][data-view=prof] .h-focus.dk .h-fcopy,html[data-theme=light][data-view=prof] .h-focus.dk .h-ftime{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .h-focus.dk .h-ctx{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .h-focus.dk b{color:#0E1524}
+html[data-theme=light][data-view=prof] .hm-intro .who,html[data-theme=light][data-view=prof] .hm-cap,html[data-theme=light][data-view=prof] .hm-cap svg{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hm-intro .who .bw,html[data-theme=light][data-view=prof] .hm-intro .who .ry,html[data-theme=light][data-view=prof] .hm-cap .ry{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .ry-on,html[data-theme=light][data-view=prof] .hm-intro .ry-on{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .hm-type,html[data-theme=light][data-view=prof] .hm-intro b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-type .c{background:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-ex{background:#F4F5F8!important;border-color:rgba(14,21,36,.08)!important}
+html[data-theme=light][data-view=prof] .hm-ex span{color:#3A4252!important}
+html[data-theme=light][data-view=prof] .mxc-pct b{background:linear-gradient(100deg,#0E1524 0%,#1F4FD8 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+html[data-theme=light][data-view=prof] .mxc-pct span{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hf-pg button::before,html[data-theme=light][data-view=prof] .mx-dots button::before{background:rgba(14,21,36,.16)!important}
+html[data-theme=light][data-view=prof] .hf-pg button[aria-selected=true]::before,html[data-theme=light][data-view=prof] .mx-dots button[aria-selected=true]::before{background:#0E1524!important}
+/* tasks, steps, tips */
+html[data-theme=light][data-view=prof] .hm-task{background:#F6F7FA!important;border-color:rgba(14,21,36,.07)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-task .t b,html[data-theme=light][data-view=prof] .hm-step .t b,html[data-theme=light][data-view=prof] .hm-tasks .hd b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-task .t small,html[data-theme=light][data-view=prof] .hm-step .t small,html[data-theme=light][data-view=prof] .hm-tasks .hd small{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hm-task .go,html[data-theme=light][data-view=prof] .hm-step .go{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .hm-task .ck{border-color:rgba(14,21,36,.25)!important}
+html[data-theme=light][data-view=prof] .hm-task.done .ck,html[data-theme=light][data-view=prof] .hm-step.done .n{background:#0E1524!important;border-color:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .hm-step{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-step .n{background:#F2F4F8!important;border-color:rgba(14,21,36,.18)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-tip{background:#FFFFFF!important;border:1px solid rgba(14,21,36,.08)!important;box-shadow:0 6px 22px rgba(14,21,36,.06);color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-tip::before{opacity:.18!important}
+html[data-theme=light][data-view=prof] .hm-tip small{color:#3D5BA8!important}
+html[data-theme=light][data-view=prof] .hm-tip b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hm-tip span,html[data-theme=light][data-view=prof] .hm-tip span *{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hm-tip .ry{color:#0E1524!important}
+/* week strip */
+html[data-theme=light][data-view=prof] .h-day b{color:#0E1524}
+html[data-theme=light][data-view=prof] .h-day.past b{color:#6B7385}
+html[data-theme=light][data-view=prof] .h-day small{color:#6B7385}
+/* rings and lines: black */
+html[data-theme=light][data-view=prof] #h-idx{--lb:#0E1524;--ls:#0E1524;--lg:#0E1524;--rb:#0E1524}
+html[data-theme=light][data-view=prof] #h-idx .h-ix .r svg circle.val,html[data-theme=light][data-view=prof] .dv svg .val,html[data-theme=light][data-view=prof] .dv-base svg .val{stroke:#0E1524!important}
+html[data-theme=light][data-view=prof] .h-ix svg .trk,html[data-theme=light][data-view=prof] .dv svg .trk{stroke:rgba(14,21,36,.1)!important}
+html[data-theme=light][data-view=prof] .dv-spark .ln{stroke:#0E1524!important}
+html[data-theme=light][data-view=prof] .dv-spark .dt{fill:#0E1524!important}
+html[data-theme=light][data-view=prof] .dv-score .st,html[data-theme=light][data-view=prof] .dv-conf i{color:#0E1524!important;background:transparent}
+html[data-theme=light][data-view=prof] .dv-conf i{background:#0E1524!important}
+html[data-theme=light][data-view=prof] .dv-all,html[data-theme=light][data-view=prof] .dv-more,html[data-theme=light][data-view=prof] .dv .dv-more{color:#0E1524!important;border-color:rgba(14,21,36,.12)!important}
+html[data-theme=light][data-view=prof] .pg-ai{box-shadow:inset 2px 0 0 #0E1524!important}
+html[data-theme=light][data-view=prof] .pg-ai .k{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .pg-seg button[aria-selected=true]{background:#0E1524!important;color:#fff!important}
+/* activity, heart rate, public opinion */
+html[data-theme=light][data-view=prof] .hrc-hd .k,html[data-theme=light][data-view=prof] .po-hd .k{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hrc-hd .s,html[data-theme=light][data-view=prof] .hrc-c,html[data-theme=light][data-view=prof] .hrc-mm small,html[data-theme=light][data-view=prof] .hrc-v em,html[data-theme=light][data-view=prof] .hrc-mm b em,html[data-theme=light][data-view=prof] .po-cap,html[data-theme=light][data-view=prof] .po-sl,html[data-theme=light][data-view=prof] .po-ax,html[data-theme=light][data-view=prof] .po-now .dt,html[data-theme=light][data-view=prof] .po-hl small,html[data-theme=light][data-view=prof] .po-list a small,html[data-theme=light][data-view=prof] .po-ch span{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .hrc-v b,html[data-theme=light][data-view=prof] .hrc-mm b,html[data-theme=light][data-view=prof] .po-lv .po-sl b,html[data-theme=light][data-view=prof] .po-ch em,html[data-theme=light][data-view=prof] .po-list a,html[data-theme=light][data-view=prof] .po-list a b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .po-hl{background:#F4F5F8!important;border-color:rgba(14,21,36,.07)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .po-list a{border-bottom-color:rgba(14,21,36,.07)!important}
+html[data-theme=light][data-view=prof] .po-dr{color:#0E1524!important;border-color:rgba(14,21,36,.25)!important}
+html[data-theme=light][data-view=prof] .hr-seg button{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .hr-seg button[aria-selected=true],html[data-theme=light][data-view=prof] .hr-seg button.on{color:#fff!important;background:#0E1524!important}
+html[data-theme=light][data-view=prof] .ha-row em,html[data-theme=light][data-view=prof] .ha-water .t small,html[data-theme=light][data-view=prof] .ha-water .t b em{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .ha-water .t b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .ha-water .gl{background:#EEF2FB!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .ha-water button{color:#0E1524!important;border-color:rgba(14,21,36,.2)!important}
+html[data-theme=light][data-view=prof] .ry-nh b{color:#0E1524!important}
+/* + quick actions: white panel, light tiles (like the reference) */
+html[data-theme=light][data-view=prof] .qa{background:rgba(255,255,255,.98)!important;border-color:rgba(14,21,36,.08)!important;box-shadow:0 18px 44px rgba(14,21,36,.18)!important}
+html[data-theme=light][data-view=prof] .qa .qa-tile,html[data-theme=light][data-view=prof] .qa .qa-tile.primary{background:#F4F5F8!important;border-color:rgba(14,21,36,.06)!important}
+html[data-theme=light][data-view=prof] .qa .qa-tile svg,html[data-theme=light][data-view=prof] .qa .qa-tile b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .qa .qa-tile:active{background:#E9EBF0!important}
+html[data-theme=light][data-view=prof] .qa .qa-tile.rec svg,html[data-theme=light][data-view=prof] .qa .qa-tile.rec b{color:#C9761E!important}
+/* sheets: white */
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal){--s-text:#0E1524;--s-mut:#5A6375;--s-faint:#8A92A3;--s-card:#F6F7FA;--s-line:rgba(14,21,36,.08);--s-input:#F2F4F8;--ryse-white:#0E1524;--ryse-grey:#5A6375;background:#FFFFFF!important;border-top-color:rgba(14,21,36,.08)!important;color:#0E1524}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) h3,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) b{color:#0E1524}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) p{color:#5A6375}
+html[data-theme=light][data-view=prof] .sheet .grab{background:rgba(14,21,36,.18)!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-primary,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .st-btn:not(.ghost){background:#0E1524!important;color:#fff!important;border-color:#0E1524!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .st-btn.ghost,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-ghost{background:#fff!important;color:#0E1524!important;border-color:rgba(14,21,36,.2)!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .later,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .link{color:#5A6375!important}
+/* match stats sheet */
+html[data-theme=light][data-view=prof] .mx{color:#0E1524}
+html[data-theme=light][data-view=prof] .mx .ml{color:#5A6375}
+html[data-theme=light][data-view=prof] .mx .mla,html[data-theme=light][data-view=prof] .mx .ml.mla{color:#1F4FD8}
+html[data-theme=light][data-view=prof] .mx .ttl{color:#0E1524}
+html[data-theme=light][data-view=prof] .mx .meta,html[data-theme=light][data-view=prof] .mx .lg,html[data-theme=light][data-view=prof] .mx .zone,html[data-theme=light][data-view=prof] .mx .hrbig em,html[data-theme=light][data-view=prof] .mx .note,html[data-theme=light][data-view=prof] .mx-ticks,html[data-theme=light][data-view=prof] .mx-shotsum,html[data-theme=light][data-view=prof] .mx-shotrow .t small{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx .card{background:#FFFFFF!important;border-color:rgba(14,21,36,.08)!important;box-shadow:0 6px 22px rgba(14,21,36,.05)}
+html[data-theme=light][data-view=prof] .mx .hero{background:#FFFFFF!important}
+html[data-theme=light][data-view=prof] .mx .hero-r p,html[data-theme=light][data-view=prof] .mx .row,html[data-theme=light][data-view=prof] .mx .imp span{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx .row{border-top-color:rgba(14,21,36,.07)!important}
+html[data-theme=light][data-view=prof] .mx .row b,html[data-theme=light][data-view=prof] .mx .tile b,html[data-theme=light][data-view=prof] .mx .zone b,html[data-theme=light][data-view=prof] .mx .hrbig b,html[data-theme=light][data-view=prof] .mx-shotsum b,html[data-theme=light][data-view=prof] .mx-shotrow .t b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx .tile{background:#F6F7FA!important;border-color:rgba(14,21,36,.06)!important}
+html[data-theme=light][data-view=prof] .mx .tile span{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .mx .tile b small{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx .seg{background:#F2F4F8!important;border-color:rgba(14,21,36,.08)!important}
+html[data-theme=light][data-view=prof] .mx .seg button{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx .seg button[aria-selected=true]{background:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .mx .bar,html[data-theme=light][data-view=prof] .mx .imp div{background:rgba(14,21,36,.08)!important}
+html[data-theme=light][data-view=prof] .mx .imp div i.z{background:rgba(14,21,36,.35)!important}
+html[data-theme=light][data-view=prof] .mx .imp div i.p,html[data-theme=light][data-view=prof] .mx .imp div i.n{background:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx .ring circle:first-of-type{stroke:rgba(14,21,36,.1)!important}
+html[data-theme=light][data-view=prof] .mx .ring circle:nth-of-type(2){stroke:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx .ring text{fill:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx .ring text+text{fill:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx svg path[stroke="#4C7DFF"]{stroke:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx-chg{background:#fff!important;border-color:rgba(14,21,36,.14)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx-list{background:#fff!important;border-color:rgba(14,21,36,.1)!important}
+html[data-theme=light][data-view=prof] .mx-list button{color:#0E1524!important;border-top-color:rgba(14,21,36,.06)!important}
+html[data-theme=light][data-view=prof] .mx-list button[aria-current=true]{background:#F2F4F8!important}
+html[data-theme=light][data-view=prof] .mx-list .t small,html[data-theme=light][data-view=prof] .mx-list .d{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx-play{background:#fff!important;border-color:rgba(14,21,36,.14)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx-rng{background:linear-gradient(90deg,#0E1524 var(--p,100%),rgba(14,21,36,.1) var(--p,100%))!important}
+html[data-theme=light][data-view=prof] .mx-rng::-webkit-slider-thumb{background:#0E1524;box-shadow:0 0 0 4px rgba(14,21,36,.12)}
+html[data-theme=light][data-view=prof] .mx-rng::-moz-range-thumb{background:#0E1524;box-shadow:0 0 0 4px rgba(14,21,36,.12)}
+html[data-theme=light][data-view=prof] .mx-shotrow{border-top-color:rgba(14,21,36,.07)!important}
+html[data-theme=light][data-view=prof] .mx-shotrow .mi{background:#F2F4F8!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx-shotrow .res{color:#0E1524!important;border-color:rgba(14,21,36,.18)!important}
+html[data-theme=light][data-view=prof] .mx-shotrow .res.on{background:#0E1524!important;border-color:#0E1524!important;color:#fff!important}
+/* calendar match days and the Progress match card */
+html[data-theme=light][data-view=prof] .mx-thirds b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .mx-thirds span{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .mx-thirds div{background:rgba(14,21,36,calc(var(--a,.12) * .35))!important;border-color:rgba(14,21,36,.08)!important}
+html[data-theme=light][data-view=prof] .mx .ry,html[data-theme=light][data-view=prof] .pg-ai .ry,html[data-theme=light][data-view=prof] .dv .ry{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .po-sc em{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .mx .card>div>span{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .h-day.past b{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .mx .shotw svg text{fill:#F5F7FB}
+html[data-theme=light][data-view=prof] #cal-grid .cal-d.mt .ic,html[data-theme=light][data-view=prof] #cal-grid .cal-d.mt .ic em{color:#1F4FD8!important}
+html[data-theme=light][data-view=prof] .mx-pgc .mx-chg{background:#fff!important}
 </style>
 
 <div class="stage">
