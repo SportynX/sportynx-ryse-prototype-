@@ -3682,12 +3682,12 @@ html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-quiet{b
 html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-secondary{background:#fff!important;color:#0E1524!important;border:1px solid rgba(14,21,36,.2)!important}
 /* week strip (Ivan, 29 Oct): airy row; each date in a soft rounded square — dashed for past days, thin solid for coming days; today is the black card */
 html[data-theme=light][data-view=prof] .h-week{gap:6px!important;padding:4px 2px!important}
-html[data-theme=light][data-view=prof] .h-day{gap:8px!important;padding:8px 0 8px!important;background:transparent;box-shadow:none}
+html[data-theme=light][data-view=prof] .h-day.today{align-self:center}
+html[data-theme=light][data-view=prof] .h-day:not(.today){gap:6px!important;background:transparent;box-shadow:none}
 html[data-theme=light][data-view=prof] .h-day:not(.today) b{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;border:1.5px solid rgba(14,21,36,.12);background:#fff;box-sizing:border-box}
-html[data-theme=light][data-view=prof] .h-day.past:not(.today) b{border-style:dashed;border-color:rgba(14,21,36,.22);background:transparent}
+html[data-theme=light][data-view=prof] .h-day:not(.today) b{border-style:dashed!important;border-color:rgba(14,21,36,.22)!important;background:transparent!important}
+html[data-theme=light][data-view=prof] .h-day.past:not(.today) b{border-color:rgba(14,21,36,.16)!important}
 html[data-theme=light][data-view=prof] .h-day:not(.today) small{color:#6B7385!important}
-html[data-theme=light][data-view=prof] .h-day.today{padding:8px 0 8px!important}
-html[data-theme=light][data-view=prof] .h-day.today b{display:grid;place-items:center;width:34px;height:34px}
 /* injury type list */
 html[data-theme=light][data-view=prof] .ij-tl button{color:#0E1524!important;border-bottom-color:rgba(14,21,36,.08)!important}
 html[data-theme=light][data-view=prof] .ij-tl .ck{border-color:rgba(14,21,36,.28)!important;color:#fff}
