@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793273509'; window.__ryseB=B;
+(function(){ var B='1793273981'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); setTimeout(cb,20000); return } }catch(_){} } go() }) } })();
@@ -3671,7 +3671,6 @@ html[data-theme=light][data-view=prof] .hnav .hnav-tab[aria-current=page] .hnav-
 html[data-theme=light][data-view=prof] .hnav-pill{background:rgba(14,21,36,.075)!important;box-shadow:inset 0 0 0 1px rgba(14,21,36,.04)}
 html[data-theme=light][data-view=prof] .hnav-tabs{background:rgba(255,255,255,.94)!important;border:1px solid rgba(14,21,36,.1)!important}
 /* week strip: thin frames on every day, today stays black */
-html[data-theme=light][data-view=prof] .h-day:not(.today){box-shadow:inset 0 0 0 1px rgba(14,21,36,.1);background:#fff}
 /* Home activity tiles */
 html[data-theme=light][data-view=prof] #h-act .ha-t{background:#fff!important;border:1px solid rgba(14,21,36,.08)!important;box-shadow:0 4px 16px rgba(14,21,36,.05)}
 html[data-theme=light][data-view=prof] #h-act .ha-t b{color:#0E1524!important}
@@ -3717,6 +3716,35 @@ html[data-theme=light][data-view=prof] .mx-hud b{color:#F5F7FB!important}
 html[data-theme=light][data-view=prof] .mx-hud b small,html[data-theme=light][data-view=prof] .mx-hud span{color:rgba(220,228,244,.8)!important}
 html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-quiet{background:#0E1524!important;color:#fff!important;border:1px solid #0E1524!important;letter-spacing:.04em}
 html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-secondary{background:#fff!important;color:#0E1524!important;border:1px solid rgba(14,21,36,.2)!important}
+/* week strip (Ivan, 29 Oct): airy row; each date in a soft rounded square — dashed for past days, thin solid for coming days; today is the black card */
+html[data-theme=light][data-view=prof] .h-week{gap:6px!important;padding:4px 2px!important}
+html[data-theme=light][data-view=prof] .h-day{gap:8px!important;padding:8px 0 8px!important;background:transparent;box-shadow:none}
+html[data-theme=light][data-view=prof] .h-day:not(.today) b{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;border:1.5px solid rgba(14,21,36,.12);background:#fff;box-sizing:border-box}
+html[data-theme=light][data-view=prof] .h-day.past:not(.today) b{border-style:dashed;border-color:rgba(14,21,36,.22);background:transparent}
+html[data-theme=light][data-view=prof] .h-day:not(.today) small{color:#6B7385!important}
+html[data-theme=light][data-view=prof] .h-day.today{padding:8px 0 8px!important}
+html[data-theme=light][data-view=prof] .h-day.today b{display:grid;place-items:center;width:34px;height:34px}
+/* injury type list */
+html[data-theme=light][data-view=prof] .ij-tl button{color:#0E1524!important;border-bottom-color:rgba(14,21,36,.08)!important}
+html[data-theme=light][data-view=prof] .ij-tl .ck{border-color:rgba(14,21,36,.28)!important;color:#fff}
+html[data-theme=light][data-view=prof] .ij-tl button[aria-pressed=true] .ck{background:#0E1524!important;border-color:#0E1524!important}
+html[data-theme=light][data-view=prof] .ij-tl button[aria-pressed=true]{font-weight:600}
+/* sheets: every remaining light-on-white text (Ivan, 29 Oct) */
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .ry{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .ry-on{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .pm-k,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .pm-k .bw{color:#1F4FD8!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) ul li span,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .por-tile span,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .por-ring small,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) #por-m,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) #pm-m,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .kg-l,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .proto{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .pm-pr b,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .por-tile b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .lt-save{background:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .lt-save:disabled{background:rgba(14,21,36,.1)!important;color:rgba(14,21,36,.4)!important;opacity:1!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .wt-unit,html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) #kg-u{color:#0E1524!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .wt-pad button{background:#F2F4F8!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .wt-pad button:active{background:#E4E7EE!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .wt-pad button[data-k=del]{background:none!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .kg-seg button{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .kg-seg button[aria-pressed=true]{background:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .proto button{color:#0E1524!important;border-color:rgba(14,21,36,.2)!important;background:#fff!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .proto button[aria-pressed=true]{background:#0E1524!important;color:#fff!important}
 </style>
 
 </head>
@@ -8647,7 +8675,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
    downloaded in the background first; only when it is fully on the phone, nobody is touching the screen and the
    language screen is showing, the app switches to it (in about a second, under the loading cover). The screen is never
    left frozen on an old page while a download runs, which made Continue look dead. */
-(function(){var B='1793273509',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
+(function(){var B='1793273981',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
   addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   try{ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')) addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').then(function(){ return navigator.serviceWorker.ready }).then(function(){ return cachedB() }).then(function(cb){ if(!cb) setTimeout(function(){ prefetch(B) },3000) }).catch(function(){}) }) }catch(_){}
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')&&!window.__ryseQ&&!document.hidden }
