@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1793207144'; window.__ryseB=B;
+(function(){ var B='1793273509'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); setTimeout(cb,20000); return } }catch(_){} } go() }) } })();
@@ -3661,6 +3661,62 @@ html[data-theme=light][data-view=prof] .h-day.past b{color:#5A6375!important}
 html[data-theme=light][data-view=prof] .mx .shotw svg text{fill:#F5F7FB}
 html[data-theme=light][data-view=prof] #cal-grid .cal-d.mt .ic,html[data-theme=light][data-view=prof] #cal-grid .cal-d.mt .ic em{color:#1F4FD8!important}
 html[data-theme=light][data-view=prof] .mx-pgc .mx-chg{background:#fff!important}
+
+/* ================= Light mode v3 (Ivan, 29 Oct): white 3D body screen, black bold selected tab with a soft pill,
+   framed health options / activity tiles / week days, stronger verification badge */
+html[data-theme=light][data-view=prof] .hnav{--lb:#0E1524;--rb:#0E1524}
+html[data-theme=light][data-view=prof] .hnav .hnav-tab[aria-current=page]{color:#0E1524!important;font-weight:700}
+html[data-theme=light][data-view=prof] .hnav .hnav-tab[aria-current=page] svg{stroke-width:2.3}
+html[data-theme=light][data-view=prof] .hnav .hnav-tab[aria-current=page] .hnav-ava{border-color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hnav-pill{background:rgba(14,21,36,.075)!important;box-shadow:inset 0 0 0 1px rgba(14,21,36,.04)}
+html[data-theme=light][data-view=prof] .hnav-tabs{background:rgba(255,255,255,.94)!important;border:1px solid rgba(14,21,36,.1)!important}
+/* week strip: thin frames on every day, today stays black */
+html[data-theme=light][data-view=prof] .h-day:not(.today){box-shadow:inset 0 0 0 1px rgba(14,21,36,.1);background:#fff}
+/* Home activity tiles */
+html[data-theme=light][data-view=prof] #h-act .ha-t{background:#fff!important;border:1px solid rgba(14,21,36,.08)!important;box-shadow:0 4px 16px rgba(14,21,36,.05)}
+html[data-theme=light][data-view=prof] #h-act .ha-t b{color:#0E1524!important}
+html[data-theme=light][data-view=prof] #h-act .ha-t svg{color:#1F4FD8!important}
+/* + → Log health options */
+html[data-theme=light][data-view=prof] .hl-opts button{background:#fff!important;border:1px solid rgba(14,21,36,.1)!important;box-shadow:0 4px 16px rgba(14,21,36,.05);color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hl-opts .tx b{color:#0E1524}
+html[data-theme=light][data-view=prof] .hl-opts .tx small{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .hl-opts .ch{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .hl-opts .ic{background:#EEF2FB!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .hl-opts .rec .ic{background:#FBEEDF!important;color:#B4651A!important}
+html[data-theme=light][data-view=prof] .hl-opts .rec .tx b{color:#B4651A!important}
+/* profile: verification badge */
+html[data-theme=light][data-view=prof] .vbadge{background:#F6E3BF!important;border-color:#D9952B!important;color:#7A4A00!important;font-weight:700}
+html[data-theme=light][data-view=prof] .vbadge.vok{background:#DDEBFF!important;border-color:#2F6BFF!important;color:#1240B8!important}
+/* 3D body (injury, recovery, health): white ground */
+html[data-theme=light][data-view=prof] .b3d{background:radial-gradient(70% 55% at 50% 42%,#FFFFFF 0%,#F2F4F8 60%,#E9ECF2 100%)!important;color:#0E1524}
+html[data-theme=light][data-view=prof] .b3d-top b{color:#0E1524}
+html[data-theme=light][data-view=prof] .b3d-x{background:#fff!important;border-color:rgba(14,21,36,.12)!important;color:#0E1524!important;box-shadow:0 4px 14px rgba(14,21,36,.08)}
+html[data-theme=light][data-view=prof] .b3d-views{background:#fff!important;border-color:rgba(14,21,36,.1)!important;box-shadow:0 4px 14px rgba(14,21,36,.06)}
+html[data-theme=light][data-view=prof] .b3d-views button{color:#3A4252!important}
+html[data-theme=light][data-view=prof] .b3d-views button[aria-pressed=true],html[data-theme=light][data-view=prof] .b3d-views button.on{background:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .b3d-load,html[data-theme=light][data-view=prof] .b3-hint{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .b3d-bot{background:linear-gradient(180deg,rgba(242,244,248,0),rgba(242,244,248,.95) 35%)!important}
+html[data-theme=light][data-view=prof] .b3d-common{background:#fff!important;border-color:rgba(14,21,36,.14)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .b3d-common.on{background:#FDECEC!important;border-color:rgba(210,60,60,.45)!important;color:#B42323!important}
+html[data-theme=light][data-view=prof] .b3-chip{background:#EEF2FB!important;border-color:rgba(31,79,216,.3)!important;color:#0E1524!important}
+html[data-theme=light][data-view=prof] .b3d-tip{background:#FDECEC!important;border-color:rgba(210,60,60,.35)!important;color:#9E1F1F!important}
+html[data-theme=light][data-view=prof] .b3l button{color:#3A4252!important}
+html[data-theme=light][data-view=prof] .b3l button.on{color:#D23C3C!important}
+html[data-theme=light][data-view=prof] .b3l button.ln-no{color:#8A92A3!important}
+html[data-theme=light][data-view=prof] .b3l-svg path{stroke:rgba(14,21,36,.35)}
+html[data-theme=light][data-view=prof] .b3l-svg circle{fill:#0E1524}
+html[data-theme=light][data-view=prof] .tp-trk{stroke:rgba(14,21,36,.1)!important}
+html[data-theme=light][data-view=prof] .tp-knob{fill:#fff!important;stroke:rgba(14,21,36,.35)!important}
+html[data-theme=light][data-view=prof] .tp-c b{color:#0E1524}
+html[data-theme=light][data-view=prof] .tp-c span,html[data-theme=light][data-view=prof] .b3d-temp small{color:#5A6375!important}
+html[data-theme=light][data-view=prof] .b3d .lt-save:disabled{background:rgba(14,21,36,.08)!important;color:rgba(14,21,36,.35)!important}
+html[data-theme=light][data-view=prof] .b3d .lt-save:not(:disabled){background:#0E1524!important;color:#fff!important}
+html[data-theme=light][data-view=prof] .hrc-ecg .base{stroke:#0E1524!important;stroke-width:1.5!important}
+html[data-theme=light][data-view=prof] .hrc-ecg .run{stroke:#2F6BFF!important;filter:none!important}
+html[data-theme=light][data-view=prof] .mx-hud b{color:#F5F7FB!important}
+html[data-theme=light][data-view=prof] .mx-hud b small,html[data-theme=light][data-view=prof] .mx-hud span{color:rgba(220,228,244,.8)!important}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-quiet{background:#0E1524!important;color:#fff!important;border:1px solid #0E1524!important;letter-spacing:.04em}
+html[data-theme=light][data-view=prof] .sheet:not(.sx):not(#sh-cal) .btn-secondary{background:#fff!important;color:#0E1524!important;border:1px solid rgba(14,21,36,.2)!important}
 </style>
 
 </head>
@@ -7175,7 +7231,11 @@ function countryName(n){ if(!n)return n; var c=RYSE_ISO2[n];
     window.addEventListener('resize',b3Resize) }
   function b3Resize(){ if(!B3.R) return; var cv=$('b3d-cv'), w=cv.clientWidth, h=cv.clientHeight; if(!w||!h) return; B3.R.setSize(w,h,false); B3.cam.aspect=w/h; B3.cam.updateProjectionMatrix(); b3Frame() }
   function b3Cam(){ var s=B3.st, c=B3.center, T=B3.T, cam=B3.cam; var x=c.x+s.tx+Math.sin(s.yaw)*Math.cos(s.pitch)*s.dist, y=c.y+s.ty+Math.sin(s.pitch)*s.dist, z=c.z+Math.cos(s.yaw)*Math.cos(s.pitch)*s.dist; cam.position.set(x,y,z); cam.lookAt(c.x+s.tx,c.y+s.ty,c.z) }
-  var b3Raf=0; function b3Frame(){ if(b3Raf||!B3.R) return; b3Raf=requestAnimationFrame(function(t){ b3Raf=0; if($('b3d').hidden) return; var s=B3.st; if(b3Idle(t)) b3Frame(); else B3.tPrev=0; s.dist+=(s.tdist-s.dist)*0.25; if(Math.abs(s.tdist-s.dist)>1e-4) b3Frame(); if(B3.sel.length){ B3.mats.forEach(function(m){ m.uniforms.t.value=t/1000 }); b3Frame() } if(B3.spin){ s.yaw=B3.spinFrom+(B3.spinTo-B3.spinFrom)*Math.min(1,(t-B3.spinT0)/600); if(t-B3.spinT0<600) b3Frame(); else B3.spin=false } b3Cam(); B3.R.render(B3.sc,B3.cam); if(B3.lab&&b3LabDraw()) b3Frame() }) }
+  /* light mode (Ivan, 29 Oct): additive glow is invisible on white — draw the wire and skin rim with normal blending in dark blue */
+  function b3Theme(){ var lt=document.documentElement.getAttribute('data-theme')==='light'; if(B3.lt===lt||!B3.wire||!B3.T) return; B3.lt=lt; var T=B3.T, w=B3.wire.material, k=B3.skinM;
+    w.blending=lt?T.NormalBlending:T.AdditiveBlending; w.color.setHex(lt?0x1F3A7A:0x6FD3FF); w.opacity=lt?0.22:0.16; w.needsUpdate=true;
+    if(k){ k.blending=lt?T.NormalBlending:T.AdditiveBlending; k.uniforms.sk.value.setRGB(lt?0.12:0.35,lt?0.25:0.8,lt?0.55:1.0); k.needsUpdate=true } }
+  var b3Raf=0; function b3Frame(){ if(b3Raf||!B3.R) return; b3Raf=requestAnimationFrame(function(t){ b3Raf=0; if($('b3d').hidden) return; var s=B3.st; b3Theme(); if(b3Idle(t)) b3Frame(); else B3.tPrev=0; s.dist+=(s.tdist-s.dist)*0.25; if(Math.abs(s.tdist-s.dist)>1e-4) b3Frame(); if(B3.sel.length){ B3.mats.forEach(function(m){ m.uniforms.t.value=t/1000 }); b3Frame() } if(B3.spin){ s.yaw=B3.spinFrom+(B3.spinTo-B3.spinFrom)*Math.min(1,(t-B3.spinT0)/600); if(t-B3.spinT0<600) b3Frame(); else B3.spin=false } b3Cam(); B3.R.render(B3.sc,B3.cam); if(B3.lab&&b3LabDraw()) b3Frame() }) }
   function b3Controls(cv){ var pts={}, last=null, moved=0, pinch0=0, dist0=0, mid0=null;
     function n(){ return Object.keys(pts).length }
     cv.addEventListener('pointerdown',function(e){ B3.auto=false; clearTimeout(B3.idleT); cv.setPointerCapture(e.pointerId); pts[e.pointerId]={x:e.clientX,y:e.clientY}; moved=0; if(n()===2){ var a=Object.values(pts); pinch0=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); dist0=B3.st.tdist; mid0={x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2,tx:B3.st.tx,ty:B3.st.ty} } last={x:e.clientX,y:e.clientY} });
@@ -8587,7 +8647,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
    downloaded in the background first; only when it is fully on the phone, nobody is touching the screen and the
    language screen is showing, the app switches to it (in about a second, under the loading cover). The screen is never
    left frozen on an old page while a download runs, which made Continue look dead. */
-(function(){var B='1793207144',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
+(function(){var B='1793273509',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
   addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   try{ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')) addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').then(function(){ return navigator.serviceWorker.ready }).then(function(){ return cachedB() }).then(function(cb){ if(!cb) setTimeout(function(){ prefetch(B) },3000) }).catch(function(){}) }) }catch(_){}
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')&&!window.__ryseQ&&!document.hidden }
