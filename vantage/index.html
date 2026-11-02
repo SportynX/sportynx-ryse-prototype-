@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-build="1792787936">
+<html lang="en" data-build="1793607049">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
@@ -2474,12 +2474,12 @@ function viewPricing(){
   h+='<div class="card rise d2 calc"><div class="out"><span class="mlabel acc">How many athletes will be in your team?</span><span class="muted" style="font-size:13.5px">Best value</span></div>'+
     '<div class="out"><b><span id="calc-n">'+n+'</span> <span style="font-size:15px;font-family:var(--font-body);font-weight:500;color:var(--mut)">athlete'+(n>1?'s':'')+'</span></b><b id="calc-out">'+PLANS[bp[0]].short+' · €'+bp[1].toFixed(2)+'</b></div>'+
     '<input type="range" id="calc" min="1" max="11" step="1" value="'+n+'" data-in="calc" aria-label="Number of athletes"><div class="ticks">'+[1,2,3,4,5,6,7,8,9,10,'10+'].map(function(x){return '<span>'+x+'</span>'}).join('')+'</div><p class="note" id="calc-note">'+calcNote(n)+'</p></div>';
-  h+='<div class="rx rise d3"><div><span class="mlabel acc">RYSEON X</span><h3 style="margin-top:10px">Managing more than<br>10 athletes?</h3><p>RYSEON X is the professional command centre for teams, academies, national teams and football organisations.</p></div><a class="btn btn-quiet btn-sm" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a></div>';
+  h+='<div class="rx rise d3"><div><span class="mlabel acc">Daytona</span><h3 style="margin-top:10px">Managing more than<br>10 athletes?</h3><p>Daytona is the professional command centre for teams, academies, national teams and football organisations.</p></div><a class="btn btn-quiet btn-sm" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover Daytona</a></div>';
   h+='<p class="note">Prices include VAT where applicable. Cancel any time. Prototype only — no payment is taken.</p>';
   return h+'</div>';
 }
 function calcNote(n){
-  if(n>10) return 'VANTAGE connects up to 10 athletes. For larger groups, RYSEON X is built for teams and organisations.';
+  if(n>10) return 'VANTAGE connects up to 10 athletes. For larger groups, Daytona is built for teams and organisations.';
   var b=bestPlan(n),parts=['individual','v5','pro'].map(function(k){var v=price(k,n);return v==null?null:PLANS[k].short+' €'+v.toFixed(2)}).filter(Boolean);
   return 'Options for '+n+': '+parts.join(' · ')+'.';
 }
@@ -2503,7 +2503,7 @@ function renderOv(){
   if(o.t==='report') inner=reportSheet(o.id);
   else if(o.t==='stop'){cls+=' sm';var a=A(o.id);inner='<div class="sheet-b" style="padding-top:26px"><h2 class="rp-h" style="font-size:24px">Disconnect from '+esc(a.first)+'?</h2><p class="sub">You’ll lose access to everything '+esc(a.first)+' shares with you. To connect again, you’ll need to send a new request and '+esc(a.first)+' will need to approve it.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="doStop" data-id="'+a.id+'">Disconnect</button><button class="btn btn-quiet" type="button" data-a="closeOv">Stay connected</button></div></div>'}
   else if(o.t==='limit'){cls+=' sm';var pl=PLANS[S.plan];
-    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">RYSEON X</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE connects up to 10 athletes. RYSEON X is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover RYSEON X</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
+    inner=S.plan==='pro'?'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">Daytona</span><h2 class="rp-h" style="font-size:26px">Managing more than 10 athletes?</h2><p class="sub">VANTAGE connects up to 10 athletes. Daytona is the professional command centre for teams, academies and football organisations.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><a class="btn btn-primary" href="https://ryseon.ai" target="_blank" rel="noopener" style="text-decoration:none">Discover Daytona</a><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'
       :'<div class="sheet-b" style="padding-top:26px"><span class="mlabel acc">'+pl.name+'</span><h2 class="rp-h" style="font-size:26px">Your plan is full</h2><p class="sub">'+pl.name+' connects up to '+pl.max+' athletes. Move to a larger plan to request another athlete.</p><div style="display:flex;flex-direction:column;gap:10px;margin-top:6px"><button class="btn btn-primary" type="button" data-a="nav" data-v="pricing">See plans</button><button class="btn btn-quiet" type="button" data-a="closeOv">Not now</button></div></div>'}
   else if(o.t==='role'){cls+=' sm';inner='<div class="sheet-h"><span class="mlabel">How you use VANTAGE</span><button class="iconbtn" type="button" data-a="closeOv" aria-label="Close">'+I.x+'</button></div><div class="sheet-b"><div class="roles" role="radiogroup">'+[['parent','Parent',I.parent],['agent','Agent',I.agent],['coach','Private Coach',I.coach],['other','Other',I.other]].map(function(r){return '<button class="role" type="button" role="radio" style="min-height:104px" aria-checked="'+(S.role===r[0])+'" data-a="setRole" data-r="'+r[0]+'"><span class="tick">'+I.check+'</span>'+r[2]+'<b>'+r[1]+'</b></button>'}).join('')+'</div><p class="note">This personalises VANTAGE. It doesn’t change what any athlete shares with you.</p></div>'}
   else if(o.t==='proto'){
@@ -2676,7 +2676,7 @@ function onInput(e){
   var t=e.target,k=t.getAttribute('data-in');if(!k) return;
   if(k==='find'){S.req.q=t.value;var r=document.getElementById('results');if(r) r.innerHTML=resultsHtml()}
   else if(k==='athQ'){S.athQ=t.value;var o=document.getElementById('ath-out');if(o) o.innerHTML=athOut()}
-  else if(k==='calc'){var n=+t.value;S.calcN=n;var b=n>10?null:bestPlan(n);document.getElementById('calc-n').textContent=n>10?'10+':n;document.getElementById('calc-out').textContent=b?PLANS[b[0]].short+' · €'+b[1].toFixed(2):'RYSEON X';document.getElementById('calc-note').textContent=calcNote(n)}
+  else if(k==='calc'){var n=+t.value;S.calcN=n;var b=n>10?null:bestPlan(n);document.getElementById('calc-n').textContent=n>10?'10+':n;document.getElementById('calc-out').textContent=b?PLANS[b[0]].short+' · €'+b[1].toFixed(2):'Daytona';document.getElementById('calc-note').textContent=calcNote(n)}
 }
 function onSubmit(e){
   var f=e.target.getAttribute('data-f');if(!f) return;e.preventDefault();
@@ -4071,7 +4071,7 @@ S._wasOb=S.ob;
 })();
 
 
-(function(){var B='1792787936',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
+(function(){var B='1793607049',busy=0;function check(){if(busy||!window.fetch) return;busy=1;
   fetch(location.pathname+'?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){busy=0;var m=t.match(/data-build="(\d+)"/);if(m&&m[1]!==B) location.reload()}).catch(function(){busy=0})}
   addEventListener('load',function(){setTimeout(check,1500)});document.addEventListener('visibilitychange',function(){if(!document.hidden) check()})})();
 </script>
