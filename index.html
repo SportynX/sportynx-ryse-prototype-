@@ -29,7 +29,7 @@ img{max-width:100%}[hidden]{display:none!important}
   fit(); addEventListener('resize',fit); addEventListener('orientationchange',function(){ setTimeout(fit,250) }) })();
 /* Update gate (Ivan, 24 Oct): the version check starts at the very first byte, while the app downloads behind the loading screen.
    When the app is ready and a newer build is live, it reloads straight from the loading screen — the old first screen never shows. */
-(function(){ var B='1795693200'; window.__ryseB=B;
+(function(){ var B='1795693711'; window.__ryseB=B;
   var ver=window.fetch?fetch('version.json?u='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(v){return v&&v.b}).catch(function(){return null}):Promise.resolve(null);
   window.__ryseGate=function(cb){ var fired=false; function go(){ if(!fired){ fired=true; cb() } } setTimeout(go,1500);
     ver.then(function(nb){ if(fired) return; if(nb&&nb!==B){ var k='ryse-upd'; try{ if(sessionStorage.getItem(k)!==nb){ sessionStorage.setItem(k,nb); fired=true; location.replace(location.pathname+'?v='+nb); setTimeout(cb,20000); return } }catch(_){} } go() }) } })();
@@ -2149,7 +2149,8 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .mxc-pct{display:flex;align-items:baseline;gap:8px;margin-top:12px}
 .mxc-pct b{font:700 38px/1 var(--font-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums;background:linear-gradient(100deg,#DCE6FF 0%,#8FB0FF 45%,#4C7DFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mxc-pct span{font:600 13px/1 var(--font-body);color:rgba(214,220,232,.88)}
-.mx-cover .hm-type{min-height:0;margin:10px 0 14px;padding-bottom:26px;font-weight:500}
+.mx-cover .hm-type{min-height:0;margin:10px 0 14px;padding-bottom:8px;font-weight:500}
+.hm-track>.mx-cover .hm-type{margin-bottom:14px;padding-bottom:8px}   /* less air above the match row (Ivan, 26 Nov) */
 .mx-cover .hm-ex{margin-top:auto}
 /* the stats sheet */
 .sheet.mx{height:94%;max-height:94%;padding:10px 0 0;gap:0;background:#101114}
@@ -3287,7 +3288,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
    under the status bar instead of being cut off by a hard line below it; the first content keeps the same position. */
 .screen.home{--hp:max(calc(env(safe-area-inset-top,0px) + 12px),62px);padding-top:0!important}
 .screen.home>.pane{margin-top:0!important;padding-top:calc(var(--hp) + 4px)!important}
-.screen.home>#pane-home{padding-top:var(--hp)!important}
+.screen.home>#pane-home{padding-top:calc(var(--hp) + 16px)!important}   /* header a little lower, fully clear of the status bar (Ivan, 26 Nov) */
 .screen.home .pg-sticky{top:calc(env(safe-area-inset-top,0px) - 4px)}
 /* a soft shade only behind the status bar (clock, battery) so they stay readable over scrolled content */
 .screen.home::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 14px);z-index:6;pointer-events:none;
@@ -8753,7 +8754,7 @@ var RYSE_MAP={"coarse":{"step":1.5,"lon0":-169,"lat1":84,"ids":["304","124","643
    downloaded in the background first; only when it is fully on the phone, nobody is touching the screen and the
    language screen is showing, the app switches to it (in about a second, under the loading cover). The screen is never
    left frozen on an old page while a download runs, which made Continue look dead. */
-(function(){var B='1795693200',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
+(function(){var B='1795693711',busy=0,touch=0,CN='ryseon-app',BASE=new URL('./',location.href).href;
   addEventListener('pointerdown',function(){touch=Date.now()},true);addEventListener('touchstart',function(){touch=Date.now()},{capture:true,passive:true});
   try{ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')) addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').then(function(){ return navigator.serviceWorker.ready }).then(function(){ return cachedB() }).then(function(cb){ if(!cb) setTimeout(function(){ prefetch(B) },3000) }).catch(function(){}) }) }catch(_){}
   function safe(){ var L=document.getElementById('sLang'); return Date.now()-touch>4000&&L&&!L.classList.contains('is-hidden')&&!L.classList.contains('is-leaving')&&!window.__ryseQ&&!document.hidden }

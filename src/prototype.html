@@ -2113,7 +2113,8 @@ html[data-theme=light][data-view=prof] .sx-edit input:not(.sheet:not(#sh-cal)):n
 .mxc-pct{display:flex;align-items:baseline;gap:8px;margin-top:12px}
 .mxc-pct b{font:700 38px/1 var(--font-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums;background:linear-gradient(100deg,#DCE6FF 0%,#8FB0FF 45%,#4C7DFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .mxc-pct span{font:600 13px/1 var(--font-body);color:rgba(214,220,232,.88)}
-.mx-cover .hm-type{min-height:0;margin:10px 0 14px;padding-bottom:26px;font-weight:500}
+.mx-cover .hm-type{min-height:0;margin:10px 0 14px;padding-bottom:8px;font-weight:500}
+.hm-track>.mx-cover .hm-type{margin-bottom:14px;padding-bottom:8px}   /* less air above the match row (Ivan, 26 Nov) */
 .mx-cover .hm-ex{margin-top:auto}
 /* the stats sheet */
 .sheet.mx{height:94%;max-height:94%;padding:10px 0 0;gap:0;background:#101114}
@@ -3251,7 +3252,7 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
    under the status bar instead of being cut off by a hard line below it; the first content keeps the same position. */
 .screen.home{--hp:max(calc(env(safe-area-inset-top,0px) + 12px),62px);padding-top:0!important}
 .screen.home>.pane{margin-top:0!important;padding-top:calc(var(--hp) + 4px)!important}
-.screen.home>#pane-home{padding-top:var(--hp)!important}
+.screen.home>#pane-home{padding-top:calc(var(--hp) + 16px)!important}   /* header a little lower, fully clear of the status bar (Ivan, 26 Nov) */
 .screen.home .pg-sticky{top:calc(env(safe-area-inset-top,0px) - 4px)}
 /* a soft shade only behind the status bar (clock, battery) so they stay readable over scrolled content */
 .screen.home::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 14px);z-index:6;pointer-events:none;
