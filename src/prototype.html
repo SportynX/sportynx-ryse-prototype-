@@ -3247,6 +3247,16 @@ html:not([data-pro]) #ry-chips .ry-pro{display:none}
 .qa{bottom:calc(max(12px,calc(env(safe-area-inset-bottom,0px) - 14px)) + 62px + 14px)}
 .screen.home{padding-bottom:0}
 .screen.home .pane{padding-bottom:calc(max(12px,calc(env(safe-area-inset-bottom,0px) - 14px)) + 62px + 28px)!important}
+/* Tabs scroll edge to edge (Ivan, 26 Nov): the scroll area starts at the very top of the screen, so content glides
+   under the status bar instead of being cut off by a hard line below it; the first content keeps the same position. */
+.screen.home{--hp:max(calc(env(safe-area-inset-top,0px) + 12px),62px);padding-top:0!important}
+.screen.home>.pane{margin-top:0!important;padding-top:calc(var(--hp) + 4px)!important}
+.screen.home>#pane-home{padding-top:var(--hp)!important}
+.screen.home .pg-sticky{top:calc(env(safe-area-inset-top,0px) - 4px)}
+/* a soft shade only behind the status bar (clock, battery) so they stay readable over scrolled content */
+.screen.home::before{content:"";position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 14px);z-index:6;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,11,13,.92) 0,rgba(10,11,13,.6) 60%,rgba(10,11,13,0))}
+html[data-theme=light][data-view=prof] .screen.home::before{background:linear-gradient(180deg,rgba(255,255,255,.92) 0,rgba(255,255,255,.6) 60%,rgba(255,255,255,0))}
 .hnav-tabs{background:rgba(22,23,27,.58);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .hfab,.hfab[aria-expanded=true]{background:rgba(245,247,251,.9);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%)}
 .ry-chips button{border:1px solid rgba(255,255,255,.2)}.ry-chips button.on{border-color:#F5F7FB}   /* RYSEON filter chips keep a visible outline (Ivan, 24 Oct) */
